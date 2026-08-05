@@ -1,5 +1,16 @@
 # Yowie
 
+```
+     ▄▄▓▓▓▓▓▓▓▓▓▄▄
+   ▄▓▓▒▒▒▒▒▒▒▒▒▒▒▓▓▄    Yowie  ·  tracking down the SaaS nobody told you about
+  ▓▓▒▒░░░░░░░░░░░▒▒▓▓
+  ▓▒░░  ●       ●  ░▒▓  Domain      acme.com.au
+  ▓▒░░      ▼      ░▒▓  Candidates  acme, acmecorp
+  ▓▓▒░░   ╰───╯   ░▒▓▓
+   ▀▓▓▒▒░░░░░░░░░▒▒▓▓▀
+     ▀▀▓▓▓▓▓▓▓▓▓▓▓▀▀
+```
+
 Finds the SaaS services an organisation subscribes to, using only externally
 observable data. Built for shadow IT discovery: the services worth finding are
 the ones nobody told you about.
@@ -7,6 +18,12 @@ the ones nobody told you about.
 Named for the Australian bush cryptid, and for the same reason its predecessor
 was named after a sasquatch — you are hunting something everyone insists isn't
 there.
+
+![Yowie in action](docs/yowie-in-action.png)
+
+**479 signatures covering 346 vendors** across nine detectors, plus 74 parked
+awaiting confirmation. Findings are graded and every one carries the record or
+response that produced it.
 
 ### Build
 
@@ -147,11 +164,11 @@ typo cannot quietly cost you coverage in every future scan.
 | `file-transfer` | Managed file transfer — MOVEit, GoAnywhere, Egnyte. **Parked.** |
 | `finance-procurement` | Finance, expense, payroll, procurement. **Parked.** |
 | `security-grc` | Security tooling and compliance automation. **Parked.** |
-| `graveyard` | Unverified signatures carried over from the predecessor. **Parked.** |
+| `graveyard` | Unverified entries, and platforms whose operator could not be identified. **Parked.** |
 
 #### Parked signatures and how to promote one
 
-Four packs ship entirely disabled. They are structurally complete and pass
+Five packs ship entirely disabled. They are structurally complete and pass
 validation, but their match criteria have never been confirmed against a live
 tenant, so they are not evaluated during a scan.
 
@@ -159,13 +176,19 @@ This is deliberate. A signature with a wrong `contains` value never fires and
 never errors — it just makes a vendor look covered when it is not. Shipping
 those disabled keeps the research in the repo without inflating the numbers.
 
+Five have graduated so far, and the record is worth knowing before you trust the
+rest: two were correct as written, one had the wrong domain, and two had the
+right domain but the wrong channel — the vendor appeared as an SPF include
+rather than the per-customer hostname the entry predicted. Treat the remaining
+parked entries as research notes, not latent coverage.
+
 `-validate` prints the backlog grouped by pack:
 
 ```
 $ ./yowie -validate
-232 signatures across 13 packs, covering 168 vendors
+479 signatures across 13 packs, covering 346 vendors
 ...
-71 signature(s) parked behind `disabled: true`, awaiting confirmation against a live tenant:
+74 signature(s) parked behind `disabled: true`, awaiting confirmation against a live tenant:
 
   ai-services.yaml (24)
     txt-grammarly                            Grammarly
@@ -237,13 +260,26 @@ it is weaker.
 | `-nameservers` | Override the public resolvers |
 | `-timeout` | Overall scan budget (default 5m) |
 | `-dns-concurrency` / `-http-concurrency` | Tune throughput |
+| `-dns-timeout` / `-http-timeout` | Per-query and per-request budgets |
+| `-quiet` | Suppress the progress line |
+| `-insecure` | Skip TLS verification, for vendors with broken certificates |
+| `-no-banner` / `-no-color` / `-no-evidence` | Trim the terminal output |
 
-Ctrl-C reports whatever was found rather than discarding it.
+`-help` lists everything. Ctrl-C reports whatever was found rather than
+discarding it.
 
 ### Notes on accuracy
 
-- The CT detector depends on crt.sh, falling back to Cert Spotter. crt.sh is
-  frequently overloaded; if both fail you get a warning, not a silent gap.
+- The CT detector queries **both** aggregators in parallel and merges the union.
+  It used to stop at the first that answered, which silently traded away
+  coverage: on a measured comparison the secondary returned 154 hostnames where
+  the primary returned 434, a strict subset. If one source fails you still get a
+  result, with a warning saying coverage is lower than a healthy run; if both
+  fail you get a warning, not a silent gap.
+- `-ct-limit` truncates a **sorted** list, so it keeps early-alphabet hostnames
+  rather than sampling. When it bites, the warning gives the real total and says
+  the selection is alphabetical — raise the limit for full coverage on a large
+  estate.
 - HTTP status handling depends on the match style, because the status code is
   doing a different job in each. An **absent** marker fires on the *absence* of
   the vendor's no-such-tenant text, which any unrelated error page also
@@ -295,8 +331,57 @@ Leads — verify before acting (7) ───────────────
       ! 9 subdomain(s) point at service-now.com, which matches no known vendor signature.
 
 33 services across 18 confirmed, 8 probable, 7 leads
-176 DNS queries (12 served from cache), 73 HTTP requests, 232 signatures, 10.0s
+176 DNS queries (12 served from cache), 73 HTTP requests, 479 signatures, 10.0s
 ```
+
+### Working on this repository
+
+Yowie is run against real organisations, and naming one of those domains
+anywhere that leaves the machine publishes the fact that it was assessed. That
+is not ours to disclose, and it cannot be retracted — rewriting history leaves
+the original commit reachable by SHA, and the push event is archived
+off-platform within the hour.
+
+`.scanned-domains` (gitignored) records every domain scanned. Three layers read
+it:
+
+| Layer | Guards |
+|-------|--------|
+| `scripts/hooks/commit-msg` | Rejects a commit message naming a scanned domain |
+| `scripts/hooks/pre-push` | Rejects a push whose commits **or file content** name one — catches `--no-verify` commits and pre-existing history |
+| `scripts/preflight.sh` | Sweeps the remote too: issues, pull requests, release notes, repository description |
+
+Enable the hooks after cloning:
+
+```
+git config core.hooksPath scripts/hooks
+```
+
+Add a domain to `.scanned-domains` **before** scanning it, so the guard is in
+place before there is anything to leak.
+
+`preflight.sh` also checks three things a domain match cannot see, because they
+identify an organisation without naming its domain: **organisation names in
+prose**, **verification tokens** (unique to one domain and indexed by
+DNS-history services), and **tenant GUIDs**. All three exist because an
+anonymisation pass on a worked example replaced the domains and left a live
+token and a real GUID in place — removing the obvious identifier is not the same
+as de-identifying. Use `acme.example`, `EXAMPLETOKEN…`, an all-zero GUID and the
+`203.0.113.0/24` documentation range in examples, never a value copied from a
+scan.
+
+Two limits are recorded rather than papered over. The guard cannot cover a
+domain that is also a vendor carried in the packs — several scanned
+organisations are themselves SaaS providers we detect — so those are listed as
+documented exclusions and rely on the written rule instead. And no hook reaches
+issue or release text; that depends on the rule being followed.
+
+`preflight.sh` self-tests every detection path against planted canaries before
+reporting anything. An earlier version piped into `grep -q`, which exits on
+first match and SIGPIPEs the writer; under `set -o pipefail` the pipeline then
+reported failure and the match was silently dropped. It passed on small inputs
+and missed matches in large ones — a guard that reports "ok" while detecting
+nothing is worse than no guard.
 
 ### Licence
 
@@ -305,7 +390,16 @@ Apache License 2.0 — see [LICENSE](LICENSE) and [NOTICE](NOTICE).
 ### History
 
 Yowie is a Go rewrite of an earlier internal Python tool. The signature database
-was ported mechanically, so coverage is a superset of its predecessor's.
+was ported mechanically and has since grown to roughly 2.7 times its size — 174
+signatures to 479 — almost entirely in channels the predecessor did not have.
+The 87 TXT-token signatures are the inherited ones; everything added since is
+`cname_target`, `spf_include` or `dmarc_rua`.
+
+Most of that growth came from running the tool against real organisations and
+writing signatures for whatever the unattributed leads turned out to be, which
+is a loop the certificate transparency detector sustains on its own: it surfaces
+vendors nobody wrote a rule for, and each one found becomes a rule that then
+works everywhere else.
 
 Behavioural differences worth knowing:
 
@@ -322,3 +416,23 @@ Behavioural differences worth knowing:
   package global. The old `run()` never reset its results list, so a second call
   in the same process returned the first call's findings too; that class of bug
   is gone.
+
+#### Two defect classes to watch for
+
+Both fail silently — the signature looks like coverage while matching nothing —
+and both have recurred repeatedly:
+
+- **Writing a match against one observed hostname** when the vendor publishes
+  several. A Google netblock host missing its numbered siblings, Valimail's
+  report domain, Mandrill's bare include, Pardot's second sender and Webflow's
+  CDN were all written this way and all had to be broadened.
+- **Assuming a vendor appears on one channel.** Signature types are
+  channel-specific and vendors are not: a sender carried as `spf_include` cannot
+  match the same vendor appearing as a certificate transparency target. When you
+  add a vendor, ask which other channels it could surface on.
+
+A third, rarer but worse: **naming a shared multi-tenant platform after one of
+its customers.** On such a platform the tenant hostname presents the *tenant's*
+certificate, not the operator's, so a certificate subject identifies who the host
+serves rather than who runs it. Two signatures were wrong this way before the
+pattern was recognised.
