@@ -25,21 +25,78 @@ while IFS= read -r d; do
 done < "$list"
 echo "Checking ${#domains[@]} scanned domain(s) against every published surface."
 
+# Organisation names written in prose, which a domain check cannot see.
+#
+# Derived from the scanned domains' registrable labels. A label is skipped when
+# the signature packs already carry it as a vendor — that is the sanctioned
+# exception: a domain may appear because we detect the product, not because the
+# organisation was assessed. Short and ordinary-English labels are skipped too,
+# or every note mentioning "corporate" or "group" would fire.
+orgnames=()
+build_orgnames() {
+  local vendors lbl
+  vendors="$(grep -hoiE '^[[:space:]]+(vendor|query|contains):.*' signatures/*.yaml 2>/dev/null | tr '[:upper:]' '[:lower:]')"
+  local stop=" corporate group energy international surgical health global cloud first auto \
+systems services holdings limited technologies industries resources digital online \
+capital partners financial national general medical dental \
+"
+  for d in "${domains[@]}"; do
+    lbl="${d%%.*}"
+    [ "${#lbl}" -ge 5 ] || continue
+    case "$stop" in *" $lbl "*) continue ;; esac
+    grep -qiF -- "$lbl" <<<"$vendors" && continue   # carried as a vendor: sanctioned
+    orgnames+=("$lbl")
+  done
+}
+build_orgnames
+
+# Artefacts that identify an organisation even after its domain has been removed.
+# Each entry is: <regex>|<allowed-placeholder-regex>|<description>.
+#
+# These exist because an earlier anonymisation pass replaced the domains in a
+# worked example but left a live domain-verification token and a fragment of a
+# real tenant GUID in place. A verification token is unique to one domain and is
+# indexed by DNS-history services, so it identifies the organisation more
+# reliably than the name that was carefully removed.
+artefacts=(
+  'verification=[A-Za-z0-9_/+=-]{16,}|EXAMPLETOKEN|a live domain-verification token'
+  '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000|a tenant or account GUID'
+)
+
 # Self-test. An earlier version of this script piped into `grep -q`, which exits
 # on first match and SIGPIPEs the writer; under `set -o pipefail` the pipeline
 # then reported failure and the match was silently dropped. It passed on small
 # inputs and failed on large ones — a guard that reports "ok" while detecting
-# nothing. Prove detection works, on an input large enough to trip that class of
-# bug, before trusting any result below.
+# nothing. Every check below is therefore proved against a planted canary, on an
+# input large enough to trip that class of bug, before any result is trusted.
 selftest() {
-  local canary="${domains[0]}" haystack
-  haystack="$(head -c 400000 /dev/zero | tr '\0' 'x')"$'\n'"${canary}"$'\n'
-  if ! grep -qiF -- "$canary" <<<"$haystack"; then
-    echo "  ABORT — self-test failed: cannot detect a known domain in a large input." >&2
-    echo "  This script is not providing the protection it claims. Fix it before publishing." >&2
-    exit 2
+  local pad haystack
+  pad="$(head -c 400000 /dev/zero | tr '\0' 'x')"
+
+  haystack="${pad}"$'\n'"${domains[0]}"$'\n'
+  grep -qiF -- "${domains[0]}" <<<"$haystack" || {
+    echo "  ABORT — self-test failed: cannot detect a known domain in a large input." >&2; exit 2; }
+
+  # Assembled at runtime so the canaries never appear as literals in this file —
+  # otherwise the self-test would trip the very check it exists to prove, and a
+  # realistic-looking canary is itself the thing we are trying to keep out.
+  local vpart="verification" vval="Ab3dEf6hIj9lMn2pQr5t"
+  haystack="${pad}"$'\n'"google-site-${vpart}=${vval}"$'\n'
+  grep -qiE 'verification=[A-Za-z0-9_/+=-]{16,}' <<<"$haystack" || {
+    echo "  ABORT — self-test failed: cannot detect a verification token." >&2; exit 2; }
+
+  local g1="aaaaaaaa" g2="bbbb" g3="cccc" g4="dddd" g5="eeeeeeeeeeee"
+  haystack="${pad}"$'\n'"tenant ${g1}-${g2}-${g3}-${g4}-${g5}"$'\n'
+  grep -qiE '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' <<<"$haystack" || {
+    echo "  ABORT — self-test failed: cannot detect a GUID." >&2; exit 2; }
+
+  if [ "${#orgnames[@]}" -gt 0 ]; then
+    haystack="${pad}"$'\n'"a note mentioning ${orgnames[0]} in prose"$'\n'
+    grep -qiE "(^|[^a-z0-9])${orgnames[0]}([^a-z0-9]|$)" <<<"$haystack" || {
+      echo "  ABORT — self-test failed: cannot detect an organisation name." >&2; exit 2; }
   fi
-  printf '  self-test ok (detection verified on a %s-byte input)\n' "${#haystack}"
+
+  printf '  self-test ok (domain, token, GUID and org-name detection all verified)\n'
 }
 selftest
 
@@ -60,11 +117,37 @@ check() { # name, content
   fi
 }
 
+# Organisation names in prose, and scan artefacts that survive de-identification.
+# Run only against local content: the remote surfaces are prose written by hand
+# and would produce constant false positives on ordinary words.
+check_deep() { # name, content
+  local name="$1" content="$2" hits="" n found spec re allow desc
+  for n in ${orgnames[@]+"${orgnames[@]}"}; do
+    if grep -qiE "(^|[^a-z0-9])${n}([^a-z0-9]|$)" <<<"$content"; then hits="${hits} ${n}"; fi
+  done
+  for spec in "${artefacts[@]}"; do
+    re="${spec%%|*}"; allow="${spec#*|}"; desc="${allow#*|}"; allow="${allow%%|*}"
+    found="$(grep -oiE "$re" <<<"$content" | grep -viE "$allow" | sort -u | head -3 | tr '\n' ' ')"
+    [ -n "$found" ] && hits="${hits} [${desc}: ${found}]"
+  done
+  if [ -n "$hits" ]; then
+    printf '  FAIL  %-26s%s\n' "$name" "$hits"; fail=1
+  else
+    printf '  ok    %s\n' "$name"
+  fi
+}
+
 hr; echo "Local repository"
-check "tracked file content" "$(git grep -I --no-color -h '' -- . 2>/dev/null || true)"
-check "commit messages"      "$(git log --all --format='%B' 2>/dev/null || true)"
+tracked_content="$(git grep -I --no-color -h '' -- . 2>/dev/null || true)"
+commit_content="$(git log --all --format='%B' 2>/dev/null || true)"
+check "tracked file content" "$tracked_content"
+check "commit messages"      "$commit_content"
 check "tag messages"         "$(git tag -l --format='%(contents)' 2>/dev/null || true)"
 check "branch names"         "$(git for-each-ref --format='%(refname)' 2>/dev/null || true)"
+
+hr; printf 'Deep checks (%d org name(s), %d artefact pattern(s))\n' "${#orgnames[@]}" "${#artefacts[@]}"
+check_deep "org names + artefacts in files"   "$tracked_content"
+check_deep "org names + artefacts in commits" "$commit_content"
 
 if command -v gh >/dev/null 2>&1 && git remote get-url origin >/dev/null 2>&1; then
   repo="$(gh repo view --json nameWithOwner --jq .nameWithOwner 2>/dev/null || true)"

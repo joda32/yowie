@@ -275,18 +275,18 @@ $ yowie acme.com.au acme acmecorp
 
 Confirmed (18) ────────────────────────────────────────────────────
   Atlassian  Collaboration
-      TXT     acme.com.au → atlassian-domain-verification=59rFzyTBLE5bPlEP…
+      TXT     acme.com.au → atlassian-domain-verification=EXAMPLETOKENd41d8cd98f…
       HTTP    https://acme.atlassian.net/ → Log in with Atlassian account
   Microsoft 365  Identity & Secrets
       MX      acme.com.au → acme-com-au.mail.protection.outlook.com
-      Tenant  https://login.microsoftonline.com/…/openid-configuration → tenant d7a0631f-…
+      Tenant  https://login.microsoftonline.com/…/openid-configuration → tenant 00000000-0000-0000-0000-…
   Salesforce  Business Applications
-      A       acme.lightning.force.com → [141.163.193.226 141.163.193.227]
+      A       acme.lightning.force.com → [203.0.113.10 203.0.113.11]
   …
 
 Probable (8) ──────────────────────────────────────────────────────
   Okta  Identity & Secrets
-      CNAME   acme.okta.com → [ok8-crtrs.tng.okta.com]
+      CNAME   acme.okta.com → [okN-crtrs.tng.okta.com]
       ! Vendor wildcards this zone. The tenant is inferred from a differing answer…
 
 Leads — verify before acting (7) ────────────────────────────────
