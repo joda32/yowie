@@ -14,3 +14,10 @@
 *.swp
 .idea/
 .vscode/
+
+# Record of assessed organisations. Never commit.
+.scanned-domains
+
+# Local working-agreements file. Never commit.
+CLAUDE.md
+.claude/

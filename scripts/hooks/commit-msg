@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+#
+# Block any commit message that names a domain we have scanned.
+#
+# Scanned domains belong to real organisations. Naming one in a commit message
+# publishes the fact that it was assessed, and a pushed commit message cannot be
+# reliably retracted: rewriting history leaves the original object reachable by
+# SHA, and the push event is archived off-platform within the hour.
+#
+# Vendor domains are fine and necessary — a signature note has to be able to say
+# "reports are published to vali.email". Only the target list is forbidden, so
+# this checks an explicit list rather than guessing what a domain is.
+#
+# The list lives in .scanned-domains, deliberately gitignored: it is a record of
+# who was assessed and must not itself be committed.
+#
+# Bypass, if you are certain: git commit --no-verify
+
+set -uo pipefail
+
+msg_file="$1"
+list="$(git rev-parse --show-toplevel)/.scanned-domains"
+[ -f "$list" ] || exit 0
+
+hits=""
+while IFS= read -r domain; do
+  domain="${domain%%#*}"
+  domain="$(printf '%s' "$domain" | tr -d '[:space:]')"
+  [ -n "$domain" ] || continue
+  if grep -qiF -- "$domain" "$msg_file"; then hits="${hits}    ${domain}"$'\n'; fi
+done < "$list"
+
+[ -z "$hits" ] && exit 0
+
+{
+  printf '\n  COMMIT BLOCKED — the message names a domain that has been scanned.\n\n'
+  printf '%s' "$hits"
+  cat <<'TEXT'
+
+  Scanned domains identify real organisations as assessment targets. Once
+  pushed this cannot be reliably retracted: rewriting history leaves the
+  original object reachable by SHA, and the push event is archived
+  off-platform within the hour.
+
+  Describe the work without naming the target. "Validated against a set of
+  real organisations" carries the same meaning and none of the disclosure.
+
+  The same rule applies where this hook cannot see: issue text, pull request
+  descriptions, release notes and the repository description.
+
+  If you are certain this is a false positive: git commit --no-verify
+
+TEXT
+} >&2
+exit 1
