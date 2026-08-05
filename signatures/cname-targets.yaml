@@ -18,11 +18,62 @@ defaults:
   confidence: high
 
 signatures:
+  - id: cname-target-acorn-lms
+    vendor: "Acorn LMS"
+    category: "HR & Learning"
+    type: cname_target
+    query: "acornlms.com"
+    notes: "Australian learning and performance platform, trading as Acorn (acorn.works). Tenants are aliased as <host>.<customer-domain>.hosted.acornlms.com, so a hit names both the vendor and the customer's own subdomain."
+
+  - id: cname-target-adobe-experience-cloud
+    vendor: "Adobe Experience Cloud"
+    category: "Analytics"
+    type: cname_target
+    query: "adobedc.net"
+    notes: "Adobe's Experience Platform data collection endpoint. Ownership confirmed: adobedc.net is served by ns*.adobe.net with SOA techops-cst.adobe.com. Customers alias a first-party collection hostname here to dodge tracking protection, so a hit means behavioural analytics on the organisation's own domain."
+
+  - id: cname-target-adobe-experience-manager
+    vendor: "Adobe Experience Manager"
+    category: "Content Management"
+    type: cname_target
+    query: "adobecqms.net"
+    notes: "Adobe Managed Services for Experience Manager — cqms is CQ (the product's pre-AEM name) plus Managed Services. DNS ownership is not confirmable because the zone sits on AWS nameservers, but the naming is explicit and tenants appear as <customer>-<env>.adobecqms.net, which also exposes the environment."
+
+  - id: cname-target-adobe-analytics
+    vendor: "Adobe Analytics"
+    category: "Analytics"
+    type: cname_target
+    query: "omtrdc.net"
+    notes: "Adobe Analytics data collection, from the Omniture heritage. Ownership confirmed: SOA hostmaster.adobe.com on ns*.adobe.net. A first-party alias here means behavioural analytics collected on the organisation's own domain."
+
+  - id: cname-target-akamai
+    vendor: "Akamai"
+    category: "Infrastructure"
+    type: cname_target
+    query: "edgekey.net"
+    confidence: medium
+    notes: "Akamai's edge delivery network, confirmed by SOA hostmaster.akamai.com. CDN fronting identifies the provider but not the application behind it."
+
+  - id: cname-target-akamai-edgesuite
+    vendor: "Akamai"
+    category: "Infrastructure"
+    type: cname_target
+    query: "edgesuite.net"
+    confidence: medium
+    notes: "Akamai's older delivery suffix. Not observed in the sample that produced the edgekey.net entry, but the same platform."
+
   - id: cname-target-atlassian
     vendor: "Atlassian"
     category: "Collaboration"
     type: cname_target
     query: "atlassian.net"
+
+  - id: cname-target-adobe-campaign
+    vendor: "Adobe Campaign"
+    category: "Marketing"
+    type: cname_target
+    query: "campaign.adobe.com"
+    notes: "Adobe's marketing automation platform. Customers alias a sending subdomain here, so the hostname is usually something like communication.<domain>."
 
   - id: cname-target-aws-cloudfront
     vendor: "AWS CloudFront"
@@ -87,12 +138,33 @@ signatures:
     type: cname_target
     query: "mybigcommerce.com"
 
+  - id: cname-target-crowdicity
+    vendor: "Crowdicity"
+    category: "Collaboration"
+    type: cname_target
+    query: "crowdicity.com"
+    notes: "Idea and innovation management platform. Also seen on the crowdicity.com.au country domain — see the companion signature."
+
+  - id: cname-target-crowdicity-au
+    vendor: "Crowdicity"
+    category: "Collaboration"
+    type: cname_target
+    query: "crowdicity.com.au"
+    notes: "Australian country domain for Crowdicity. DNS ownership was not confirmable (AWS-hosted nameservers), so this rests on the product name rather than on registry evidence."
+
   - id: cname-target-cloudflare
     vendor: "Cloudflare"
     category: "Infrastructure"
     type: cname_target
     query: "cdn.cloudflare.net"
     confidence: medium
+
+  - id: cname-target-digicert-vmc
+    vendor: "DigiCert"
+    category: "Certificates"
+    type: cname_target
+    query: "digicert.com"
+    notes: "Also used to name the issuer of a Verified Mark Certificate found in a BIMI record, which implies a paid VMC rather than a self-hosted logo."
 
   - id: cname-target-desk-com
     vendor: "Salesforce Service Cloud"
@@ -105,6 +177,35 @@ signatures:
     category: "Collaboration"
     type: cname_target
     query: "discourse.cloud"
+
+  - id: cname-target-jrni
+    vendor: "JRNI"
+    category: "Scheduling & Events"
+    type: cname_target
+    query: "jrni.com"
+    notes: "Enterprise appointment booking and queue management, formerly BookingBug. Confirmed from the vendor's own site. Customer hostnames are aliased as <their-domain-with-dashes>.jrni.com."
+
+  - id: cname-target-fico
+    vendor: "FICO"
+    category: "Financial Services"
+    type: cname_target
+    query: "fico-ccs.net"
+    notes: "FICO Customer Communication Services. DNS ownership is not confirmable (AWS nameservers), so this rests on the naming and on observed hostnames such as corecollection-consumer-au.fico-ccs.net. See the companion signature for the environment-suffixed domains."
+
+  - id: cname-target-fico-envs
+    vendor: "FICO"
+    category: "Financial Services"
+    type: cname_target
+    query: "ficoccs-*.net"
+    notes: "FICO publishes per-environment domains such as ficoccs-prod.net and ficoccs-cqa.net, so the wildcard is anchored inside the label to cover current and future environments."
+
+  - id: cname-target-kalix
+    vendor: "Kalix"
+    category: "Infrastructure"
+    type: cname_target
+    query: "kalix.app"
+    confidence: medium
+    notes: "Serverless application platform. DNS ownership was not confirmable (Google Cloud DNS), so this rests on the product name rather than on registry evidence."
 
   - id: cname-target-fastly
     vendor: "Fastly"
@@ -143,6 +244,27 @@ signatures:
     type: cname_target
     query: "hs-sites.com"
 
+  - id: cname-target-imperva
+    vendor: "Imperva"
+    category: "Security"
+    type: cname_target
+    query: "incapdns.net"
+    notes: "Imperva's WAF and DDoS protection, from the Incapsula heritage. Ownership confirmed: SOA hostmaster.incapsula.com. A hit means the hostname sits behind a web application firewall, which is useful context before any testing."
+
+  - id: cname-target-imperva-2
+    vendor: "Imperva"
+    category: "Security"
+    type: cname_target
+    query: "impervadns.net"
+    notes: "The rebranded Imperva suffix, same operator as incapdns.net (identical SOA)."
+
+  - id: cname-target-ivvy
+    vendor: "iVvy"
+    category: "Scheduling & Events"
+    type: cname_target
+    query: "ivvy.com"
+    notes: "Australian venue and event management platform, confirmed from the vendor's own site."
+
   - id: cname-target-intercom
     vendor: "Intercom"
     category: "Service Desk"
@@ -168,6 +290,13 @@ signatures:
     type: cname_target
     query: "mktoweb.com"
 
+  - id: cname-target-marketo-tracking
+    vendor: "Marketo"
+    category: "Marketing"
+    type: cname_target
+    query: "mkto-*.com"
+    notes: "Marketo mints a per-customer tracking domain of the form mkto-<instance>.com, so the registrable domain itself varies and the wildcard is anchored inside the label."
+
   - id: cname-target-netlify
     vendor: "Netlify"
     category: "Infrastructure"
@@ -179,6 +308,13 @@ signatures:
     category: "Identity & Secrets"
     type: cname_target
     query: "okta.com"
+
+  - id: cname-target-oracle-service-cloud
+    vendor: "Oracle Service Cloud"
+    category: "Service Desk"
+    type: cname_target
+    query: "custhelp.com"
+    notes: "Oracle Service Cloud, formerly RightNow. Ownership confirmed: custhelp.com is served by ednsac0*.rightnowtech.com with SOA root.rightnowtech.com. Tenants appear as <customer>--<env>.custhelp.com, so the hostname also reveals the environment."
 
   - id: cname-target-pantheon
     vendor: "Pantheon"
@@ -209,6 +345,27 @@ signatures:
     category: "Business Applications"
     type: cname_target
     query: "siteforce.com"
+
+  - id: cname-target-seismic
+    vendor: "Seismic"
+    category: "Sales Enablement"
+    type: cname_target
+    query: "seismic.com"
+    notes: "Sales enablement and content distribution. Tenants appear as <customer>.tenant-services.seismic.com."
+
+  - id: cname-target-salesforce-marketing-cloud
+    vendor: "Salesforce Marketing Cloud"
+    category: "Marketing"
+    type: cname_target
+    query: "sfmc-marketing.com"
+    notes: "Ownership confirmed: sfmc-marketing.com is served by dns0*.salesforce.com with SOA hostmaster.salesforce.com. Click and view tracking hostnames are aliased here."
+
+  - id: cname-target-salesforce-marketing-cloud-content
+    vendor: "Salesforce Marketing Cloud"
+    category: "Marketing"
+    type: cname_target
+    query: "sfmc-content.com"
+    notes: "The content and image delivery half of Salesforce Marketing Cloud, paired with sfmc-marketing.com."
 
   - id: cname-target-sendgrid
     vendor: "SendGrid"
@@ -258,6 +415,13 @@ signatures:
     category: "Infrastructure"
     type: cname_target
     query: "vercel-dns.com"
+
+  - id: cname-target-verifone
+    vendor: "Verifone"
+    category: "Payments"
+    type: cname_target
+    query: "verifone.cloud"
+    notes: "Hosted payment pages. Confirmed by the vendor's own documentation portal on the same domain. A hit means cardholder-facing payment flows on the organisation's domain."
 
   - id: cname-target-webflow
     vendor: "Webflow"

@@ -97,8 +97,8 @@ signatures:
     query: "{domain}"
     match:
       contains: "autodesk-domain-verification"
-    confidence: medium
-    notes: "Signature was never confirmed against a live tenant in the legacy tool; treat a hit as a lead, not proof."
+    confidence: high
+    notes: "Confirmed against a live tenant during signature validation. The token is issued by Autodesk to a specific domain, so a hit means a provisioned Autodesk enterprise agreement."
 
   - id: txt-aws-ses
     vendor: "AWS SES"
@@ -662,8 +662,8 @@ signatures:
     query: "{domain}"
     match:
       contains: "sitecore-domain-verification"
-    confidence: medium
-    notes: "Signature was never confirmed against a live tenant in the legacy tool; treat a hit as a lead, not proof."
+    confidence: high
+    notes: "Confirmed against a live tenant during signature validation. Sitecore is an enterprise content management platform; the token is domain-scoped."
 
   - id: txt-slack
     vendor: "Slack"

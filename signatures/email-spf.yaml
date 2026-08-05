@@ -17,15 +17,42 @@ signatures:
       contains: "barracudanetworks.com"
     confidence: high
 
-  - id: spf-dmarcly
-    vendor: "Dmarcly"
+  - id: spf-flattening-dmarcl
+    vendor: "Third-party SPF flattening"
     category: "Email Security"
     type: spf_include
     query: "{domain}"
     match:
-      contains: "dmarclb.com"
+      contains: "._spf.dmarcl"
+    confidence: medium
+    notes: >-
+      A hosted SPF flattening service, which rewrites a domain's includes into
+      generated IP lists to stay under the RFC 7208 ten-lookup limit. Includes
+      appear as _u and nbN subdomains, e.g. _u.example.com._spf.dmarclh.com.
+      Deliberately not attributed to a named vendor: dmarcla through dmarclj all
+      resolve to one nameserver pair, and the family has been observed in use by
+      more than one DMARC management platform. Read the domain's DMARC rua
+      destination to identify which platform is actually engaged — that is
+      reliable, this is not.
+
+  - id: spf-google-workspace
+    vendor: "Google Workspace"
+    category: "Productivity"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "_spf.google.com"
     confidence: high
-    notes: "Dmarcly's SPF flattening service. Includes appear as several _u/nbN subdomains of dmarclb.com."
+
+  - id: spf-google-workspace-netblocks
+    vendor: "Google Workspace"
+    category: "Productivity"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "netblocks"
+    confidence: high
+    notes: "Google's mail-sending netblocks, published as _netblocks.google.com, _netblocks2.google.com and so on. Matched on the bare token because the numbered variants break a full-hostname match, and because Google adds more over time. Usually reached through include:_spf.google.com, but some domains inline them directly."
 
   - id: spf-freshdesk
     vendor: "Freshdesk"
@@ -125,6 +152,36 @@ signatures:
     match:
       contains: "spf.salesforce.com"
     confidence: high
+
+  - id: spf-sage-intacct
+    vendor: "Sage Intacct"
+    category: "Finance & Procurement"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "intacct.com"
+    confidence: high
+    notes: "Cloud financial management and accounting. Confirmed against a live sender: _spf.intacct.com authorises the vendor's sending ranges, and intacct.com itself takes mail at intacct-com.mail.protection.outlook.com. Finance platforms are bought by finance teams, so a hit is worth confirming against the asset register."
+
+  - id: spf-sbc-it
+    vendor: "SBC IT"
+    category: "Insurance & Claims"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "sbcit.com.au"
+    confidence: high
+    notes: "Australian self-insurance claims management software. Confirmed against a live sender. Niche vertical vendor: expect it only at self-insured employers, where it holds workers-compensation claim data."
+
+  - id: spf-sendgrid
+    vendor: "SendGrid"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "sendgrid.net"
+    confidence: high
+    notes: "Covers both the bare sendgrid.net include and the ab.sendgrid.net variant used for click tracking."
 
   - id: spf-service-now
     vendor: "ServiceNow"

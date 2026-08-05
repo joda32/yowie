@@ -51,7 +51,7 @@ signatures:
     confidence: medium
 
   - id: vanity-cname-azure-website-azurewebsites
-    vendor: "Azure Website"
+    vendor: "Azure App Service"
     category: "Infrastructure"
     type: vanity_cname
     query: "{candidate}.azurewebsites.net"

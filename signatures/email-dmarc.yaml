@@ -102,3 +102,11 @@ signatures:
     query: "{domain}"
     match:
       contains: "valimail.com"
+
+  - id: dmarc-valimail-short
+    vendor: "Valimail"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "vali.email"
+    notes: "Valimail publishes aggregate reports to vali.email, not valimail.com. The longer form is kept as well because both appear in the wild."
