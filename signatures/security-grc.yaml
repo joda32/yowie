@@ -1,0 +1,159 @@
+# Yowie signature pack — schema v1
+#
+# Security tooling and compliance automation.
+#
+# Two distinct reasons to detect these:
+#
+#   1. Knowing a client's security stack is directly useful on an engagement —
+#      it tells you what telemetry exists, what is likely to catch you, and
+#      where the gaps are.
+#   2. Compliance automation (Vanta, Drata, Secureframe) is very often bought
+#      by one person ahead of an audit, wired into every SaaS the company owns
+#      via OAuth, and never security-reviewed. A tool with read access to the
+#      entire estate is a significant finding when nobody owns it.
+#
+# ---------------------------------------------------------------------------
+# ALL ENTRIES SHIP DISABLED. Confirm each against a live tenant before enabling.
+# ---------------------------------------------------------------------------
+#
+# Confidence is uneven here and the notes say which is which. Broadly:
+#
+#   - Cloudflare Access, Netskope, SentinelOne and CyberArk use per-customer
+#     tenant hostnames, which are structural and cheap to confirm.
+#   - Bugcrowd reuses the public-programme-page pattern already proven by the
+#     HackerOne signature in http-endpoints.yaml.
+#   - CrowdStrike, Wiz, Snyk, Tenable and Qualys are deliberately absent as
+#     vanity signatures: they put every customer on a shared regional console
+#     (falcon.crowdstrike.com, app.wiz.io, cloud.tenable.com), so there is no
+#     per-customer hostname to detect. For those, an SSO redirect or entitlement
+#     data is the only route — do not invent a vanity signature for them.
+
+version: 1
+pack: security-grc
+description: "Security tooling and compliance automation platforms. All entries ship disabled pending confirmation."
+defaults:
+  category: "Security"
+  confidence: medium
+
+signatures:
+  # --- Network and access ----------------------------------------------------
+
+  - id: vanity-cname-cloudflare-access
+    vendor: "Cloudflare Zero Trust"
+    type: vanity_cname
+    query: "{candidate}.cloudflareaccess.com"
+    disabled: true
+    notes: "Cloudflare Zero Trust team domains follow <team>.cloudflareaccess.com. Structurally solid and among the most likely in this pack to confirm cleanly. Note the team name is chosen at signup and may not match the domain, so supply generous candidates."
+
+  - id: vanity-a-netskope
+    vendor: "Netskope"
+    type: vanity_a
+    query: "{candidate}.goskope.com"
+    disabled: true
+    notes: "Netskope tenants are believed to use a per-customer subdomain under goskope.com. A hit means a cloud access security broker is inspecting the organisation's traffic — useful context for any assessment."
+
+  # --- Endpoint --------------------------------------------------------------
+
+  - id: vanity-a-sentinelone
+    vendor: "SentinelOne"
+    type: vanity_a
+    query: "{candidate}.sentinelone.net"
+    disabled: true
+    notes: "SentinelOne management consoles are believed to use a per-customer subdomain. CrowdStrike has no equivalent — it puts all customers on falcon.crowdstrike.com — so do not expect symmetry between the two."
+
+  # --- Privileged access and secrets -----------------------------------------
+
+  - id: vanity-cname-cyberark
+    vendor: "CyberArk"
+    category: "Identity & Secrets"
+    type: vanity_cname
+    query: "{candidate}.cyberark.cloud"
+    disabled: true
+    notes: "UNVERIFIED. CyberArk Identity tenants are believed to sit under cyberark.cloud, possibly as <tenant>.id.cyberark.cloud — check both forms."
+
+  - id: vanity-a-jumpcloud
+    vendor: "JumpCloud"
+    category: "Identity & Secrets"
+    type: vanity_a
+    query: "{candidate}.jumpcloud.com"
+    disabled: true
+    notes: "UNVERIFIED. JumpCloud SSO may be served from a shared host rather than a per-customer subdomain, in which case this will never fire and should stay disabled with a note saying so."
+
+  - id: txt-keeper
+    vendor: "Keeper Security"
+    category: "Identity & Secrets"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "keeper-domain-verification"
+    disabled: true
+    notes: "UNVERIFIED token, assumed from the common <vendor>-domain-verification convention. 1Password is already confirmed in dns-txt.yaml and follows that pattern, which is the basis for the guess."
+
+  # --- Vulnerability disclosure ----------------------------------------------
+
+  - id: http-bugcrowd-program
+    vendor: "Bugcrowd"
+    type: http
+    query: "https://bugcrowd.com/{candidate}"
+    match:
+      absent: "Page not found"
+      status: [200]
+    disabled: true
+    notes: "Mirrors the confirmed HackerOne signature in http-endpoints.yaml, so the mechanism is proven — only the not-found marker needs confirming. Fetch https://bugcrowd.com/<random-string> and copy the exact wording. As with HackerOne and GitHub, a hit proves the namespace is taken, not that your client owns it."
+
+  # --- Compliance automation -------------------------------------------------
+  # These integrate with every SaaS an organisation owns in order to collect
+  # audit evidence. Detecting one is worth more than the subscription itself:
+  # its integration list is effectively a SaaS inventory somebody else built.
+
+  - id: cname-target-vanta
+    vendor: "Vanta"
+    category: "Compliance & GRC"
+    type: cname_target
+    query: "vanta.com"
+    disabled: true
+    notes: "Customers commonly publish a trust centre at trust.<their-domain>, aliased into Vanta. That hostname is exactly what the certificate transparency detector surfaces, making this a realistic path to detection."
+
+  - id: cname-target-drata
+    vendor: "Drata"
+    category: "Compliance & GRC"
+    type: cname_target
+    query: "drata.com"
+    disabled: true
+    notes: "Same trust-centre pattern as Vanta."
+
+  - id: cname-target-secureframe
+    vendor: "Secureframe"
+    category: "Compliance & GRC"
+    type: cname_target
+    query: "secureframe.com"
+    disabled: true
+    notes: "Same trust-centre pattern as Vanta."
+
+  - id: cname-target-safebase
+    vendor: "SafeBase"
+    category: "Compliance & GRC"
+    type: cname_target
+    query: "safebase.io"
+    disabled: true
+    notes: "Dedicated trust-centre hosting, so an aliased security.<domain> or trust.<domain> is the expected shape."
+
+  # --- Awareness and email ---------------------------------------------------
+
+  - id: cname-target-duo
+    vendor: "Duo Security"
+    category: "Identity & Secrets"
+    type: cname_target
+    query: "duosecurity.com"
+    disabled: true
+    notes: "Duo API hostnames are hash-derived rather than customer-named, so a vanity signature will not work. This CNAME route only fires if an organisation aliases a subdomain into Duo."
+
+  - id: spf-abnormal
+    vendor: "Abnormal Security"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "abnormalsecurity.com"
+    disabled: true
+    notes: "UNVERIFIED, and unlikely to fire: Abnormal integrates via API rather than sitting in the mail flow, so it usually leaves no MX or SPF trace at all. Kept as a documented negative — if you confirm there is no external indicator, leave this disabled and say so here."

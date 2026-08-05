@@ -1,0 +1,104 @@
+# Yowie signature pack — schema v1
+#
+# DMARC aggregate/forensic report processors. A third-party rua or ruf
+# destination is a live subscription: someone is paying for that platform to
+# ingest the organisation's mail authentication reports.
+
+version: 1
+pack: email-dmarc
+description: "Platforms receiving this domain's DMARC aggregate and forensic reports."
+defaults:
+  category: "Email Security"
+  confidence: high
+
+signatures:
+  - id: dmarc-agari
+    vendor: "Agari"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "agari.com"
+
+  - id: dmarc-dmarcian
+    vendor: "dmarcian"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "dmarcian.com"
+
+  - id: dmarc-dmarcly
+    vendor: "Dmarcly"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "dmarcly.com"
+
+  - id: dmarc-easydmarc
+    vendor: "EasyDMARC"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "easydmarc.com"
+
+  - id: dmarc-fraudmarc
+    vendor: "Fraudmarc"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "fraudmarc.com"
+
+  - id: dmarc-mimecast
+    vendor: "Mimecast"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "mimecast.com"
+
+  - id: dmarc-mxtoolbox
+    vendor: "MXToolbox"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "mxtoolbox.com"
+
+  - id: dmarc-ondmarc
+    vendor: "Red Sift OnDMARC"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "ondmarc.com"
+
+  - id: dmarc-postmark
+    vendor: "Postmark"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "dmarc.postmarkapp.com"
+
+  - id: dmarc-proofpoint
+    vendor: "Proofpoint"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "emaildefense.proofpoint.com"
+
+  - id: dmarc-sendmarc
+    vendor: "Sendmarc"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "sendmarc.com"
+
+  - id: dmarc-uriports
+    vendor: "URIports"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "uriports.com"
+
+  - id: dmarc-valimail
+    vendor: "Valimail"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "valimail.com"

@@ -1,0 +1,205 @@
+# Yowie signature pack — schema v1
+#
+# Finance, expense, payroll and procurement platforms.
+#
+# A deliberately different angle on shadow IT. Finance teams buy independently
+# of IT, on corporate cards, with a business case that never passes through
+# security review — and the resulting systems hold payroll, banking and supplier
+# data. Nothing in the legacy signature set covered this category at all.
+#
+# ---------------------------------------------------------------------------
+# ALL ENTRIES SHIP DISABLED. Confirm each against a live tenant before enabling.
+# ---------------------------------------------------------------------------
+#
+# Most entries here use SPF rather than a verification token, because these
+# products send mail as the customer — invoices, remittances, expense approvals,
+# payslip notifications. That makes SPF the natural channel, and it has a useful
+# property: an include tends to outlive the subscription, so it catches products
+# that were trialled and abandoned without anyone tidying up the DNS.
+#
+# To confirm an SPF entry, find a domain you know uses the product and run:
+#
+#   ./yowie -only spf -format json <domain> | jq -r '.findings[].evidence[].value'
+#
+# The unattributed senders in that output are the real include hostnames. Copy
+# the actual string into `contains` rather than trusting the guess below.
+#
+# Australian and New Zealand products are over-represented on purpose: Xero and
+# MYOB dominate that market and are almost absent from generic OSINT tooling.
+
+version: 1
+pack: finance-procurement
+description: "Finance, expense, payroll and procurement platforms. All entries ship disabled pending confirmation."
+defaults:
+  category: "Finance & Procurement"
+  confidence: medium
+
+signatures:
+  # --- Accounting and payroll ------------------------------------------------
+
+  - id: spf-xero
+    vendor: "Xero"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "xero.com"
+    disabled: true
+    notes: "UNVERIFIED include hostname. Dominant in AU/NZ, so worth confirming first for local clients. Xero sends invoices on the customer's behalf, which is what puts it in SPF."
+
+  - id: spf-myob
+    vendor: "MYOB"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "myob.com"
+    disabled: true
+    notes: "UNVERIFIED include hostname. The other half of the AU/NZ accounting market alongside Xero."
+
+  - id: spf-employment-hero
+    vendor: "Employment Hero"
+    category: "HR & Learning"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "employmenthero.com"
+    disabled: true
+    notes: "UNVERIFIED include hostname. Australian HR and payroll platform; holds employee and payroll data, so a hit is worth following up even when sanctioned."
+
+  - id: spf-intuit
+    vendor: "Intuit QuickBooks"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "intuit.com"
+    disabled: true
+    notes: "UNVERIFIED include hostname."
+
+  # --- Expense and travel ----------------------------------------------------
+
+  - id: spf-concur
+    vendor: "SAP Concur"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "concursolutions.com"
+    disabled: true
+    notes: "UNVERIFIED include hostname. Concur also uses concur.com; check both."
+
+  - id: spf-expensify
+    vendor: "Expensify"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "expensify.com"
+    disabled: true
+    notes: "UNVERIFIED include hostname. Expensify has a strong self-serve tier, so it frequently arrives without procurement involvement."
+
+  - id: spf-navan
+    vendor: "Navan"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "navan.com"
+    disabled: true
+    notes: "UNVERIFIED include hostname. Formerly TripActions; older estates may still show tripactions.com, so check that too."
+
+  - id: spf-pleo
+    vendor: "Pleo"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "pleo.io"
+    disabled: true
+    notes: "UNVERIFIED include hostname."
+
+  - id: spf-ramp
+    vendor: "Ramp"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "ramp.com"
+    disabled: true
+    notes: "UNVERIFIED include hostname. Short and generic — confirm it cannot collide with an unrelated sender before enabling."
+
+  # --- Accounts payable and procurement --------------------------------------
+
+  - id: spf-bill-com
+    vendor: "BILL"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "bill.com"
+    disabled: true
+    notes: "UNVERIFIED include hostname. Very generic string — 'bill.com' could plausibly appear inside an unrelated hostname, so verify the full include and tighten the match if needed."
+
+  - id: vanity-a-coupa
+    vendor: "Coupa"
+    type: vanity_a
+    query: "{candidate}.coupahost.com"
+    disabled: true
+    notes: "Coupa tenants are believed to use a per-customer subdomain under coupahost.com. Structural rather than token-based, so cheaper to confirm than the SPF entries."
+
+  # --- Payments --------------------------------------------------------------
+
+  - id: spf-airwallex
+    vendor: "Airwallex"
+    category: "Payments"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "airwallex.com"
+    disabled: true
+    notes: "UNVERIFIED include hostname. Australian-founded cross-border payments platform."
+
+  - id: cname-target-chargebee
+    vendor: "Chargebee"
+    category: "Payments"
+    type: cname_target
+    query: "chargebee.com"
+    disabled: true
+    notes: "Applies only to subdomains discovered via certificate transparency; customers commonly alias a billing portal here."
+
+  - id: cname-target-recurly
+    vendor: "Recurly"
+    category: "Payments"
+    type: cname_target
+    query: "recurly.com"
+    disabled: true
+    notes: "Applies only to subdomains discovered via certificate transparency."
+
+  # --- HR suites that also carry financials ----------------------------------
+  # Workday's recruiting sites are deliberately public, which makes them the
+  # most reliably observable part of the platform. Workday spreads tenants
+  # across numbered pods, so several hostnames have to be tried.
+
+  - id: vanity-a-workday-jobs-wd1
+    vendor: "Workday"
+    category: "HR & Learning"
+    type: vanity_a
+    query: "{candidate}.wd1.myworkdayjobs.com"
+    disabled: true
+    notes: "Workday recruiting sites follow <tenant>.wdN.myworkdayjobs.com. Pod number varies per customer, hence the wd1/wd3/wd5 variants — enable whichever confirm. Public careers sites make these unusually easy to verify by hand."
+
+  - id: vanity-a-workday-jobs-wd3
+    vendor: "Workday"
+    category: "HR & Learning"
+    type: vanity_a
+    query: "{candidate}.wd3.myworkdayjobs.com"
+    disabled: true
+    notes: "See vanity-a-workday-jobs-wd1."
+
+  - id: vanity-a-workday-jobs-wd5
+    vendor: "Workday"
+    category: "HR & Learning"
+    type: vanity_a
+    query: "{candidate}.wd5.myworkdayjobs.com"
+    disabled: true
+    notes: "See vanity-a-workday-jobs-wd1."
+
+  - id: cname-target-workday
+    vendor: "Workday"
+    category: "HR & Learning"
+    type: cname_target
+    query: "workday.com"
+    disabled: true
+    notes: "Applies only to subdomains discovered via certificate transparency; organisations often alias a careers or login hostname here."

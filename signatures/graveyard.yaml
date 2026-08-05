@@ -1,0 +1,85 @@
+# Yowie signature pack — schema v1
+#
+# The graveyard: signatures that are structurally written but have never been
+# confirmed against a live tenant, so they ship disabled.
+#
+# These were carried over from the TODO comments at the bottom of the legacy
+# yowie.py. Keeping them here rather than as comments means the research
+# is versioned, validated by the test suite, and one field away from being
+# live — `disabled: true` exists exactly for this.
+#
+# To bring one back:
+#   1. Find a domain you know uses the product.
+#   2. Confirm the mechanism by hand, e.g.
+#        dig +short A  acme.sharefile.com
+#        dig +short A  $(openssl rand -hex 6).sharefile.com   # baseline
+#      A real tenant must answer differently from a random label.
+#   3. Delete `disabled: true` and set an honest confidence.
+#   4. Run `yowie -signatures ./signatures -validate`.
+#
+# If a mechanism turns out not to work, leave the entry disabled and replace the
+# note with what you found. A negative result is worth recording too — it stops
+# the next person spending an afternoon on it.
+
+version: 1
+pack: graveyard
+description: "Structurally complete but unverified signatures, shipped disabled until someone confirms them against a live tenant."
+defaults:
+  confidence: low
+
+signatures:
+  - id: vanity-a-citrix-sharefile
+    vendor: "Citrix ShareFile"
+    category: "Storage"
+    type: vanity_a
+    query: "{candidate}.sharefile.com"
+    disabled: true
+    notes: "Legacy note: could not find a live example. Worth revisiting — ShareFile is managed file transfer, so confirming it on a client estate is security-relevant in its own right."
+
+  - id: vanity-a-defender-for-cloud-apps
+    vendor: "Microsoft Defender for Cloud Apps"
+    category: "Security"
+    type: vanity_a
+    query: "{candidate}.portal.cloudappsecurity.com"
+    disabled: true
+    notes: "Legacy note: probably not determinable — the portal 302s to Entra ID authentication for every tenant name, so responses are identical. If revisited, an HTTP signature keying on the redirect target rather than the body is the more promising angle."
+
+  - id: vanity-a-oracle-epm-melbourne
+    vendor: "Oracle EPM Cloud"
+    category: "Business Applications"
+    type: vanity_a
+    query: "{candidate}.epm.ap-melbourne-1.oraclecloud.com"
+    disabled: true
+    notes: "Legacy note: could not find a live example. Oracle EPM regional hostnames are well documented, so the structure is likely right; it needs an Australian customer to confirm against."
+
+  - id: vanity-a-oracle-epm-melbourne-idm
+    vendor: "Oracle EPM Cloud"
+    category: "Business Applications"
+    type: vanity_a
+    query: "{candidate}-epmidm.epm.ap-melbourne-1.ocs.oraclecloud.com"
+    disabled: true
+    notes: "Legacy note: could not find a live example. The identity-management companion host to the Melbourne EPM instance."
+
+  - id: vanity-a-oracle-epm-sydney
+    vendor: "Oracle EPM Cloud"
+    category: "Business Applications"
+    type: vanity_a
+    query: "{candidate}.epm.ap-sydney-1.oraclecloud.com"
+    disabled: true
+    notes: "Legacy note: could not find a live example. Sydney region equivalent of the Melbourne EPM host."
+
+  - id: vanity-a-oracle-epm-sydney-idm
+    vendor: "Oracle EPM Cloud"
+    category: "Business Applications"
+    type: vanity_a
+    query: "{candidate}-epmidm.epm.ap-sydney-1.ocs.oraclecloud.com"
+    disabled: true
+    notes: "Legacy note: could not find a live example. The identity-management companion host to the Sydney EPM instance."
+
+  - id: vanity-a-soti-mobicontrol
+    vendor: "SOTI MobiControl"
+    category: "Device Management"
+    type: vanity_a
+    query: "{candidate}.mobicontrolcloud.com"
+    disabled: true
+    notes: "Legacy note: could not find a live example. SOTI is a mobile device management platform, so a hit would be a notable finding on any estate."

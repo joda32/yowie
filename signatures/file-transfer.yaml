@@ -1,0 +1,105 @@
+# Yowie signature pack — schema v1
+#
+# Managed file transfer and enterprise file sharing.
+#
+# This is the highest-consequence category in the whole signature set. MOVEit,
+# GoAnywhere and Accellion FTA were each mass-exploited for bulk data theft, and
+# in every case the victims were organisations whose security team did not have
+# the product on an asset list. Knowing a client runs one of these is a finding
+# in its own right, separate from any shadow IT question.
+#
+# ---------------------------------------------------------------------------
+# ALL ENTRIES SHIP DISABLED. Confirm each against a live tenant before enabling.
+# ---------------------------------------------------------------------------
+#
+# The vanity entries here rest on observable hostname structure rather than a
+# guessed verification token, so they are cheaper to confirm than the AI pack:
+#
+#   dig +short A acme.egnyte.com
+#   dig +short A $(openssl rand -hex 6).egnyte.com     # baseline
+#
+# A real tenant must answer differently from the random label. If both answer
+# identically the vendor wildcards the zone, and the signature will only produce
+# medium-confidence hits — see the vanity detection notes in the README.
+#
+# Citrix ShareFile is deliberately not repeated here: it already exists as
+# vanity-a-citrix-sharefile in graveyard.yaml, carried over from the legacy
+# tool's TODO list. Verify it there.
+
+version: 1
+pack: file-transfer
+description: "Managed file transfer and enterprise file sharing platforms. All entries ship disabled pending confirmation."
+defaults:
+  category: "Managed File Transfer"
+  confidence: medium
+
+signatures:
+  # --- Tenant hostnames ------------------------------------------------------
+
+  - id: vanity-a-egnyte
+    vendor: "Egnyte"
+    type: vanity_a
+    query: "{candidate}.egnyte.com"
+    disabled: true
+    notes: "Egnyte tenants are believed to use a per-customer subdomain. The most likely of this pack to verify cleanly — confirm with a known customer against a random-label baseline."
+
+  - id: vanity-a-files-com
+    vendor: "Files.com"
+    type: vanity_a
+    query: "{candidate}.files.com"
+    disabled: true
+    notes: "UNVERIFIED. Files.com tenants are believed to use a per-customer subdomain."
+
+  - id: vanity-a-kiteworks
+    vendor: "Kiteworks"
+    type: vanity_a
+    query: "{candidate}.kiteworks.com"
+    disabled: true
+    notes: "UNVERIFIED. Kiteworks is the successor to Accellion FTA, which was mass-exploited in 2021; many deployments are customer-hosted on a customer domain and will not appear under this suffix at all. A negative result here does not mean the product is absent."
+
+  - id: vanity-a-moveit-cloud
+    vendor: "Progress MOVEit"
+    type: vanity_a
+    query: "{candidate}.moveitcloud.com"
+    disabled: true
+    notes: "UNVERIFIED. Covers MOVEit Cloud only. The majority of MOVEit Transfer deployments are self-hosted on a customer domain, so this signature will miss them — the certificate transparency detector is a better route to those, via the cname-target entry below or by eyeballing hostnames like mft/transfer/files."
+
+  # --- Hosting suffixes for subdomains found in certificate transparency -----
+  # Self-hosted MFT is usually reached at a customer-branded hostname, so these
+  # only fire when the vendor's own infrastructure is in the CNAME chain.
+
+  - id: cname-target-egnyte
+    vendor: "Egnyte"
+    type: cname_target
+    query: "egnyte.com"
+    disabled: true
+    notes: "Applies only to subdomains discovered via certificate transparency."
+
+  - id: cname-target-goanywhere
+    vendor: "Fortra GoAnywhere"
+    type: cname_target
+    query: "goanywhere.com"
+    disabled: true
+    notes: "UNVERIFIED suffix. GoAnywhere MFT is predominantly self-hosted, so a CNAME into Fortra infrastructure is the exception rather than the rule. Confirm the cloud offering's real hostname before enabling."
+
+  - id: cname-target-kiteworks
+    vendor: "Kiteworks"
+    type: cname_target
+    query: "kiteworks.com"
+    disabled: true
+    notes: "Applies only to subdomains discovered via certificate transparency."
+
+  - id: cname-target-moveit
+    vendor: "Progress MOVEit"
+    type: cname_target
+    query: "moveitcloud.com"
+    disabled: true
+    notes: "Applies only to subdomains discovered via certificate transparency. Worth prioritising given MOVEit's exploitation history."
+
+  - id: cname-target-wetransfer
+    vendor: "WeTransfer"
+    category: "Storage"
+    type: cname_target
+    query: "wetransfer.com"
+    disabled: true
+    notes: "UNVERIFIED. WeTransfer is mostly consumer-tier and unlikely to appear in DNS; included because unsanctioned use for moving large files out of an organisation is common. Entitlement data is a better source than DNS for this one."

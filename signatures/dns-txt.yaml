@@ -1,0 +1,802 @@
+# Yowie signature pack — schema v1
+#
+# Edit freely: signatures are data, not code. Run `yowie validate`
+# after changes to check the pack before relying on it.
+
+version: 1
+pack: dns-txt
+description: "Domain-ownership verification tokens published as TXT records. The highest-signal channel: these tokens are issued by the vendor to a specific domain."
+
+signatures:
+  - id: txt-1password
+    vendor: "1Password"
+    category: "Identity & Secrets"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "1password-site-verification"
+    confidence: high
+
+  - id: txt-adobe-enterprise
+    vendor: "Adobe Enterprise"
+    category: "Productivity"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "adobe-idp-site-verification"
+    confidence: high
+
+  - id: txt-adobe-sign
+    vendor: "Adobe Sign"
+    category: "Productivity"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "adobe-sign-verification"
+    confidence: high
+
+  - id: txt-airtable
+    vendor: "Airtable"
+    category: "Productivity"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "airtable-verification"
+    confidence: high
+
+  - id: txt-anthropic
+    vendor: "Anthropic"
+    category: "AI"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "anthropic-domain-verification"
+    confidence: high
+    notes: "Confirmed against a live tenant. The token only exists once a domain has been claimed for an Anthropic team or enterprise plan, so a hit means provisioned tenancy, not casual consumer use."
+
+  - id: txt-apple-business-school-manager
+    vendor: "Apple Business/School Manager"
+    category: "Device Management"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "apple-domain-verification"
+    confidence: high
+
+  - id: txt-appspace
+    vendor: "Appspace"
+    category: "Productivity"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "appspace-domain-verification"
+    confidence: high
+
+  - id: txt-atlassian
+    vendor: "Atlassian"
+    category: "Collaboration"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "atlassian-domain-verification"
+    confidence: high
+
+  - id: txt-atlassian-2
+    vendor: "Atlassian"
+    category: "Collaboration"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "atlassian-sending-domain-verification"
+    confidence: high
+
+  - id: txt-autodesk
+    vendor: "Autodesk"
+    category: "Engineering"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "autodesk-domain-verification"
+    confidence: medium
+    notes: "Signature was never confirmed against a live tenant in the legacy tool; treat a hit as a lead, not proof."
+
+  - id: txt-aws-ses
+    vendor: "AWS SES"
+    category: "Email"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "_amazonses"
+    confidence: high
+
+  - id: txt-bluebeam
+    vendor: "Bluebeam"
+    category: "Engineering"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "bluebeam-verification"
+    confidence: high
+
+  - id: txt-box
+    vendor: "Box"
+    category: "Storage"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "box-domain-verification"
+    confidence: medium
+    notes: "Signature was never confirmed against a live tenant in the legacy tool; treat a hit as a lead, not proof."
+
+  - id: txt-brevo
+    vendor: "Brevo"
+    category: "Marketing"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "brevo-code"
+    confidence: high
+
+  - id: txt-browserstack
+    vendor: "BrowserStack"
+    category: "Development"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "browserstack-domain-verification"
+    confidence: high
+
+  - id: txt-canva
+    vendor: "Canva"
+    category: "Productivity"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "canva-site-verification"
+    confidence: high
+
+  - id: txt-cerner-id
+    vendor: "Cerner ID"
+    category: "Healthcare"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "cerner-client-id"
+    confidence: high
+
+  - id: txt-cisco-ci
+    vendor: "Cisco CI"
+    category: "Identity & Secrets"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "cisco-ci-domain-verification"
+    confidence: high
+
+  - id: txt-cisco-ci-2
+    vendor: "Cisco CI"
+    category: "Identity & Secrets"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "ciscocidomainverification"
+    confidence: high
+
+  - id: txt-cisco-webex
+    vendor: "Cisco Webex"
+    category: "Collaboration"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "webexdomainverification"
+    confidence: high
+
+  - id: txt-citrix
+    vendor: "Citrix"
+    category: "Remote Access"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "citrix-verification-code"
+    confidence: high
+
+  - id: txt-cloudhealth
+    vendor: "CloudHealth"
+    category: "Cloud Management"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "cloudhealth"
+    confidence: high
+
+  - id: txt-cursor
+    vendor: "Cursor"
+    category: "AI"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "cursor-domain-verification"
+    confidence: high
+
+  - id: txt-deepl
+    vendor: "DeepL"
+    category: "AI"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "deepl-domain-verification"
+    confidence: high
+
+  - id: txt-dmarcly
+    vendor: "Dmarcly"
+    category: "Email Security"
+    type: txt
+    query: "_dmarc.{domain}"
+    match:
+      contains: "dmarcly"
+    confidence: high
+
+  - id: txt-docker
+    vendor: "Docker"
+    category: "Development"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "docker-verification"
+    confidence: high
+
+  - id: txt-docusign
+    vendor: "Docusign"
+    category: "Productivity"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "docusign"
+    confidence: high
+
+  - id: txt-dropbox
+    vendor: "Dropbox"
+    category: "Storage"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "dropbox-domain-verification"
+    confidence: high
+
+  - id: txt-dynamics-365
+    vendor: "Dynamics 365"
+    category: "Business Applications"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "d365mktkey"
+    confidence: high
+
+  - id: txt-dynatrace
+    vendor: "Dynatrace"
+    category: "Monitoring"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "dynatrace-site-verification"
+    confidence: high
+
+  - id: txt-elevenlabs
+    vendor: "ElevenLabs"
+    category: "AI"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "elevenlabs"
+    confidence: high
+
+  - id: txt-facebook-business-manager
+    vendor: "Facebook Business Manager"
+    category: "Marketing"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "facebook-domain-verification"
+    confidence: high
+
+  - id: txt-facebook-workplace
+    vendor: "Facebook Workplace"
+    category: "Collaboration"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "workplace-domain-verification"
+    confidence: high
+
+  - id: txt-figma
+    vendor: "Figma"
+    category: "Productivity"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "figma-domain-verification"
+    confidence: high
+
+  - id: txt-globalsign
+    vendor: "Globalsign"
+    category: "Certificates"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "_globalsign-domain-verification"
+    confidence: high
+
+  - id: txt-globalsign-2
+    vendor: "Globalsign"
+    category: "Certificates"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "globalsign-domain-verification"
+    confidence: high
+
+  - id: txt-globalsign-3
+    vendor: "Globalsign"
+    category: "Certificates"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "globalsign-smime-dv"
+    confidence: high
+
+  - id: txt-gsuite-or-google-analytics
+    vendor: "Google (Workspace, Analytics or Search Console)"
+    category: "Productivity"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "google-site-verification"
+    confidence: medium
+    notes: "Shared token: proves a Google property, but does not distinguish Workspace from Search Console or Analytics."
+
+  - id: txt-hackerone
+    vendor: "HackerOne"
+    category: "Security"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "h1-domain-verification"
+    confidence: high
+
+  - id: txt-happeo
+    vendor: "Happeo"
+    category: "Collaboration"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "happeo-site-verification"
+    confidence: high
+
+  - id: txt-hashicorp-cloud-platform
+    vendor: "HashiCorp Cloud Platform"
+    category: "Identity & Secrets"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "hcp-domain-verification"
+    confidence: high
+
+  - id: txt-have-i-been-pwned
+    vendor: "Have I Been Pwned"
+    category: "Security"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "have-i-been-pwned-verification"
+    confidence: high
+
+  - id: txt-hubspot
+    vendor: "HubSpot"
+    category: "Marketing"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "hsverify"
+    confidence: high
+
+  - id: txt-hubspot-2
+    vendor: "HubSpot"
+    category: "Marketing"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "hubspot-developer-verification"
+    confidence: high
+
+  - id: txt-imbid-enterprise-federation
+    vendor: "IBMid Enterprise Federation"
+    category: "Identity & Secrets"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "ibmid"
+    confidence: high
+
+  - id: txt-infoblox
+    vendor: "Infoblox"
+    category: "Infrastructure"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "infoblox-domain-mastery"
+    confidence: medium
+    notes: "Signature was never confirmed against a live tenant in the legacy tool; treat a hit as a lead, not proof."
+
+  - id: txt-jamf
+    vendor: "Jamf"
+    category: "Device Management"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "jamf-site-verification"
+    confidence: high
+
+  - id: txt-jetbrains
+    vendor: "JetBrains"
+    category: "Development"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "jetbrains-domain-verification"
+    confidence: medium
+    notes: "Signature was never confirmed against a live tenant in the legacy tool; treat a hit as a lead, not proof."
+
+  - id: txt-klaviyo
+    vendor: "Klaviyo"
+    category: "Marketing"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "klaviyo-site-verification"
+    confidence: high
+
+  - id: txt-knowbe4
+    vendor: "KnowBe4"
+    category: "Security"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "knowbe4-site-verification"
+    confidence: high
+
+  - id: txt-liveramp
+    vendor: "LiveRamp"
+    category: "Analytics"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "liveramp-site-verification"
+    confidence: high
+
+  - id: txt-logmein-remote-management
+    vendor: "LogMeIn (Remote Management)"
+    category: "Remote Access"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "logmein-verification-code"
+    confidence: high
+
+  - id: txt-loom
+    vendor: "Loom"
+    category: "Collaboration"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "loom-site-verification"
+    confidence: high
+
+  - id: txt-loom-2
+    vendor: "Loom"
+    category: "Collaboration"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "loom-verification"
+    confidence: high
+
+  - id: txt-lucidlink
+    vendor: "LucidLink"
+    category: "Storage"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "lucidlink-verification"
+    confidence: high
+
+  - id: txt-mgverify
+    vendor: "Mailgun"
+    category: "Email"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "mgverify"
+    confidence: high
+
+  - id: txt-microsoft-365-entra-id
+    vendor: "Microsoft 365"
+    category: "Identity & Secrets"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "ms="
+    confidence: high
+
+  - id: txt-microsoft-365-entra-id-2
+    vendor: "Microsoft 365"
+    category: "Identity & Secrets"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "ms-domain-verification"
+    confidence: high
+
+  - id: txt-miro
+    vendor: "Miro"
+    category: "Collaboration"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "miro-verification"
+    confidence: high
+
+  - id: txt-mixpanel
+    vendor: "Mixpanel"
+    category: "Analytics"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "mixpanel-domain-verify"
+    confidence: high
+
+  - id: txt-mongodb
+    vendor: "MongoDB"
+    category: "Data"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "mongodb-site-verification"
+    confidence: high
+
+  - id: txt-neat-pulse
+    vendor: "Neat Pulse"
+    category: "Facilities"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "neat-pulse-domain-verification"
+    confidence: high
+
+  - id: txt-notion
+    vendor: "Notion"
+    category: "Collaboration"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "notion-domain-verification"
+    confidence: high
+
+  - id: txt-onetrust
+    vendor: "OneTrust"
+    category: "Governance"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "onetrust-domain-verification"
+    confidence: high
+
+  - id: txt-openai
+    vendor: "OpenAI"
+    category: "AI"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "openai-domain-verification"
+    confidence: high
+    notes: "Confirmed against a live tenant. The token only exists once a domain has been claimed for an OpenAI team or enterprise plan, so a hit means provisioned tenancy, not casual consumer use."
+
+  - id: txt-palo-alto-networks
+    vendor: "Palo Alto Networks"
+    category: "Security"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "paloaltonetworks-site-verification"
+    confidence: medium
+    notes: "Signature was never confirmed against a live tenant in the legacy tool; treat a hit as a lead, not proof."
+
+  - id: txt-pardot-b2b-marketing-tools
+    vendor: "Pardot"
+    category: "Marketing"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "pardot"
+    confidence: high
+
+  - id: txt-pendo
+    vendor: "Pendo"
+    category: "Analytics"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "pendo-domain-verification"
+    confidence: high
+
+  - id: txt-postman
+    vendor: "Postman"
+    category: "Development"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "postman-domain-verification"
+    confidence: high
+
+  - id: txt-quovaid-digicert
+    vendor: "QuoVadis (DigiCert)"
+    category: "Certificates"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "quovadis"
+    confidence: high
+
+  - id: txt-shopify
+    vendor: "Shopify"
+    category: "eCommerce"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "shopify_verification"
+    confidence: high
+
+  - id: txt-sitecore
+    vendor: "Sitecore"
+    category: "Content Management"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "sitecore-domain-verification"
+    confidence: medium
+    notes: "Signature was never confirmed against a live tenant in the legacy tool; treat a hit as a lead, not proof."
+
+  - id: txt-slack
+    vendor: "Slack"
+    category: "Collaboration"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "slack-challenge"
+    confidence: high
+
+  - id: txt-slack-2
+    vendor: "Slack"
+    category: "Collaboration"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "slack-domain-verification"
+    confidence: high
+
+  - id: txt-smartsheet
+    vendor: "Smartsheet"
+    category: "Project Management"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "smartsheet-site-validation"
+    confidence: high
+
+  - id: txt-status-page-atlassian
+    vendor: "Statuspage"
+    category: "Monitoring"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "status-page-domain-verification"
+    confidence: high
+
+  - id: txt-stripe
+    vendor: "Stripe"
+    category: "Payments"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "stripe-verification"
+    confidence: high
+
+  - id: txt-teamviewer-sso
+    vendor: "TeamViewer SSO"
+    category: "Identity & Secrets"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "teamviewer-sso-verification"
+    confidence: high
+
+  - id: txt-twilio
+    vendor: "Twilio"
+    category: "Communications"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "twilio-domain-verification"
+    confidence: medium
+    notes: "Signature was never confirmed against a live tenant in the legacy tool; treat a hit as a lead, not proof."
+
+  - id: txt-unity-cloud
+    vendor: "Unity Cloud"
+    category: "Development"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "unity-sso-verification"
+    confidence: high
+
+  - id: txt-vmware-cloud
+    vendor: "VMWare Cloud"
+    category: "Infrastructure"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "vmware-cloud-verification"
+    confidence: high
+
+  - id: txt-wrike
+    vendor: "Wrike"
+    category: "Project Management"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "wrike-verification"
+    confidence: high
+
+  - id: txt-yandex-webmaster
+    vendor: "Yandex Webmaster"
+    category: "Content Management"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "yandex-verification"
+    confidence: high
+
+  - id: txt-zapier
+    vendor: "Zapier"
+    category: "Automation"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "zapier-domain-verification-challenge"
+    confidence: high
+
+  - id: txt-zoom
+    vendor: "Zoom"
+    category: "Collaboration"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "zoom-domain-verification"
+    confidence: high
+
+  - id: txt-zoom-2
+    vendor: "Zoom"
+    category: "Collaboration"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "zoom_verify_"
+    confidence: high
+
+  - id: txt-zuora-subscription-management
+    vendor: "Zuora Subscription Management"
+    category: "Business Applications"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "zuora"
+    confidence: high

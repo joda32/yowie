@@ -1,0 +1,283 @@
+# Yowie signature pack — schema v1
+#
+# AI and LLM services. The fastest-growing shadow IT category, and the one where
+# an unsanctioned subscription carries the most data-exposure risk: these tools
+# ingest source code, meeting audio, customer records and draft documents.
+#
+# ---------------------------------------------------------------------------
+# EVERY SIGNATURE IN THIS PACK SHIPS DISABLED. READ THIS BEFORE ENABLING ONE.
+# ---------------------------------------------------------------------------
+#
+# The TXT entries below assume the near-universal convention of a
+# `<vendor>-domain-verification` token, which holds for the confirmed vendors in
+# dns-txt.yaml (Anthropic, OpenAI, Cursor, Notion, Postman, Canva, Figma, Miro,
+# Docker, Zapier...). It is a reasonable prior, NOT a verified fact.
+#
+# A signature with the wrong `contains` value never fires and never errors. That
+# is worse than having no signature at all, because the vendor appears covered.
+# So: confirm each one against a domain you know uses the product before
+# enabling it.
+#
+#   dig +short TXT example.com | grep -i <vendor>
+#
+# The `notes` on each entry record exactly what needs confirming. When you
+# verify one, replace the note with what you actually observed and set an honest
+# confidence. If the convention turns out not to hold, keep the entry disabled
+# and write down the real token — a negative result saves the next person an
+# afternoon.
+#
+# The HTTP and cname_target entries rest on observable URL and hosting
+# structure rather than a guessed token, so they are the safer ones to verify
+# first.
+#
+# Not externally detectable, and deliberately absent:
+#   - GitHub Copilot        indistinguishable from a GitHub organisation
+#   - Microsoft 365 Copilot subsumed by the Entra ID tenant
+#   - Google Gemini/Vertex  hidden behind the shared google-site-verification token
+#   - Midjourney            account model is Discord-based, no domain claim
+# For these, entitlement data from the parent tenant is the only reliable source.
+
+version: 1
+pack: ai-services
+description: "AI and LLM platforms. All entries ship disabled pending confirmation against a live tenant — see the header before enabling."
+defaults:
+  category: "AI"
+  confidence: medium
+
+signatures:
+  # --- Meeting recorders -----------------------------------------------------
+  # Highest-priority group. These bots join calls and retain audio, transcripts
+  # and summaries. They are usually onboarded by one person, spread by meeting
+  # invite, and never reviewed. A hit is worth chasing even at low confidence.
+
+  - id: txt-fireflies-ai
+    vendor: "Fireflies.ai"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "fireflies-domain-verification"
+    disabled: true
+    notes: "UNVERIFIED token, assumed from the common convention. Meeting recorder — retains call audio and transcripts. Verify against a known customer before enabling."
+
+  - id: txt-gong
+    vendor: "Gong"
+    category: "Sales Intelligence"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "gong-domain-verification"
+    disabled: true
+    notes: "UNVERIFIED token, assumed from the common convention. Records and analyses sales calls; usually a sanctioned purchase, but confirms customer-conversation data leaving the estate."
+
+  - id: txt-otter-ai
+    vendor: "Otter.ai"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "otter-domain-verification"
+    disabled: true
+    notes: "UNVERIFIED token, assumed from the common convention. Meeting recorder with a strong free tier, so it spreads without procurement involvement."
+
+  - id: txt-read-ai
+    vendor: "Read AI"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "read-domain-verification"
+    disabled: true
+    notes: "UNVERIFIED token, and `read-` is a short, generic prefix that risks matching unrelated records. Confirm the exact string and consider a longer match before enabling."
+
+  # --- Coding assistants -----------------------------------------------------
+  # Source code leaves the organisation. Cursor is already confirmed in
+  # dns-txt.yaml; these are its peers.
+
+  - id: txt-codeium
+    vendor: "Codeium / Windsurf"
+    category: "Development"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "codeium-domain-verification"
+    disabled: true
+    notes: "UNVERIFIED token. The product was renamed to Windsurf, so the token prefix may be either name — check both."
+
+  - id: txt-replit
+    vendor: "Replit"
+    category: "Development"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "replit-domain-verification"
+    disabled: true
+    notes: "UNVERIFIED token. See http-replit-org for a structural alternative that does not depend on guessing the token."
+
+  - id: txt-tabnine
+    vendor: "Tabnine"
+    category: "Development"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "tabnine-domain-verification"
+    disabled: true
+    notes: "UNVERIFIED token, assumed from the common convention."
+
+  # --- Assistants, search and writing ---------------------------------------
+
+  - id: txt-glean
+    vendor: "Glean"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "glean-domain-verification"
+    disabled: true
+    notes: "UNVERIFIED token. Enterprise search that indexes connected SaaS content, so it is a strong indicator of what else the organisation runs. See vanity-a-glean for a structural alternative."
+
+  - id: txt-grammarly
+    vendor: "Grammarly"
+    category: "Productivity"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "grammarly-domain-verification"
+    disabled: true
+    notes: "UNVERIFIED token. Grammarly Business uses domain claiming for SSO. Worth prioritising: the browser extension sees everything typed into a browser, including other SaaS applications."
+
+  - id: txt-jasper
+    vendor: "Jasper"
+    category: "Marketing"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "jasper-domain-verification"
+    disabled: true
+    notes: "UNVERIFIED token, assumed from the common convention."
+
+  - id: txt-perplexity
+    vendor: "Perplexity"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "perplexity-domain-verification"
+    disabled: true
+    notes: "UNVERIFIED token, assumed from the common convention."
+
+  - id: txt-writer
+    vendor: "Writer"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "writer-domain-verification"
+    disabled: true
+    notes: "UNVERIFIED token, and `writer-` is generic enough to risk collisions. Confirm the exact string before enabling."
+
+  # --- Model platforms -------------------------------------------------------
+
+  - id: txt-cohere
+    vendor: "Cohere"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "cohere-domain-verification"
+    disabled: true
+    notes: "UNVERIFIED token, assumed from the common convention."
+
+  - id: txt-huggingface
+    vendor: "Hugging Face"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "huggingface-domain-verification"
+    disabled: true
+    notes: "UNVERIFIED token. See http-huggingface-org for a structural alternative that is easier to confirm."
+
+  - id: txt-mistral
+    vendor: "Mistral AI"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "mistral-domain-verification"
+    disabled: true
+    notes: "UNVERIFIED token, assumed from the common convention."
+
+  # --- Media generation ------------------------------------------------------
+
+  - id: txt-runway
+    vendor: "Runway"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "runway-domain-verification"
+    disabled: true
+    notes: "UNVERIFIED token, assumed from the common convention."
+
+  - id: txt-synthesia
+    vendor: "Synthesia"
+    type: txt
+    query: "{domain}"
+    match:
+      contains: "synthesia-domain-verification"
+    disabled: true
+    notes: "UNVERIFIED token, assumed from the common convention."
+
+  # --- Structural signatures -------------------------------------------------
+  # These rest on observable URL and hosting structure rather than a guessed
+  # token, so they are the ones to verify first. The HTTP pair follows the same
+  # public-organisation-page pattern as the confirmed GitHub, HackerOne and
+  # SourceForge signatures in http-endpoints.yaml.
+
+  - id: http-huggingface-org
+    vendor: "Hugging Face"
+    type: http
+    query: "https://huggingface.co/{candidate}"
+    match:
+      absent: "Sorry, we can't find the page you are looking for"
+      status: [200]
+    disabled: true
+    notes: "Mechanism is sound; the not-found marker is UNVERIFIED. Fetch https://huggingface.co/<random-string> and copy the exact wording. Note a hit proves only that the namespace is taken, not that your organisation owns it — same caveat as the GitHub signature."
+
+  - id: http-replit-org
+    vendor: "Replit"
+    category: "Development"
+    type: http
+    query: "https://replit.com/@{candidate}"
+    match:
+      absent: "404"
+      status: [200]
+    disabled: true
+    notes: "Mechanism is plausible but the marker is a placeholder and almost certainly too generic to be safe. Confirm the real not-found page and replace `absent` before enabling. Teams may live under a different path than @user."
+
+  - id: vanity-a-glean
+    vendor: "Glean"
+    type: vanity_a
+    query: "{candidate}.glean.com"
+    disabled: true
+    notes: "Glean tenants are believed to use a per-customer subdomain. Verify by comparing a known customer against a random label: dig +short A acme.glean.com vs dig +short A $(openssl rand -hex 6).glean.com — the answers must differ."
+
+  - id: cname-target-fireflies
+    vendor: "Fireflies.ai"
+    type: cname_target
+    query: "fireflies.ai"
+    disabled: true
+    notes: "Applies only to subdomains discovered via certificate transparency. Low risk of a false positive, but no confirmed example of an organisation aliasing a subdomain here."
+
+  - id: cname-target-glean
+    vendor: "Glean"
+    type: cname_target
+    query: "glean.com"
+    disabled: true
+    notes: "Applies only to subdomains discovered via certificate transparency."
+
+  - id: cname-target-gong
+    vendor: "Gong"
+    category: "Sales Intelligence"
+    type: cname_target
+    query: "gong.io"
+    disabled: true
+    notes: "Applies only to subdomains discovered via certificate transparency."
+
+  - id: cname-target-otter
+    vendor: "Otter.ai"
+    type: cname_target
+    query: "otter.ai"
+    disabled: true
+    notes: "Applies only to subdomains discovered via certificate transparency."

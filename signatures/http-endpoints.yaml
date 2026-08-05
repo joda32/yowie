@@ -1,0 +1,259 @@
+# Yowie signature pack — schema v1
+#
+# Edit freely: signatures are data, not code. Run `yowie validate`
+# after changes to check the pack before relying on it.
+
+version: 1
+pack: http-endpoints
+description: "Application-layer fingerprints for services with no distinctive DNS footprint."
+
+signatures:
+  - id: http-atlassian
+    vendor: "Atlassian"
+    category: "Collaboration"
+    type: http
+    query: "https://{candidate}.atlassian.net/"
+    match:
+      absent: "Cloud Notifications - Page Unavailable"
+      status: [200, 301, 302, 303, 307, 308]
+    confidence: medium
+
+  - id: http-auth0
+    vendor: "Auth0"
+    category: "Identity & Secrets"
+    type: http
+    query: "https://{candidate}.au.auth0.com/login/callback"
+    match:
+      present: "cdn.auth0.com"
+    confidence: medium
+    notes: "A live tenant answers HTTP 400 with an Auth0-branded error page that loads assets from cdn.auth0.com; an unknown tenant answers 404 with the plain text \"Unknown host\". Matching on the branding rather than the absence of that text means the 400 is not mistaken for a failure. Covers the au region only — add regional variants as needed."
+
+  - id: http-aws-s3
+    vendor: "AWS S3"
+    category: "Storage"
+    type: http
+    query: "http://{candidate}.s3.amazonaws.com"
+    match:
+      absent: "NoSuchBucket"
+      status: [200, 301, 403]
+    confidence: medium
+    notes: "A bucket that exists answers 200 when public, 403 AccessDenied when private, or 301 PermanentRedirect when it lives in another region. Only a bucket that does not exist answers 404 NoSuchBucket, so those three codes are the \"exists\" states."
+
+  - id: http-bitbucket
+    vendor: "BitBucket"
+    category: "Development"
+    type: http
+    query: "https://bitbucket.org/{candidate}"
+    match:
+      absent: "Resource not found"
+      status: [200, 301, 302, 303, 307, 308]
+    confidence: medium
+
+  - id: http-blogger
+    vendor: "Blogger"
+    category: "Content Management"
+    type: http
+    query: "https://{candidate}.blogspot.com"
+    match:
+      absent: "Sorry, the blog you were looking"
+      status: [200, 301, 302, 303, 307, 308]
+    confidence: medium
+
+  - id: http-facebook-workplace
+    vendor: "Facebook Workplace"
+    category: "Collaboration"
+    type: http
+    query: "https://{candidate}.workplace.com/work/landing/input/"
+    match:
+      absent: "page_uri:\"https://www."
+      status: [200, 301, 302, 303, 307, 308]
+    confidence: medium
+
+  - id: http-firebase-firebaseio
+    vendor: "Firebase"
+    category: "Infrastructure"
+    type: http
+    query: "https://{candidate}.firebaseio.com/.json"
+    match:
+      absent: "404 Not Found"
+      status: [200, 401, 403]
+    confidence: medium
+    notes: "A database with rules locked down answers 401 Permission denied, which is the normal state for a correctly configured instance; only a missing database answers 404. A 200 here means the database is readable without authentication and is a finding in its own right."
+
+  - id: http-freshdesk
+    vendor: "Freshdesk"
+    category: "Service Desk"
+    type: http
+    query: "https://{candidate}.freshdesk.com"
+    match:
+      absent: "May be this is still fresh!"
+      status: [200, 301, 302, 303, 307, 308]
+    confidence: medium
+
+  - id: http-gcp-appspot
+    vendor: "GCP Appspot"
+    category: "Infrastructure"
+    type: http
+    query: "https://{candidate}.appspot.com"
+    match:
+      absent: "Error: Page not found"
+      status: [200, 301, 302, 303, 307, 308]
+    confidence: medium
+
+  - id: http-gcp-storage
+    vendor: "GCP Storage"
+    category: "Storage"
+    type: http
+    query: "http://{candidate}.storage.googleapis.com"
+    match:
+      absent: "NoSuchBucket"
+      status: [200, 403]
+    confidence: medium
+    notes: "Same access-denied semantics as S3: a private bucket that exists answers 403, only a missing one answers 404 NoSuchBucket."
+
+  - id: http-github
+    vendor: "GitHub"
+    category: "Development"
+    type: http
+    query: "https://github.com/{candidate}"
+    match:
+      absent: "Not Found"
+      status: [200, 301, 302, 303, 307, 308]
+    confidence: medium
+
+  - id: http-github-2
+    vendor: "GitHub"
+    category: "Development"
+    type: http
+    query: "https://{candidate}.github.io/"
+    match:
+      absent: "There isn't a GitHub Pages site here"
+      status: [200, 301, 302, 303, 307, 308]
+    confidence: medium
+
+  - id: http-gitlab
+    vendor: "GitLab"
+    category: "Development"
+    type: http
+    query: "https://{candidate}.gitlab.io/"
+    match:
+      absent: "Checking your browser"
+      status: [200, 301, 302, 303, 307, 308]
+    confidence: medium
+
+  - id: http-gsuite-google
+    vendor: "Google Workspace"
+    category: "Productivity"
+    type: http
+    query: "https://drive.google.com/a/{domain}"
+    match:
+      absent: "Google Workspace - Server error"
+      status: [200, 301, 302, 303, 307, 308]
+    confidence: medium
+
+  - id: http-hackerone
+    vendor: "HackerOne"
+    category: "Security"
+    type: http
+    query: "https://hackerone.com/{candidate}"
+    match:
+      status: [200]
+    confidence: medium
+    notes: "Status-only. The legacy marker \"The page you are looking for does not exist\" no longer appears in either response — hackerone.com now serves an almost identical single-page-application shell for both, so the status code (200 vs 404) is the only discriminator. As with the GitHub signature, a hit proves the namespace is taken, not that your client owns it."
+
+  - id: http-leankit
+    vendor: "Leankit"
+    category: "Project Management"
+    type: http
+    query: "https://{candidate}.leankit.com/login"
+    match:
+      present: "Remember me on this device"
+    confidence: high
+
+  - id: http-microsoft-365-microsoftonline
+    vendor: "Microsoft 365"
+    category: "Identity & Secrets"
+    type: http
+    query: "https://login.microsoftonline.com/{domain}/.well-known/openid-configuration"
+    match:
+      present: "token_endpoint"
+    confidence: high
+
+  - id: http-onelogin
+    vendor: "OneLogin"
+    category: "Identity & Secrets"
+    type: http
+    query: "https://app.onelogin.com/sessions/try_subdomain?query={candidate}"
+    match:
+      absent: "subdomain\":null"
+      status: [200, 301, 302, 303, 307, 308]
+    confidence: medium
+
+  - id: http-sap-hana-ondemand
+    vendor: "SAP HANA"
+    category: "Business Applications"
+    type: http
+    query: "https://{candidate}.authentication.eu10.hana.ondemand.com/login"
+    match:
+      absent: "Something went amiss."
+      status: [200, 301, 302, 303, 307, 308]
+    confidence: medium
+
+  - id: http-slack
+    vendor: "Slack"
+    category: "Collaboration"
+    type: http
+    query: "https://{candidate}.slack.com"
+    match:
+      absent: "Error: There's been a glitch"
+      status: [200, 301, 302, 303, 307, 308]
+    confidence: medium
+
+  - id: http-sourceforge
+    vendor: "SourceForge"
+    category: "Development"
+    type: http
+    query: "https://sourceforge.net/projects/{candidate}"
+    match:
+      absent: "Whoops,"
+      status: [200, 301, 302, 303, 307, 308]
+    confidence: medium
+
+  - id: http-status-page
+    vendor: "Statuspage"
+    category: "Monitoring"
+    type: http
+    query: "https://{candidate}.statuspage.io"
+    match:
+      present: "View historical uptime"
+    confidence: high
+
+  - id: http-vmware-workspaceone-access-workspaceoneaccess
+    vendor: "VMWare WorkspaceOne Access"
+    category: "Device Management"
+    type: http
+    query: "https://{candidate}.workspaceoneaccess.com/federation/auth/login"
+    match:
+      absent: "tenant that does not exist"
+      status: [200, 301, 302, 303, 307, 308]
+    confidence: medium
+
+  - id: http-you-can-book-me
+    vendor: "You Can Book Me"
+    category: "Productivity"
+    type: http
+    query: "https://{candidate}.youcanbook.me"
+    match:
+      absent: "You may have mistyped the address"
+      status: [200, 301, 302, 303, 307, 308]
+    confidence: medium
+
+  - id: http-zscaler
+    vendor: "ZScaler"
+    category: "Security"
+    type: http
+    query: "https://samlsp.private.zscaler.com/auth/v2/login?ssotype=test&domain={domain}"
+    match:
+      absent: "Unable to verify the IdP configuration for this domain"
+      status: [200, 301, 302, 303, 307, 308]
+    confidence: medium

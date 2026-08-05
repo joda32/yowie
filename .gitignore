@@ -1,0 +1,16 @@
+# Build output
+/yowie
+/yowie.exe
+/dist/
+
+# Scan output
+*.html
+*.csv
+*.jsonl
+!signatures/*.yaml
+
+# Editor and OS noise
+.DS_Store
+*.swp
+.idea/
+.vscode/

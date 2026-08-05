@@ -1,0 +1,298 @@
+# Yowie signature pack — schema v1
+#
+# Hosting suffixes that identify a vendor when one of the organisation's own
+# subdomains is aliased to it.
+#
+# Unlike the vanity pack, these are never queried directly. They are applied to
+# hostnames discovered in Certificate Transparency logs, which is how the tool
+# finds SaaS that was set up under a custom subdomain — the usual shape of a
+# team quietly onboarding a product.
+#
+# `query` is the bare hosting suffix. Matching is on a label boundary, so
+# "zendesk.com" matches "acme.zendesk.com" but never "notzendesk.com".
+
+version: 1
+pack: cname-targets
+description: "Vendor hosting suffixes, matched against the CNAME targets of discovered subdomains."
+defaults:
+  confidence: high
+
+signatures:
+  - id: cname-target-atlassian
+    vendor: "Atlassian"
+    category: "Collaboration"
+    type: cname_target
+    query: "atlassian.net"
+
+  - id: cname-target-aws-cloudfront
+    vendor: "AWS CloudFront"
+    category: "Infrastructure"
+    type: cname_target
+    query: "cloudfront.net"
+    confidence: medium
+    notes: "CDN fronting is generic; it identifies AWS but not the application behind it."
+
+  - id: cname-target-aws-elb
+    vendor: "AWS Elastic Load Balancing"
+    category: "Infrastructure"
+    type: cname_target
+    query: "elb.amazonaws.com"
+    confidence: medium
+
+  - id: cname-target-aws-api-gateway
+    vendor: "AWS API Gateway"
+    category: "Infrastructure"
+    type: cname_target
+    query: "execute-api.*.amazonaws.com"
+    confidence: medium
+
+  - id: cname-target-azure-frontdoor
+    vendor: "Azure Front Door"
+    category: "Infrastructure"
+    type: cname_target
+    query: "azurefd.net"
+    confidence: medium
+
+  - id: cname-target-azure-cloud-services
+    vendor: "Azure Cloud Services"
+    category: "Infrastructure"
+    type: cname_target
+    query: "cloudapp.azure.com"
+    confidence: medium
+    notes: "Identifies Azure-hosted compute but not the application running on it. Common enough on large estates to be background noise rather than a finding."
+
+  - id: cname-target-azure-traffic-manager
+    vendor: "Azure Traffic Manager"
+    category: "Infrastructure"
+    type: cname_target
+    query: "trafficmanager.net"
+    confidence: medium
+    notes: "DNS-level load balancing in front of something else; the real service is whatever the profile resolves on to."
+
+  - id: cname-target-azure-websites
+    vendor: "Azure App Service"
+    category: "Infrastructure"
+    type: cname_target
+    query: "azurewebsites.net"
+
+  - id: cname-target-barracuda-waas
+    vendor: "Barracuda WAF-as-a-Service"
+    category: "Security"
+    type: cname_target
+    query: "cudawaas.com"
+
+  - id: cname-target-bigcommerce
+    vendor: "BigCommerce"
+    category: "eCommerce"
+    type: cname_target
+    query: "mybigcommerce.com"
+
+  - id: cname-target-cloudflare
+    vendor: "Cloudflare"
+    category: "Infrastructure"
+    type: cname_target
+    query: "cdn.cloudflare.net"
+    confidence: medium
+
+  - id: cname-target-desk-com
+    vendor: "Salesforce Service Cloud"
+    category: "Service Desk"
+    type: cname_target
+    query: "desk.com"
+
+  - id: cname-target-discourse
+    vendor: "Discourse"
+    category: "Collaboration"
+    type: cname_target
+    query: "discourse.cloud"
+
+  - id: cname-target-fastly
+    vendor: "Fastly"
+    category: "Infrastructure"
+    type: cname_target
+    query: "fastly.net"
+    confidence: medium
+
+  - id: cname-target-freshdesk
+    vendor: "Freshdesk"
+    category: "Service Desk"
+    type: cname_target
+    query: "freshdesk.com"
+
+  - id: cname-target-github-pages
+    vendor: "GitHub Pages"
+    category: "Development"
+    type: cname_target
+    query: "github.io"
+
+  - id: cname-target-gitlab-pages
+    vendor: "GitLab Pages"
+    category: "Development"
+    type: cname_target
+    query: "gitlab.io"
+
+  - id: cname-target-hubspot
+    vendor: "HubSpot"
+    category: "Marketing"
+    type: cname_target
+    query: "hubspot.net"
+
+  - id: cname-target-hubspot-pages
+    vendor: "HubSpot"
+    category: "Marketing"
+    type: cname_target
+    query: "hs-sites.com"
+
+  - id: cname-target-intercom
+    vendor: "Intercom"
+    category: "Service Desk"
+    type: cname_target
+    query: "intercom.help"
+
+  - id: cname-target-jira-servicedesk
+    vendor: "Atlassian"
+    category: "Service Desk"
+    type: cname_target
+    query: "atlassian.com"
+
+  - id: cname-target-exchange-online
+    vendor: "Microsoft Exchange"
+    category: "Email"
+    type: cname_target
+    query: "outlook.com"
+    notes: "Covers autodiscover and mail routing aliases pointed at Exchange Online."
+
+  - id: cname-target-marketo
+    vendor: "Marketo"
+    category: "Marketing"
+    type: cname_target
+    query: "mktoweb.com"
+
+  - id: cname-target-netlify
+    vendor: "Netlify"
+    category: "Infrastructure"
+    type: cname_target
+    query: "netlify.app"
+
+  - id: cname-target-okta
+    vendor: "Okta"
+    category: "Identity & Secrets"
+    type: cname_target
+    query: "okta.com"
+
+  - id: cname-target-pantheon
+    vendor: "Pantheon"
+    category: "Content Management"
+    type: cname_target
+    query: "pantheonsite.io"
+
+  - id: cname-target-pardot
+    vendor: "Pardot"
+    category: "Marketing"
+    type: cname_target
+    query: "pardot.com"
+
+  - id: cname-target-readme
+    vendor: "ReadMe"
+    category: "Documentation"
+    type: cname_target
+    query: "readme.io"
+
+  - id: cname-target-salesforce
+    vendor: "Salesforce"
+    category: "Business Applications"
+    type: cname_target
+    query: "salesforce.com"
+
+  - id: cname-target-salesforce-experience-cloud
+    vendor: "Salesforce Experience Cloud"
+    category: "Business Applications"
+    type: cname_target
+    query: "siteforce.com"
+
+  - id: cname-target-sendgrid
+    vendor: "SendGrid"
+    category: "Email"
+    type: cname_target
+    query: "sendgrid.net"
+
+  - id: cname-target-servicenow
+    vendor: "ServiceNow"
+    category: "Service Desk"
+    type: cname_target
+    query: "service-now.com"
+
+  - id: cname-target-servicenow-cloud-au
+    vendor: "ServiceNow"
+    category: "Service Desk"
+    type: cname_target
+    query: "servicenowcloud.com.au"
+    notes: "ServiceNow's Australian sovereign hosting, used for protected-classification instances."
+
+  - id: cname-target-shopify
+    vendor: "Shopify"
+    category: "eCommerce"
+    type: cname_target
+    query: "myshopify.com"
+
+  - id: cname-target-statuspage
+    vendor: "Statuspage"
+    category: "Monitoring"
+    type: cname_target
+    query: "statuspage.io"
+
+  - id: cname-target-squarespace
+    vendor: "Squarespace"
+    category: "Content Management"
+    type: cname_target
+    query: "squarespace.com"
+
+  - id: cname-target-unbounce
+    vendor: "Unbounce"
+    category: "Marketing"
+    type: cname_target
+    query: "unbouncepages.com"
+
+  - id: cname-target-vercel
+    vendor: "Vercel"
+    category: "Infrastructure"
+    type: cname_target
+    query: "vercel-dns.com"
+
+  - id: cname-target-webflow
+    vendor: "Webflow"
+    category: "Content Management"
+    type: cname_target
+    query: "proxy-ssl.webflow.com"
+
+  - id: cname-target-wpengine
+    vendor: "WP Engine"
+    category: "Content Management"
+    type: cname_target
+    query: "wpengine.com"
+
+  - id: cname-target-wpengine-proxy
+    vendor: "WP Engine"
+    category: "Content Management"
+    type: cname_target
+    query: "wpeproxy.com"
+    notes: "WP Engine's edge proxy; sites are usually aliased here rather than to wpengine.com."
+
+  - id: cname-target-wpengine-powered
+    vendor: "WP Engine"
+    category: "Content Management"
+    type: cname_target
+    query: "wpenginepowered.com"
+    notes: "A third WP Engine hosting domain alongside wpengine.com and wpeproxy.com."
+
+  - id: cname-target-zendesk
+    vendor: "Zendesk"
+    category: "Service Desk"
+    type: cname_target
+    query: "zendesk.com"
+
+  - id: cname-target-zoom
+    vendor: "Zoom"
+    category: "Collaboration"
+    type: cname_target
+    query: "zoom.us"

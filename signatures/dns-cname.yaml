@@ -1,0 +1,54 @@
+# Yowie signature pack — schema v1
+#
+# Edit freely: signatures are data, not code. Run `yowie validate`
+# after changes to check the pack before relying on it.
+
+version: 1
+pack: dns-cname
+description: "Well-known service hostnames that CNAME to a vendor."
+
+signatures:
+  - id: cname-microsoft-exchange-autodiscover
+    vendor: "Microsoft Exchange"
+    category: "Email"
+    type: cname
+    query: "autodiscover.{domain}"
+    match:
+      contains: "outlook"
+    confidence: high
+
+  - id: cname-microsoft-lync-lyncdiscover
+    vendor: "Microsoft Skype for Business"
+    category: "Collaboration"
+    type: cname
+    query: "lyncdiscover.{domain}"
+    match:
+      contains: "lync"
+    confidence: high
+
+  - id: cname-microsoft-mdm-enterpriseenrollment
+    vendor: "Microsoft MDM"
+    category: "Device Management"
+    type: cname
+    query: "enterpriseenrollment.{domain}"
+    match:
+      contains: "microsoft"
+    confidence: high
+
+  - id: cname-microsoft-mdm-enterpriseregistration
+    vendor: "Microsoft MDM"
+    category: "Device Management"
+    type: cname
+    query: "enterpriseregistration.{domain}"
+    match:
+      contains: "windows"
+    confidence: high
+
+  - id: cname-microsoft-sip
+    vendor: "Microsoft Skype for Business"
+    category: "Collaboration"
+    type: cname
+    query: "sip.{domain}"
+    match:
+      contains: "lync"
+    confidence: high

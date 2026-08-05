@@ -1,0 +1,234 @@
+# Yowie signature pack — schema v1
+#
+# Edit freely: signatures are data, not code. Run `yowie validate`
+# after changes to check the pack before relying on it.
+
+version: 1
+pack: vanity-tenants
+description: "Vendor-hosted tenant namespaces. Detected by resolving a candidate-derived hostname and comparing it against a random-label baseline, so wildcard DNS does not produce false positives."
+
+signatures:
+  - id: vanity-cname-1kosmos-auth
+    vendor: "1Kosmos Auth"
+    category: "Identity & Secrets"
+    type: vanity_cname
+    query: "{candidate}.1kosmos.net"
+    confidence: medium
+
+  - id: vanity-cname-aad-atp-mdi-azure
+    vendor: "AAD ATP (MDI)"
+    category: "Security"
+    type: vanity_cname
+    query: "{candidate}.atp.azure.com"
+    confidence: medium
+
+  - id: vanity-cname-aad-atp-mdi-azure-2
+    vendor: "AAD ATP (MDI)"
+    category: "Security"
+    type: vanity_cname
+    query: "{candidate}sensorapi.atp.azure.com"
+    confidence: medium
+
+  - id: vanity-a-aws-apps-awsapps
+    vendor: "AWS Apps"
+    category: "Infrastructure"
+    type: vanity_a
+    query: "{candidate}.awsapps.com"
+    confidence: medium
+
+  - id: vanity-cname-azure-blob-windows
+    vendor: "Azure Blob"
+    category: "Storage"
+    type: vanity_cname
+    query: "{candidate}.blob.core.windows.net"
+    confidence: medium
+
+  - id: vanity-cname-azure-database-windows
+    vendor: "Azure Database"
+    category: "Infrastructure"
+    type: vanity_cname
+    query: "{candidate}.database.windows.net"
+    confidence: medium
+
+  - id: vanity-cname-azure-website-azurewebsites
+    vendor: "Azure Website"
+    category: "Infrastructure"
+    type: vanity_cname
+    query: "{candidate}.azurewebsites.net"
+    confidence: medium
+
+  - id: vanity-cname-citrix-signin-cloud
+    vendor: "Citrix Cloud"
+    category: "Remote Access"
+    type: vanity_cname
+    query: "{candidate}.cloud.com"
+    confidence: medium
+
+  - id: vanity-cname-dynamics-365
+    vendor: "Dynamics 365"
+    category: "Business Applications"
+    type: vanity_cname
+    query: "{candidate}.api.crm11.dynamics.com"
+    confidence: medium
+
+  - id: vanity-cname-dynamics-365-2
+    vendor: "Dynamics 365"
+    category: "Business Applications"
+    type: vanity_cname
+    query: "{candidate}.api.crm2.dynamics.com"
+    confidence: medium
+
+  - id: vanity-cname-dynamics-365-3
+    vendor: "Dynamics 365"
+    category: "Business Applications"
+    type: vanity_cname
+    query: "{candidate}.api.crm4.dynamics.com"
+    confidence: medium
+
+  - id: vanity-cname-dynamics-365-4
+    vendor: "Dynamics 365"
+    category: "Business Applications"
+    type: vanity_cname
+    query: "{candidate}.api.crm5.dynamics.com"
+    confidence: medium
+
+  - id: vanity-cname-dynamics-365-5
+    vendor: "Dynamics 365"
+    category: "Business Applications"
+    type: vanity_cname
+    query: "{candidate}.api.crm6.dynamics.com"
+    confidence: medium
+
+  - id: vanity-cname-dynamics-365-6
+    vendor: "Dynamics 365"
+    category: "Business Applications"
+    type: vanity_cname
+    query: "{candidate}.api.crm.dynamics.com"
+    confidence: medium
+
+  - id: vanity-a-easysm-service-managment-com
+    vendor: "easySM (Service Management)"
+    category: "Service Desk"
+    type: vanity_a
+    query: "{candidate}.easysm.com.au"
+    confidence: medium
+
+  - id: vanity-cname-hr-frontier-software-chris21
+    vendor: "HR Frontier Software"
+    category: "HR & Learning"
+    type: vanity_cname
+    query: "{candidate}.chris21.com"
+    confidence: medium
+    notes: "Tenant label is always three characters, e.g. acmecorp -> acm."
+
+  - id: vanity-cname-jenkins-jenkins-ci
+    vendor: "Jenkins"
+    category: "Development"
+    type: vanity_cname
+    query: "{candidate}.jenkins-ci.org"
+    confidence: medium
+
+  - id: vanity-cname-okta
+    vendor: "Okta"
+    category: "Identity & Secrets"
+    type: vanity_cname
+    query: "{candidate}.okta.com"
+    confidence: medium
+
+  - id: vanity-cname-planview-project-management-ppmpro
+    vendor: "Planview Project Management"
+    category: "Project Management"
+    type: vanity_cname
+    query: "{candidate}.ppmpro.com"
+    confidence: medium
+
+  - id: vanity-cname-retail-path-automaton-com
+    vendor: "Retail Path (Automaton)"
+    category: "Automation"
+    type: vanity_cname
+    query: "{candidate}.retailpath.com.au"
+    confidence: medium
+
+  - id: vanity-a-saba-cloud-sabacloud
+    vendor: "Saba Cloud"
+    category: "HR & Learning"
+    type: vanity_a
+    query: "{candidate}.sabacloud.com"
+    confidence: medium
+
+  - id: vanity-cname-saba-cloud-sabacloud
+    vendor: "Saba Cloud"
+    category: "HR & Learning"
+    type: vanity_cname
+    query: "{candidate}.sabacloud.com"
+    confidence: medium
+
+  - id: vanity-a-sailpoint-identitynow
+    vendor: "Sailpoint Identitynow"
+    category: "Identity & Secrets"
+    type: vanity_a
+    query: "{candidate}.identitynow.com"
+    confidence: medium
+
+  - id: vanity-a-salesforce
+    vendor: "Salesforce"
+    category: "Business Applications"
+    type: vanity_a
+    query: "{candidate}.lightning.force.com"
+    confidence: medium
+
+  - id: vanity-a-salesforce-2
+    vendor: "Salesforce"
+    category: "Business Applications"
+    type: vanity_a
+    query: "{candidate}.my.salesforce.com"
+    confidence: medium
+
+  - id: vanity-a-servicenow-service-now
+    vendor: "ServiceNow"
+    category: "Service Desk"
+    type: vanity_a
+    query: "{candidate}.service-now.com"
+    confidence: medium
+
+  - id: vanity-a-sharepoint
+    vendor: "SharePoint"
+    category: "Collaboration"
+    type: vanity_a
+    query: "{candidate}-my.sharepoint.com"
+    confidence: medium
+
+  - id: vanity-a-sharepoint-2
+    vendor: "SharePoint"
+    category: "Collaboration"
+    type: vanity_a
+    query: "{candidate}.sharepoint.com"
+    confidence: medium
+
+  - id: vanity-a-sharepoint-3
+    vendor: "SharePoint"
+    category: "Collaboration"
+    type: vanity_a
+    query: "{candidate}-web.sharepoint.com"
+    confidence: medium
+
+  - id: vanity-a-splunk-splunkcloud
+    vendor: "Splunk"
+    category: "Monitoring"
+    type: vanity_a
+    query: "{candidate}.splunkcloud.com"
+    confidence: medium
+
+  - id: vanity-a-zendesk
+    vendor: "Zendesk"
+    category: "Service Desk"
+    type: vanity_a
+    query: "{candidate}.zendesk.com"
+    confidence: medium
+
+  - id: vanity-a-zoom
+    vendor: "Zoom"
+    category: "Collaboration"
+    type: vanity_a
+    query: "{candidate}.zoom.us"
+    confidence: medium

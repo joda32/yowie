@@ -1,0 +1,99 @@
+# Yowie signature pack — schema v1
+#
+# Edit freely: signatures are data, not code. Run `yowie validate`
+# after changes to check the pack before relying on it.
+
+version: 1
+pack: dns-mx
+description: "Mail exchangers, which identify the mail platform and any mail security gateway in front of it."
+
+signatures:
+  - id: mx-barracuda-networks
+    vendor: "Barracuda"
+    category: "Email Security"
+    type: mx
+    query: "{domain}"
+    match:
+      contains: "barracudanetworks.com"
+    confidence: high
+
+  - id: mx-google-mail-gmail
+    vendor: "Google Mail (Gmail)"
+    category: "Email"
+    type: mx
+    query: "{domain}"
+    match:
+      contains: "google.com"
+    confidence: high
+
+  - id: mx-google-mail-gmail-2
+    vendor: "Google Mail (Gmail)"
+    category: "Email"
+    type: mx
+    query: "{domain}"
+    match:
+      contains: "googlemail.com"
+    confidence: high
+
+  - id: mx-mailguard
+    vendor: "MailGuard"
+    category: "Email Security"
+    type: mx
+    query: "{domain}"
+    match:
+      contains: "mailguard.com.au"
+    confidence: high
+
+  - id: mx-message-labs
+    vendor: "Message Labs"
+    category: "Email Security"
+    type: mx
+    query: "{domain}"
+    match:
+      contains: "messagelabs.com"
+    confidence: high
+
+  - id: mx-microsoft-365
+    vendor: "Microsoft 365"
+    category: "Identity & Secrets"
+    type: mx
+    query: "{domain}"
+    match:
+      contains: "protection.outlook.com"
+    confidence: high
+
+  - id: mx-mimecast
+    vendor: "Mimecast"
+    category: "Email Security"
+    type: mx
+    query: "{domain}"
+    match:
+      contains: "mimecast.com"
+    confidence: high
+
+  - id: mx-proof-point
+    vendor: "Proofpoint"
+    category: "Email Security"
+    type: mx
+    query: "{domain}"
+    match:
+      contains: "pphosted.com"
+    confidence: high
+
+  - id: mx-sophos-mail
+    vendor: "Sophos Mail"
+    category: "Email Security"
+    type: mx
+    query: "{domain}"
+    match:
+      contains: "sophos.com"
+    confidence: high
+
+  - id: mx-zoho-mail
+    vendor: "Zoho Mail"
+    category: "Email"
+    type: mx
+    query: "{domain}"
+    match:
+      contains: "zoho.com"
+    confidence: high

@@ -1,0 +1,154 @@
+# Yowie signature pack — schema v1
+#
+# Edit freely: signatures are data, not code. Run `yowie validate`
+# after changes to check the pack before relying on it.
+
+version: 1
+pack: email-spf
+description: "Senders authorised in the domain's SPF include graph. Matched against the fully resolved graph, so nested includes and redirects are covered."
+
+signatures:
+  - id: spf-barracuda
+    vendor: "Barracuda"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "barracudanetworks.com"
+    confidence: high
+
+  - id: spf-dmarcly
+    vendor: "Dmarcly"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "dmarclb.com"
+    confidence: high
+    notes: "Dmarcly's SPF flattening service. Includes appear as several _u/nbN subdomains of dmarclb.com."
+
+  - id: spf-freshdesk
+    vendor: "Freshdesk"
+    category: "Service Desk"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "freshdesk.com"
+    confidence: high
+
+  - id: spf-hubspot
+    vendor: "HubSpot"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "hubspotemail.net"
+    confidence: high
+
+  - id: spf-mailchimp
+    vendor: "MailChimp"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "mcsv.net"
+    confidence: high
+
+  - id: spf-mailchimp-2
+    vendor: "MailChimp"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "spf.mandrillapp.com"
+    confidence: high
+
+  - id: spf-marketto
+    vendor: "Marketo"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "mktomail.com"
+    confidence: high
+
+  - id: spf-mastercard-delivery-gateways
+    vendor: "Mastercard Delivery Gateways"
+    category: "Payments"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "deliverygateways.mastercard.com"
+    confidence: high
+
+  - id: spf-microsoft-exchange
+    vendor: "Microsoft Exchange"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "protection.outlook.com"
+    confidence: high
+
+  - id: spf-mimecast
+    vendor: "Mimecast"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "netblocks.mimecast.com"
+    confidence: high
+
+  - id: spf-netsuite
+    vendor: "NetSuite"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "mailsenders.netsuite.com"
+    confidence: high
+
+  - id: spf-proof-point
+    vendor: "Proofpoint"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "pphosted.com"
+    confidence: high
+
+  - id: spf-salesforce
+    vendor: "Salesforce"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "spf.salesforce.com"
+    confidence: high
+
+  - id: spf-service-now
+    vendor: "ServiceNow"
+    category: "Service Desk"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "service-now.com"
+    confidence: high
+
+  - id: spf-technologyone-cloud
+    vendor: "TechnologyOne Cloud"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "mailrelay.t1cloud.com"
+    confidence: high
+
+  - id: spf-zendesk
+    vendor: "Zendesk"
+    category: "Service Desk"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "zendesk.com"
+    confidence: high
