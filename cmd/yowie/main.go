@@ -10,6 +10,7 @@ import (
 	"io/fs"
 	"os"
 	"os/signal"
+	"runtime/debug"
 	"sort"
 	"strings"
 	"syscall"
@@ -26,6 +27,23 @@ import (
 
 // version is overridden at build time with -ldflags "-X main.version=...".
 var version = "dev"
+
+// buildVersion resolves the version to report.
+//
+// Release builds stamp it via -ldflags. A binary produced by
+// `go install <module>@<ref>` gets no ldflags, but the toolchain records the
+// module version in the build info, so fall back to that rather than claiming
+// to be an unversioned development build.
+func buildVersion() string {
+	if version != "dev" {
+		return version
+	}
+	info, ok := debug.ReadBuildInfo()
+	if !ok || info.Main.Version == "" || info.Main.Version == "(devel)" {
+		return version
+	}
+	return info.Main.Version
+}
 
 type options struct {
 	format      string
@@ -96,7 +114,7 @@ func run() error {
 	}
 
 	if *showVersion {
-		fmt.Printf("yowie %s\n", version)
+		fmt.Printf("yowie %s\n", buildVersion())
 		return nil
 	}
 
@@ -349,7 +367,7 @@ Detectors:
   ct       subdomains from certificate transparency logs, resolved and attributed
 
 Flags:
-`, version)
+`, buildVersion())
 	fs.PrintDefaults()
 
 	fmt.Fprintf(os.Stderr, `
