@@ -137,7 +137,7 @@ signatures:
     type: vanity_a
     query: "{candidate}.coupahost.com"
     disabled: true
-    notes: "Coupa tenants are believed to use a per-customer subdomain under coupahost.com. Structural rather than token-based, so cheaper to confirm than the SPF entries."
+    notes: "Superseded in practice. The domain was right but the channel was wrong — coupahost.com shows up as an SPF include with regional variants, not as a per-customer vanity hostname. The confirmed signature now lives in email-spf.yaml. Kept disabled as a record of the corrected assumption."
 
   # --- Payments --------------------------------------------------------------
 
@@ -149,7 +149,7 @@ signatures:
     match:
       contains: "airwallex.com"
     disabled: true
-    notes: "UNVERIFIED include hostname. Australian-founded cross-border payments platform."
+    notes: "Superseded — confirmed live and now carried in email-spf.yaml. Kept disabled as a record that the guess was correct in this instance."
 
   - id: cname-target-chargebee
     vendor: "Chargebee"

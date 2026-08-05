@@ -83,3 +83,54 @@ signatures:
     query: "{candidate}.mobicontrolcloud.com"
     disabled: true
     notes: "Legacy note: could not find a live example. SOTI is a mobile device management platform, so a hit would be a notable finding on any estate."
+
+  - id: cname-target-nc0-shared-banking-platform
+    vendor: "Unidentified shared banking platform"
+    category: "Financial Services"
+    type: cname_target
+    query: "nc0.co"
+    disabled: true
+    notes: >-
+      A multi-tenant platform used by more than one financial institution for card
+      and terminal management, reached as <tenant>.edge.nc0.co. Disabled because the
+      operator could not be identified: the apex serves no site and has no MX or
+      TXT, the zone sits on AWS nameservers, and each tenant host presents the
+      TENANT's own certificate rather than the platform operator's.
+      Recorded as a warning as much as a lead. This was briefly shipped
+      attributing the platform to the first bank whose certificate was observed
+      on it, which was wrong — a shared platform must never be named after one
+      of its customers. Confirm the operator before enabling.
+
+  - id: spf-cp-mail-platform-unidentified
+    vendor: "Unidentified email platform (cp-*)"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "cpmails.com"
+    disabled: true
+    notes: >-
+      An email platform that handles both sending and DMARC reporting for the
+      same customer: SPF includes appear under spfa.cpmails.com and DMARC
+      aggregate reports go to a tenant subdomain of cp-dmarc.com. Almost
+      certainly one operator — both domains are anonymous, sit on AWS
+      nameservers, serve no website and present no certificate, and share the
+      "cp" prefix. Disabled because the operator could not be identified and
+      naming it after a guess is how two earlier signatures came to be wrong.
+
+  - id: cname-target-pmnts-payments-platform
+    vendor: "Unidentified payments platform (pmnts)"
+    category: "Payments"
+    type: cname_target
+    query: "pmnts.io"
+    disabled: true
+    notes: >-
+      A payments platform serving at least one Australian bank, with production,
+      staging and sandbox domains (pmnts.io, pmnts-staging.io, pmnts-sandbox.io).
+      Circumstantially linked to Fat Zebra: the confirmed Fat Zebra property
+      securepay.com.au sits in the same payments space, and pmnts.io shares one
+      Route 53 nameserver with fatzebra.com. That is suggestive, not proof —
+      Route 53 delegation overlaps occur by chance, none of the pmnts domains
+      serve a site, and their certificates carry no organisation. Disabled until
+      someone confirms the operator directly.
+

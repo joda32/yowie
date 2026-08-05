@@ -424,8 +424,8 @@ signatures:
     query: "{domain}"
     match:
       contains: "infoblox-domain-mastery"
-    confidence: medium
-    notes: "Signature was never confirmed against a live tenant in the legacy tool; treat a hit as a lead, not proof."
+    confidence: high
+    notes: "Confirmed against a live tenant during signature validation. The token is domain-scoped, so a hit means a provisioned Infoblox relationship."
 
   - id: txt-jamf
     vendor: "Jamf"
@@ -607,8 +607,8 @@ signatures:
     query: "{domain}"
     match:
       contains: "paloaltonetworks-site-verification"
-    confidence: medium
-    notes: "Signature was never confirmed against a live tenant in the legacy tool; treat a hit as a lead, not proof."
+    confidence: high
+    notes: "Confirmed against a live tenant during signature validation. The token is domain-scoped, so a hit means a provisioned Palo Alto Networks relationship."
 
   - id: txt-pardot-b2b-marketing-tools
     vendor: "Pardot"
@@ -726,17 +726,18 @@ signatures:
     query: "{domain}"
     match:
       contains: "twilio-domain-verification"
-    confidence: medium
-    notes: "Signature was never confirmed against a live tenant in the legacy tool; treat a hit as a lead, not proof."
+    confidence: high
+    notes: "Confirmed against a live tenant during signature validation. The token is domain-scoped, so a hit means a provisioned Twilio account rather than incidental use."
 
   - id: txt-unity-cloud
-    vendor: "Unity Cloud"
+    vendor: "Unity Technologies"
     category: "Development"
     type: txt
     query: "{domain}"
     match:
       contains: "unity-sso-verification"
     confidence: high
+    notes: "Unity Technologies, the game development platform. Renamed from the bare \"Unity Cloud\" because an unrelated low-code vendor trades under that name and is carried separately in cname-targets.yaml — without the distinction the two would merge into one finding."
 
   - id: txt-vmware-cloud
     vendor: "VMWare Cloud"

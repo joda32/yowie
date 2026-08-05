@@ -54,6 +54,14 @@ signatures:
     match:
       contains: "mimecast.com"
 
+  - id: dmarc-mimecast-analyzer
+    vendor: "Mimecast"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "dmarcanalyzer.com"
+    notes: "DMARC Analyzer, now a Mimecast product — dmarcanalyzer.com redirects to Mimecast's product pages. Reported as Mimecast so the DMARC, SPF and MX evidence consolidate into one relationship rather than three vendors."
+
   - id: dmarc-mxtoolbox
     vendor: "MXToolbox"
     type: dmarc_rua
@@ -74,6 +82,99 @@ signatures:
     query: "{domain}"
     match:
       contains: "dmarc.postmarkapp.com"
+
+  - id: dmarc-powerdmarc
+    vendor: "PowerDMARC"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "powerdmarc.com"
+    notes: "Reports are published to rua. and ruf. subdomains, so a single relationship otherwise reports as two unattributed senders."
+
+  - id: dmarc-everest
+    vendor: "Everest"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "everest.email"
+    confidence: medium
+    notes: "Email deliverability platform. DNS ownership is not confirmable (Route 53) and the domain serves no site; pairs with the everestengagement.com tracking signature."
+
+  - id: dmarc-inbox-monster
+    vendor: "Inbox Monster"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "inboxmonster.com"
+    notes: "Email testing and deliverability, confirmed from the vendor's own site."
+
+  - id: dmarc-netcraft
+    vendor: "Netcraft"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "netcraft.com"
+    notes: "Digital risk protection and phishing takedown. Ownership confirmed: SOA hostmaster.netcraft.com. Reports go to rua. and ruf. subdomains, so one relationship otherwise reports as two unattributed senders."
+
+  - id: dmarc-cloudflare
+    vendor: "Cloudflare"
+    category: "Infrastructure"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "dmarc-reports.cloudflare.net"
+    notes: "Cloudflare's DMARC Management receives aggregate reports. Consolidates with the CDN signature so one relationship does not report as two vendors."
+
+  - id: dmarc-mxtoolbox-report
+    vendor: "MXToolbox"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "dmarc-report.com"
+    notes: "MXToolbox receives reports on dmarc-report.com, not mxtoolbox.com, so the companion signature never matched. Aggregate and forensic reports go to separate subdomains of it."
+
+  - id: dmarc-brevo
+    vendor: "Brevo"
+    category: "Marketing"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "dmarc.brevo.com"
+    notes: "Brevo also processes DMARC reports. Consolidates with the brevo-code TXT signature."
+
+  - id: dmarc-dmarcian-ap
+    vendor: "dmarcian"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "dmarcian-ap.com"
+    notes: "dmarcian's Asia-Pacific instance, confirmed from the site it serves. The companion signature matches dmarcian.com only, so APAC customers were reported as unattributed."
+
+  - id: dmarc-report-uri
+    vendor: "Report URI"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "report-uri.com"
+    confidence: medium
+    notes: "Security reporting service covering DMARC alongside CSP and other browser reports. The site sits behind a challenge page so the brand could not be read directly."
+
+  - id: dmarc-redsift-cloud
+    vendor: "Red Sift OnDMARC"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "redsift.cloud"
+    notes: "Red Sift also receives reports on redsift.cloud, confirmed from the site it serves. The companion signature matches ondmarc.com only."
+
+  - id: dmarc-250ok
+    vendor: "Validity"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "250ok.net"
+    confidence: medium
+    notes: "250ok, now part of Validity. DNS ownership is not confirmable (Route 53) and the domain serves no site, so the attribution rests on the product name."
 
   - id: dmarc-proofpoint
     vendor: "Proofpoint"

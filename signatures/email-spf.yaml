@@ -17,6 +17,23 @@ signatures:
       contains: "barracudanetworks.com"
     confidence: high
 
+  - id: spf-flattening-powerspf
+    vendor: "Third-party SPF flattening"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "powerspf.com"
+    confidence: medium
+    notes: >-
+      A hosted SPF service that rewrites a domain's includes, here using macro
+      expansion (exists:%{i}.<tenant>.macrospf.powerspf.com) rather than
+      flattened IP lists. Deliberately not attributed to a named vendor: the
+      obvious candidate shares a brand prefix but sits on entirely different
+      nameservers, and naming a shared platform after a guess is how two earlier
+      signatures came to be wrong. Read the DMARC record to identify the
+      platform actually engaged.
+
   - id: spf-flattening-dmarcl
     vendor: "Third-party SPF flattening"
     category: "Email Security"
@@ -54,6 +71,56 @@ signatures:
     confidence: high
     notes: "Google's mail-sending netblocks, published as _netblocks.google.com, _netblocks2.google.com and so on. Matched on the bare token because the numbered variants break a full-hostname match, and because Google adds more over time. Usually reached through include:_spf.google.com, but some domains inline them directly."
 
+  - id: spf-stova
+    vendor: "Stova"
+    category: "Scheduling & Events"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "aventri.com"
+    confidence: high
+    notes: "Event management platform. The domain still reads aventri.com but the vendor rebranded to Stova, which its own site confirms — recorded under the current name so it does not split from any future stova.io signature. Sends attendee and registration mail as the organisation."
+
+  - id: spf-eventsair
+    vendor: "EventsAir"
+    category: "Scheduling & Events"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "eventsairmail.com"
+    confidence: high
+    notes: "Australian event management platform, confirmed from the vendor's own site at eventsair.com. Sends attendee and registration mail as the organisation."
+
+  - id: spf-equifax
+    vendor: "Equifax"
+    category: "Financial Services"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "equifax.com"
+    confidence: high
+    notes: "Credit bureau. Appears as an a: mechanism rather than an include, which the SPF walker records the same way."
+
+  - id: spf-equifax-creditworks
+    vendor: "Equifax"
+    category: "Financial Services"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "creditworks.com.au"
+    confidence: high
+    notes: "Equifax's Australian credit reporting brand. Ownership confirmed: creditworks.com.au has SOA hostmaster.equifax.com. Reported as Equifax so both hostnames consolidate into one relationship."
+
+  - id: spf-khoros
+    vendor: "Khoros"
+    category: "Collaboration"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "khoros-mail.com"
+    confidence: high
+    notes: "Community and social engagement platform, formerly Lithium Technologies. Pairs with the lithium.com hosting signature — the rebrand left both domains in service."
+
   - id: spf-freshdesk
     vendor: "Freshdesk"
     category: "Service Desk"
@@ -72,6 +139,26 @@ signatures:
       contains: "hubspotemail.net"
     confidence: high
 
+  - id: spf-medallia
+    vendor: "Medallia"
+    category: "Customer Experience"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "medallia.com"
+    confidence: high
+    notes: "Experience management platform, confirmed from the vendor's own site. Customers publish a voice-of-customer sending host, so the include often carries the organisation's name — survey and feedback mail is sent as the organisation."
+
+  - id: spf-sap-successfactors
+    vendor: "SAP SuccessFactors"
+    category: "HR & Learning"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "sapsf.com"
+    confidence: high
+    notes: "SAP SuccessFactors human capital management. Ownership confirmed: sapsf.com is served by ns*.sap.net with SOA dns.sap-ag.de. The datacentre is visible in the include host, e.g. _spf-dc10.sapsf.com. Holds employee and payroll data."
+
   - id: spf-mailchimp
     vendor: "MailChimp"
     category: "Marketing"
@@ -87,8 +174,9 @@ signatures:
     type: spf_include
     query: "{domain}"
     match:
-      contains: "spf.mandrillapp.com"
+      contains: "mandrillapp.com"
     confidence: high
+    notes: "Mandrill, Mailchimp's transactional sender. Broadened from spf.mandrillapp.com, which missed domains publishing the bare include:mandrillapp.com — the same too-literal match that hid _netblocks2.google.com."
 
   - id: spf-marketto
     vendor: "Marketo"
@@ -125,6 +213,16 @@ signatures:
     match:
       contains: "netblocks.mimecast.com"
     confidence: high
+
+  - id: spf-mimecast-mimec
+    vendor: "Mimecast"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "mim.ec"
+    confidence: high
+    notes: "Mimecast's sending infrastructure. Ownership confirmed: mim.ec is served by dns0*.mimecast.com with SOA root.mimecast.com. A protected domain publishes one redirect plus several numbered includes under _spf._d.mim.ec, so without this signature a single relationship reports as many unattributed senders."
 
   - id: spf-netsuite
     vendor: "NetSuite"
@@ -182,6 +280,606 @@ signatures:
       contains: "sendgrid.net"
     confidence: high
     notes: "Covers both the bare sendgrid.net include and the ab.sendgrid.net variant used for click tracking."
+
+  - id: spf-swift-digital
+    vendor: "Swift Digital"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "swiftdigital.com.au"
+    confidence: high
+    notes: "Australian marketing automation and corporate communications platform, confirmed from the vendor's own site. Pairs with the hosting signature — the same vendor is often aliased at a corpcomms or similar hostname."
+
+  - id: spf-simpro
+    vendor: "simPRO"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "simprocloud.com"
+    confidence: medium
+    notes: "Australian field service and job management platform. Appears as an a: mechanism naming a specific host, e.g. a:chi-web-01.simprocloud.com. DNS ownership is not confirmable (Route 53) and the vendor's site sits behind a challenge page, so the attribution rests on the brand name."
+
+  - id: spf-socketlabs
+    vendor: "SocketLabs"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "socketlabs.com"
+    confidence: high
+    notes: "Email delivery platform. Ownership confirmed: SOA dnsadmin.socketlabs.com."
+
+  - id: spf-mailgun
+    vendor: "Mailgun"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "mailgun.org"
+    confidence: high
+    notes: "Transactional email API. Consolidates with the mgverify TXT signature, which only proves domain verification rather than authorisation to send."
+
+  - id: spf-mailendo
+    vendor: "Mailendo"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "mailendo.com"
+    confidence: high
+    notes: "Email campaign platform, confirmed from the vendor's own site."
+
+  - id: spf-ukg
+    vendor: "UKG"
+    category: "HR & Learning"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "mykronos.com"
+    confidence: medium
+    notes: "Workforce management, from the Kronos heritage — the vendor is now UKG and mykronos.com is its customer-facing domain. The site sits behind a challenge page so the brand could not be read directly; the attribution rests on the domain name. Holds rostering and time-and-attendance data."
+
+  - id: spf-fraedom
+    vendor: "Fraedom"
+    category: "Finance & Procurement"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "fraedom.com"
+    confidence: medium
+    notes: "Expense and spend management. DNS ownership is not confirmable (Cloudflare) and the domain serves no site, so the attribution rests on the product name."
+
+  - id: spf-workhuman
+    vendor: "Workhuman"
+    category: "HR & Learning"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "workhuman.com"
+    confidence: medium
+    notes: "Employee recognition and rewards platform. DNS ownership is not confirmable (Route 53) and the domain serves no site, so the attribution rests on the product name."
+
+  - id: spf-qualtrics
+    vendor: "Qualtrics"
+    category: "Customer Experience"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "qemailserver.com"
+    confidence: high
+    notes: "Experience management platform. Ownership confirmed: qemailserver.com has SOA hostmaster.qualtrics.com and the domain serves the vendor's own site. Survey mail is sent as the organisation."
+
+  - id: spf-atlassian
+    vendor: "Atlassian"
+    category: "Collaboration"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "_spf.atlassian.net"
+    confidence: high
+    notes: "Atlassian's sending infrastructure. The atlassian.net hosting signature is a cname_target and so never matched an SPF include — this covers the sending side of the same relationship."
+
+  - id: spf-aws-ses
+    vendor: "AWS SES"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "amazonses.com"
+    confidence: high
+    notes: "Amazon Simple Email Service. Consolidates with the _amazonses TXT verification signature, which only proves the domain was verified — this proves it is authorised to send."
+
+  - id: spf-exclaimer
+    vendor: "Exclaimer"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "exclaimer.net"
+    confidence: medium
+    notes: "Centrally managed email signatures. Mail is routed through the vendor to apply signatures, so it sees message content. DNS ownership is not confirmable (Cloudflare) and the domain serves no site."
+
+  - id: spf-miraqle
+    vendor: "Miraqle"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "miraqle.com"
+    confidence: medium
+    notes: "Confirmed as a distinct product from the vendor's own site, though the site does not make the service category clear. Authorised to send as the organisation."
+
+  - id: spf-salesforce-marketing-cloud
+    vendor: "Salesforce Marketing Cloud"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "exacttarget.com"
+    confidence: high
+    notes: "The sending side of Salesforce Marketing Cloud, still on the ExactTarget domain from before the acquisition. Consolidates with the sfmc-marketing.com and sfmc-content.com hosting signatures, which cover click tracking and content delivery rather than sending."
+
+  - id: spf-esker
+    vendor: "Esker"
+    category: "Finance & Procurement"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "eskerondemand.com"
+    confidence: high
+    notes: "Document process automation for accounts payable and receivable. Ownership confirmed: SOA freodoperation.esker.fr."
+
+  - id: spf-message-labs
+    vendor: "Message Labs"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "messagelabs.com"
+    confidence: high
+    notes: "Mail security gateway. The MX signature already covers inbound; this covers the outbound side, which a domain can publish without changing its MX records."
+
+  - id: spf-quest-on-demand
+    vendor: "Quest"
+    category: "Identity & Secrets"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "quest-on-demand.com"
+    confidence: medium
+    notes: "Quest On Demand, used to manage and migrate Microsoft 365 and Entra ID tenants. DNS ownership is not confirmable (Route 53) and the domain serves no site, so the attribution rests on the product name. A protected domain publishes several numbered includes."
+
+  - id: spf-statuspage
+    vendor: "Statuspage"
+    category: "Monitoring"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "stspg-customer.com"
+    confidence: medium
+    notes: "Statuspage sends incident notification mail as the organisation. DNS ownership is not confirmable (Route 53); stspg is the vendor's own abbreviation, used across its custom-domain targets."
+
+  - id: spf-boreal-is
+    vendor: "Boreal IS"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "boreal-is.com"
+    confidence: high
+    notes: "Stakeholder engagement and management software, confirmed from the vendor's own site."
+
+  - id: spf-cisco-email-security
+    vendor: "Cisco Email Security"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "iphmx.com"
+    confidence: high
+    notes: "Cisco's hosted email security, from the IronPort heritage. Ownership confirmed: SOA stbu-hostmaster@cisco.com. Includes carry a per-customer allocation, e.g. esa.hcNNN-NN.<region>.iphmx.com."
+
+  - id: spf-forcepoint
+    vendor: "Forcepoint"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "mailcontrol.com"
+    confidence: high
+    notes: "Forcepoint email security, from the BlackSpider and Websense heritage. Ownership confirmed: SOA hostmaster.blackspider.com, and the domain now serves Forcepoint's Data Security Cloud."
+
+  - id: spf-formassembly
+    vendor: "FormAssembly"
+    category: "Productivity"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "formassembly.com"
+    confidence: high
+    notes: "Secure web forms, confirmed from the vendor's own site. Pairs with the tfaforms.net hosting signature."
+
+  - id: spf-netskope
+    vendor: "Netskope"
+    category: "Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "goskope.com"
+    confidence: high
+    notes: "Netskope's tenant domain, observed here as an SPF include. The parked vanity signature guessed the same domain would show as a per-customer hostname; this is the channel it actually appears on."
+
+  - id: spf-oracle-cloud
+    vendor: "Oracle Cloud"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "oraclecloud.com"
+    confidence: high
+    notes: "Ownership confirmed: SOA hostmaster.oracle.com. A protected domain publishes several includes (spf_c, spf_s1, spf_s2), so one relationship otherwise reports as three unattributed senders."
+
+  - id: spf-qualtrics-domain
+    vendor: "Qualtrics"
+    category: "Customer Experience"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "_spf.qualtrics.com"
+    confidence: high
+    notes: "Qualtrics also publishes _spf.qualtrics.com alongside qemailserver.com; the companion signature matched only the latter."
+
+  - id: spf-templafy
+    vendor: "Templafy"
+    category: "Productivity"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "templafy-ess.com"
+    confidence: medium
+    notes: "Document template and brand governance platform. DNS ownership is not confirmable (Azure DNS) and the domain serves no site; the attribution rests on the brand appearing in the domain."
+
+  - id: spf-yardi
+    vendor: "Yardi"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "yardi.com"
+    confidence: medium
+    notes: "Property management software. The vendor site sits behind a challenge page so the brand could not be read directly; the attribution rests on the domain being the vendor's own name."
+
+  - id: spf-campaign-monitor
+    vendor: "Campaign Monitor"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "createsend.com"
+    confidence: high
+    notes: "Australian email marketing platform. createsend.com is its sending domain, confirmed from the site it serves."
+
+  - id: spf-sophos
+    vendor: "Sophos Mail"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "sophos.com"
+    confidence: high
+    notes: "Sophos email security. The MX signature covers inbound; this covers outbound, which a domain can publish without changing its MX records. Includes carry the region, e.g. _spf_uswest2.prod.hydra.sophos.com."
+
+  - id: spf-pardot
+    vendor: "Pardot"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "pardot.com"
+    confidence: high
+    notes: "The sending side of Pardot. Broadened from _spf.pardot.com, which missed aspmx.pardot.com — the fourth signature in this database written against one observed hostname when the vendor publishes several."
+
+  - id: spf-coupa
+    vendor: "Coupa"
+    category: "Finance & Procurement"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "coupahost.com"
+    confidence: high
+    notes: "Spend management. Observed as an SPF include with regional variants (spf-apac, spf-emea, spf-noram), so one relationship otherwise reports as four unattributed senders. The parked vanity signature guessed the same domain would appear as a per-customer hostname; this is the channel it actually shows up on."
+
+  - id: spf-ondmarc-flattening
+    vendor: "Red Sift OnDMARC"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "_spf.smart.ondmarc.com"
+    confidence: high
+    notes: "Red Sift's SPF flattening. A protected domain publishes one parent include plus several numbered _p.N children, so a single relationship otherwise reports as half a dozen unattributed senders. Consolidates with the DMARC signature."
+
+  - id: spf-tessian
+    vendor: "Proofpoint"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "tessian-gw.com"
+    confidence: medium
+    notes: "Tessian's mail gateway. Tessian is now Proofpoint — tessian.com serves Proofpoint's site and is delegated to ns*.proofpoint.com — so it is reported under the current owner to consolidate with the pphosted signatures. The gateway domain itself sits on separate nameservers, hence medium."
+
+  - id: spf-airwallex-live
+    vendor: "Airwallex"
+    category: "Payments"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "airwallex.com"
+    confidence: high
+    notes: "Cross-border payments. Confirmed live, superseding the parked guess in the finance pack."
+
+  - id: spf-campaign-monitor-cmail
+    vendor: "Campaign Monitor"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "cmail1.com"
+    confidence: high
+    notes: "Campaign Monitor's second sending domain, alongside createsend.com."
+
+  - id: spf-dynamics-365-marketing
+    vendor: "Dynamics 365"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "marketing.dynamics.com"
+    confidence: high
+    notes: "Dynamics 365 Customer Insights, formerly Marketing. The existing signatures cover the TXT token and CRM hostnames, not the sending side."
+
+  - id: spf-powerfront
+    vendor: "Powerfront"
+    category: "Customer Experience"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "powerfront.com"
+    confidence: high
+    notes: "Australian customer service and live chat platform, confirmed from the vendor's own site."
+
+  - id: spf-shopify
+    vendor: "Shopify"
+    category: "eCommerce"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "shops.shopify.com"
+    confidence: high
+    notes: "Shopify's sending infrastructure. The existing signatures cover the TXT token and myshopify.com hosting, not the sending side."
+
+  - id: spf-braintree
+    vendor: "Braintree"
+    category: "Payments"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "braintreegateway.com"
+    confidence: high
+    notes: "Payment gateway. Ownership confirmed by DNS: the zone's SOA delegates administration to its parent company, which a dig against the domain will show."
+
+  - id: spf-dayforce
+    vendor: "Dayforce"
+    category: "HR & Learning"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "dayforcehcm.com"
+    confidence: high
+    notes: "Human capital management, formerly Ceridian Dayforce. Ownership confirmed: SOA wperlman.dayforce.com. Holds payroll and rostering data."
+
+  - id: spf-flex-catering
+    vendor: "Flex Catering"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "flexcateringhq.com"
+    confidence: high
+    notes: "Catering and food service management software, confirmed from the vendor's own site."
+
+  - id: spf-ivvy-net
+    vendor: "iVvy"
+    category: "Scheduling & Events"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "ivvy.net"
+    confidence: high
+    notes: "iVvy's sending domain, alongside the ivvy.com hosting signature."
+
+  - id: spf-oracle-email-delivery
+    vendor: "Oracle Cloud"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "oracleemaildelivery.com"
+    confidence: high
+    notes: "Oracle Cloud's email delivery service. Ownership confirmed: SOA hostmaster@oracle.com. Consolidates with the oraclecloud.com signature."
+
+  - id: spf-proofpoint-essentials
+    vendor: "Proofpoint"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "ppe-hosted.com"
+    confidence: high
+    notes: "Proofpoint Essentials, the mid-market product. Ownership confirmed: SOA ops.proofpoint.com. Appears as an a: mechanism naming a regional dispatch host."
+
+  - id: spf-sabre
+    vendor: "Sabre"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "sabre.com"
+    confidence: high
+    notes: "Travel technology and distribution. Ownership confirmed: SOA hostmaster.sabre.com."
+
+  - id: spf-sap-successfactors-eu
+    vendor: "SAP SuccessFactors"
+    category: "HR & Learning"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "sapsf.eu"
+    confidence: high
+    notes: "The European datacentre domain for SuccessFactors. Ownership confirmed: SOA dns.sap-ag.de. The companion signature covers sapsf.com only."
+
+  - id: spf-spamexperts
+    vendor: "SpamExperts"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "spamexperts"
+    confidence: medium
+    notes: "Hosted spam filtering, commonly white-labelled by hosting resellers — here it appeared under a reseller's own domain, which is why the bare product name is matched rather than a vendor domain."
+
+  - id: spf-trend-micro
+    vendor: "Trend Micro"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "tmes.trendmicro.com"
+    confidence: high
+    notes: "Trend Micro Email Security. A protected domain publishes several lettered includes (spf, spfb, spfc), so one relationship otherwise reports as three unattributed senders."
+
+  - id: spf-mailerlite
+    vendor: "MailerLite"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "mlsend.com"
+    confidence: high
+    notes: "MailerLite's sending domain, confirmed from the site it serves."
+
+  - id: spf-paubox
+    vendor: "Paubox"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "paubox.com"
+    confidence: high
+    notes: "HIPAA-compliant email, confirmed from the vendor's own site. A hit implies the organisation handles protected health information by mail."
+
+  - id: spf-ihs-markit
+    vendor: "IHS Markit"
+    category: "Investor Relations"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "ipreomail.com"
+    confidence: high
+    notes: "Ipreo investor relations mail, now part of S&P Global. Ownership confirmed: SOA hostmaster.ihsmarkit.com."
+
+  - id: spf-peoplefluent
+    vendor: "PeopleFluent"
+    category: "HR & Learning"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "peopleclick.com"
+    confidence: high
+    notes: "Talent management, from the PeopleClick heritage. Ownership confirmed: SOA dnsadmin.peoplefluent.com. Appears as an a: mechanism."
+
+  - id: spf-versantus
+    vendor: "Versantus"
+    category: "Content Management"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "versantus.co.uk"
+    confidence: high
+    notes: "UK Drupal and web agency, confirmed from its own site. A digital agency authorised to send as the organisation is worth noting."
+
+  - id: spf-everbridge
+    vendor: "Everbridge"
+    category: "Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "everbridge.net"
+    confidence: medium
+    notes: "Critical event management and mass notification. DNS ownership is not confirmable and the domain serves no site, so the attribution rests on the product name. A hit means the vendor can send emergency messages as the organisation."
+
+  - id: spf-helpscout
+    vendor: "Help Scout"
+    category: "Service Desk"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "helpscoutemail.com"
+    confidence: medium
+    notes: "Customer support platform. DNS ownership is not confirmable (Route 53) and the domain serves no site."
+
+  - id: spf-emarsys
+    vendor: "SAP Emarsys"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "emarsys.net"
+    confidence: high
+    notes: "Customer engagement platform, now SAP Emarsys — the domain serves SAP's Engagement Cloud site. Published as two includes, s. and spf., so one relationship otherwise reports as two unattributed senders."
+
+  - id: spf-clearslide
+    vendor: "ClearSlide"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "clearslide.com"
+    confidence: high
+    notes: "Sales engagement platform, confirmed from the vendor's own site."
+
+  - id: spf-constant-contact
+    vendor: "Constant Contact"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "constantcontact.com"
+    confidence: medium
+    notes: "Email marketing. The vendor site sits behind a challenge page so the brand could not be read directly; the attribution rests on the domain being the product name."
+
+  - id: spf-opentext-cybersecurity
+    vendor: "OpenText Cybersecurity"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "appriver.com"
+    confidence: high
+    notes: "Email security and hosting, from the AppRiver heritage — the domain's own site states the rebrand to OpenText Cybersecurity. Recorded under the current owner. Appears as a ptr: mechanism rather than an include."
+
+  - id: spf-valimail-delegation
+    vendor: "Valimail"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "vali.email"
+    confidence: high
+    notes: "Valimail also manages SPF by delegation, publishing a per-customer record at <domain>._nspf.vali.email. The companion signatures cover only the DMARC and BIMI channels, so an SPF-only customer reported as unattributed."
 
   - id: spf-service-now
     vendor: "ServiceNow"

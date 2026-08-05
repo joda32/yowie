@@ -190,7 +190,7 @@ signatures:
     confidence: medium
 
   - id: http-sap-hana-ondemand
-    vendor: "SAP HANA"
+    vendor: "SAP Business Technology Platform"
     category: "Business Applications"
     type: http
     query: "https://{candidate}.authentication.eu10.hana.ondemand.com/login"
@@ -198,6 +198,7 @@ signatures:
       absent: "Something went amiss."
       status: [200, 301, 302, 303, 307, 308]
     confidence: medium
+    notes: "Renamed from SAP HANA: HANA is the database, while hana.ondemand.com hosts the Business Technology Platform. Kept under the platform name so it consolidates with the hana.ondemand.com hosting signature instead of reporting as a second vendor. This entry covers the eu10 region only — other regions follow the same pattern."
 
   - id: http-slack
     vendor: "Slack"
@@ -229,7 +230,7 @@ signatures:
     confidence: high
 
   - id: http-vmware-workspaceone-access-workspaceoneaccess
-    vendor: "VMWare WorkspaceOne Access"
+    vendor: "Omnissa Workspace ONE Access"
     category: "Device Management"
     type: http
     query: "https://{candidate}.workspaceoneaccess.com/federation/auth/login"
@@ -237,6 +238,7 @@ signatures:
       absent: "tenant that does not exist"
       status: [200, 301, 302, 303, 307, 308]
     confidence: medium
+    notes: "Renamed from VMware: the end-user computing division was divested and rebranded Omnissa. Confirmed by TLS certificate — *.workspaceoneaccess.com is issued to Omnissa, LLC."
 
   - id: http-you-can-book-me
     vendor: "You Can Book Me"
@@ -249,7 +251,7 @@ signatures:
     confidence: medium
 
   - id: http-zscaler
-    vendor: "ZScaler"
+    vendor: "Zscaler"
     category: "Security"
     type: http
     query: "https://samlsp.private.zscaler.com/auth/v2/login?ssotype=test&domain={domain}"

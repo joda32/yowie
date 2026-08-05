@@ -50,7 +50,7 @@ signatures:
     type: vanity_a
     query: "{candidate}.goskope.com"
     disabled: true
-    notes: "Netskope tenants are believed to use a per-customer subdomain under goskope.com. A hit means a cloud access security broker is inspecting the organisation's traffic — useful context for any assessment."
+    notes: "Superseded in practice. The domain was right but the channel was wrong — goskope.com shows up as an SPF include, not as a per-customer vanity hostname, and the confirmed signature now lives in email-spf.yaml. Kept disabled as a record of the corrected assumption."
 
   # --- Endpoint --------------------------------------------------------------
 
@@ -112,7 +112,7 @@ signatures:
     type: cname_target
     query: "vanta.com"
     disabled: true
-    notes: "Customers commonly publish a trust centre at trust.<their-domain>, aliased into Vanta. That hostname is exactly what the certificate transparency detector surfaces, making this a realistic path to detection."
+    notes: "Superseded. The premise was right — customers do publish a trust centre at trust.<their-domain> — but they alias it to vantatrust.com, not vanta.com, so this entry would never have fired. The confirmed signature now lives in cname-targets.yaml. Kept disabled as a record of the corrected assumption."
 
   - id: cname-target-drata
     vendor: "Drata"
@@ -136,7 +136,7 @@ signatures:
     type: cname_target
     query: "safebase.io"
     disabled: true
-    notes: "Dedicated trust-centre hosting, so an aliased security.<domain> or trust.<domain> is the expected shape."
+    notes: "Superseded — confirmed live and now carried in cname-targets.yaml. The domain was right; customers alias a portals. hostname under it rather than a bare trust. name. Kept disabled as a record."
 
   # --- Awareness and email ---------------------------------------------------
 

@@ -46,6 +46,54 @@ signatures:
     query: "omtrdc.net"
     notes: "Adobe Analytics data collection, from the Omniture heritage. Ownership confirmed: SOA hostmaster.adobe.com on ns*.adobe.net. A first-party alias here means behavioural analytics collected on the organisation's own domain."
 
+  - id: cname-target-akamai-eaa
+    vendor: "Akamai Enterprise Application Access"
+    category: "Remote Access"
+    type: cname_target
+    query: "akamai-access.com"
+    confidence: medium
+    notes: >-
+      Zero-trust access gateway publishing an internal application to the
+      internet. Hostnames take the form <customer-domain-with-dashes>.go.akamai-access.com.
+      Attribution is on balance of evidence, not proof: the domain carries
+      Akamai's brand and answers on Linode addresses, which Akamai has owned
+      since 2022, but the zone sits on AWS nameservers and the platform's
+      default vhost presents a self-signed certificate from an unrelated
+      organisation's root CA. Deliberately medium confidence.
+      Treat a hit as attack surface rather than inventory: the customer-facing
+      hostname serves a valid certificate and answers 401, so it is a real
+      internal application deliberately exposed behind authentication.
+
+  - id: cname-target-accredible
+    vendor: "Accredible"
+    category: "HR & Learning"
+    type: cname_target
+    query: "credential.net"
+    notes: "Digital certificates and badges, confirmed from the vendor's own site."
+
+  - id: cname-target-akamai-akadns
+    vendor: "Akamai"
+    category: "Infrastructure"
+    type: cname_target
+    query: "akadns.net"
+    confidence: medium
+    notes: "Akamai's mapping domain. Ownership confirmed: SOA hostmaster.akamai.com. A third Akamai suffix alongside edgekey.net and edgesuite.net."
+
+  - id: cname-target-acquia-dam
+    vendor: "Acquia DAM"
+    category: "Content Management"
+    type: cname_target
+    query: "widencollective.com"
+    notes: "Digital asset management, from the Widen heritage — the domain now serves Acquia's community site following the acquisition."
+
+  - id: cname-target-adobe-aem-cloud
+    vendor: "Adobe Experience Manager"
+    category: "Content Management"
+    type: cname_target
+    query: "adobeaemcloud.com"
+    confidence: medium
+    notes: "AEM as a Cloud Service, the successor to the managed-services domain adobecqms.net. Reported under the same vendor so the two do not split."
+
   - id: cname-target-akamai
     vendor: "Akamai"
     category: "Infrastructure"
@@ -54,6 +102,14 @@ signatures:
     confidence: medium
     notes: "Akamai's edge delivery network, confirmed by SOA hostmaster.akamai.com. CDN fronting identifies the provider but not the application behind it."
 
+  - id: cname-target-akamai-staging
+    vendor: "Akamai"
+    category: "Infrastructure"
+    type: cname_target
+    query: "edgekey-staging.net"
+    confidence: medium
+    notes: "Akamai's staging network, confirmed by SOA hostmaster.akamai.com. Hostnames aliased here are pre-production, so a hit also exposes non-production estate."
+
   - id: cname-target-akamai-edgesuite
     vendor: "Akamai"
     category: "Infrastructure"
@@ -61,6 +117,21 @@ signatures:
     query: "edgesuite.net"
     confidence: medium
     notes: "Akamai's older delivery suffix. Not observed in the sample that produced the edgekey.net entry, but the same platform."
+
+  - id: cname-target-apigee
+    vendor: "Apigee"
+    category: "Integration"
+    type: cname_target
+    query: "apigee.net"
+    confidence: medium
+    notes: "Google Cloud's API management platform. DNS ownership is not confirmable (AWS nameservers); Apigee is a distinct product name rather than a generic word, which is the basis for the attribution. Hostnames carry the customer's environment, e.g. <org>-prod.apigee.net."
+
+  - id: cname-target-aris
+    vendor: "ARIS"
+    category: "Business Applications"
+    type: cname_target
+    query: "ariscloud.com"
+    notes: "Business process management and process intelligence, confirmed from the vendor's own site."
 
   - id: cname-target-atlassian
     vendor: "Atlassian"
@@ -75,6 +146,21 @@ signatures:
     query: "campaign.adobe.com"
     notes: "Adobe's marketing automation platform. Customers alias a sending subdomain here, so the hostname is usually something like communication.<domain>."
 
+  - id: cname-target-aws-global-accelerator
+    vendor: "AWS Global Accelerator"
+    category: "Infrastructure"
+    type: cname_target
+    query: "awsglobalaccelerator.com"
+    confidence: medium
+    notes: "Anycast entry point in front of an application. Attribution rests on the name matching a documented AWS service and its published <id>.awsglobalaccelerator.com hostname format — note the Route 53 SOA proves nothing, since every zone hosted there shows the same hostmaster. Identifies the fronting layer, not the application behind it."
+
+  - id: cname-target-auth0
+    vendor: "Auth0"
+    category: "Identity & Secrets"
+    type: cname_target
+    query: "auth0.com"
+    notes: "Auth0 tenants reached through a customer hostname. Consolidates with the HTTP signature, which probes the tenant namespace directly. Hostnames often expose the environment, e.g. <tenant>-poc-... .edge.tenants.<region>.auth0.com."
+
   - id: cname-target-aws-cloudfront
     vendor: "AWS CloudFront"
     category: "Infrastructure"
@@ -82,6 +168,20 @@ signatures:
     query: "cloudfront.net"
     confidence: medium
     notes: "CDN fronting is generic; it identifies AWS but not the application behind it."
+
+  - id: cname-target-aws-elb-regional
+    vendor: "AWS Elastic Load Balancing"
+    category: "Infrastructure"
+    type: cname_target
+    query: "elb.*.amazonaws.com"
+    confidence: medium
+    notes: >-
+      AWS publishes load balancer hostnames in two shapes and the region sits on
+      a different side of the "elb" label in each: classic and older ALB names
+      end .<region>.elb.amazonaws.com, while NLB and newer names end
+      .elb.<region>.amazonaws.com. The companion signature covers the first
+      form; without this one the second was silently unmatched and reported as
+      an unidentified host.
 
   - id: cname-target-aws-elb
     vendor: "AWS Elastic Load Balancing"
@@ -103,6 +203,68 @@ signatures:
     type: cname_target
     query: "azurefd.net"
     confidence: medium
+
+  - id: cname-target-azure-container-apps
+    vendor: "Azure Container Apps"
+    category: "Infrastructure"
+    type: cname_target
+    query: "azurecontainerapps.io"
+    confidence: medium
+    notes: "Ownership confirmed: SOA azuredns-hostmaster.microsoft.com. Identifies Azure-hosted containers, not the application in them. Hostnames often carry environment names such as stg or npe."
+
+  - id: cname-target-azure-api-management
+    vendor: "Azure API Management"
+    category: "Integration"
+    type: cname_target
+    query: "azure-api.net"
+    notes: "Ownership confirmed: azure-api.net is served by azure-dns with SOA msnhst.microsoft.com. The tenant name appears in the hostname, e.g. <org>integration.azure-api.net, and a public API gateway is worth reviewing rather than just recording."
+
+  - id: cname-target-aws-elastic-beanstalk
+    vendor: "AWS Elastic Beanstalk"
+    category: "Infrastructure"
+    type: cname_target
+    query: "elasticbeanstalk.com"
+    confidence: medium
+    notes: "Application hosting. Hostnames carry the region and often the environment, e.g. <app>-dev.<region>.elasticbeanstalk.com."
+
+  - id: cname-target-azure-static-web-apps
+    vendor: "Azure Static Web Apps"
+    category: "Infrastructure"
+    type: cname_target
+    query: "azurestaticapps.net"
+    confidence: medium
+
+  - id: cname-target-azure-app-service-environment
+    vendor: "Azure App Service Environment"
+    category: "Infrastructure"
+    type: cname_target
+    query: "appserviceenvironment.net"
+    confidence: medium
+    notes: "An isolated, single-tenant App Service deployment. Hostnames commonly expose the environment, e.g. <app>-dev-web.<tenant>.appserviceenvironment.net."
+
+  - id: cname-target-aws-iot
+    vendor: "AWS IoT Core"
+    category: "Infrastructure"
+    type: cname_target
+    query: "iot.*.amazonaws.com"
+    confidence: medium
+    notes: "Device messaging endpoints, of the form <id>-ats.iot.<region>.amazonaws.com. The region sits between fixed labels so the wildcard is needed. A hit means connected devices are talking to a cloud endpoint on the organisation's behalf."
+
+  - id: cname-target-aws-transfer
+    vendor: "AWS Transfer Family"
+    category: "Managed File Transfer"
+    type: cname_target
+    query: "transfer.*.amazonaws.com"
+    confidence: medium
+    notes: "Managed SFTP, FTPS and FTP endpoints. Hostnames take the form s-<id>.server.transfer.<region>.amazonaws.com, so the region sits between fixed labels and needs the wildcard. A hit means a file transfer endpoint is exposed, which is worth reviewing given the history of this product category."
+
+  - id: cname-target-azure-cdn
+    vendor: "Azure CDN"
+    category: "Infrastructure"
+    type: cname_target
+    query: "azureedge.net"
+    confidence: medium
+    notes: "Ownership confirmed: azureedge.net is served by azure-dns with SOA msnhst.microsoft.com. Content delivery identifies the provider, not the application behind it."
 
   - id: cname-target-azure-cloud-services
     vendor: "Azure Cloud Services"
@@ -132,11 +294,145 @@ signatures:
     type: cname_target
     query: "cudawaas.com"
 
+  - id: cname-target-biza-cdr
+    vendor: "Biza"
+    category: "Compliance & GRC"
+    type: cname_target
+    query: "2492.au"
+    notes: >-
+      Consumer Data Right infrastructure, provided as a service. Ownership
+      confirmed three ways: SOA cloudadmin.biza.io, nameservers under biza.au,
+      and a tenant certificate issued to Biza Pty Ltd. The opaque domain gives
+      nothing away, so this is only findable by resolving the alias. Customer
+      hostnames sit under cdr.<domain> and expose both production and test
+      environments, which makes a hit worth reviewing rather than filing —
+      CDR endpoints broker regulated consumer data.
+
+  - id: cname-target-blackthorn
+    vendor: "Blackthorn"
+    category: "Scheduling & Events"
+    type: cname_target
+    query: "blackthorn.io"
+    notes: "Event management built on Salesforce, confirmed from the vendor's own site."
+
+  - id: cname-target-bizzabo
+    vendor: "Bizzabo"
+    category: "Scheduling & Events"
+    type: cname_target
+    query: "bizzabo.com"
+    notes: "Event management platform, confirmed from the vendor's own site."
+
+  - id: cname-target-bitly
+    vendor: "Bitly"
+    category: "Marketing"
+    type: cname_target
+    query: "bitly.com"
+    confidence: medium
+    notes: "Branded short links, aliased to the documented cname.bitly.com target. DNS ownership is not confirmable — the zone is on Route 53, whose SOA is identical for every customer. A branded shortener means link click data is held by a third party."
+
+  - id: cname-target-brightspot
+    vendor: "Brightspot"
+    category: "Content Management"
+    type: cname_target
+    query: "brightspot.cloud"
+    confidence: medium
+    notes: "Enterprise CMS and content operations platform, matching the vendor's own site at brightspot.com. DNS ownership is not confirmable — the zone is on Route 53, whose SOA is identical for every customer. Tenant hostnames embed the customer and environment, e.g. <customer>.production.<cluster>.brightspot.cloud."
+
+  - id: cname-target-bynder-get
+    vendor: "Bynder"
+    category: "Content Management"
+    type: cname_target
+    query: "getbynder.com"
+    notes: "Bynder's second hosting domain, confirmed from the site it serves. The companion signature matches bynder.com only."
+
+  - id: cname-target-bynder
+    vendor: "Bynder"
+    category: "Content Management"
+    type: cname_target
+    query: "bynder.com"
+    notes: "Enterprise digital asset management, confirmed from the vendor's own site. Tenants appear as <customer>.bynder.com, so brand and marketing assets are held off-premises."
+
+  - id: cname-target-beyondtrust
+    vendor: "BeyondTrust"
+    category: "Identity & Secrets"
+    type: cname_target
+    query: "beyondtrustcloud.com"
+    confidence: medium
+    notes: "Privileged access management, hosted. DNS ownership is not confirmable (Route 53) and the domain serves no site, so the attribution rests on the product name. Tenants appear as <customer>.beyondtrustcloud.com."
+
+  - id: cname-target-branch
+    vendor: "Branch"
+    category: "Marketing"
+    type: cname_target
+    query: "bnc.lt"
+    confidence: medium
+    notes: "Branch's deep-linking domain. DNS ownership is not confirmable (Route 53) and the domain serves no site."
+
   - id: cname-target-bigcommerce
     vendor: "BigCommerce"
     category: "eCommerce"
     type: cname_target
     query: "mybigcommerce.com"
+
+  - id: cname-target-creative-virtual
+    vendor: "Creative Virtual"
+    category: "AI"
+    type: cname_target
+    query: "creativevirtual.com"
+    notes: "Conversational AI and chatbot platform, confirmed from the vendor's own site. Customer hostnames carry a region path, e.g. <customer>.aus.apac.creativevirtual.com. A chatbot fronting a public site sees whatever customers type into it."
+
+  - id: cname-target-continu
+    vendor: "Continu"
+    category: "HR & Learning"
+    type: cname_target
+    query: "continu.co"
+    confidence: medium
+    notes: "Learning management platform. DNS ownership is not confirmable (Route 53) and the domain serves no site, so the attribution rests on the product name."
+
+  - id: cname-target-covermore
+    vendor: "Cover-More"
+    category: "Insurance & Claims"
+    type: cname_target
+    query: "poweredbycovermore.com"
+    confidence: medium
+    notes: "Travel insurance, white-labelled for partners — the domain name states the arrangement. DNS ownership is not confirmable (Route 53) and the domain serves no site."
+
+  - id: cname-target-caruso
+    vendor: "Caruso"
+    category: "Financial Services"
+    type: cname_target
+    query: "getcaruso.com"
+    notes: "Private market fund administration, confirmed from the vendor's own site."
+
+  - id: cname-target-cuscal
+    vendor: "Cuscal"
+    category: "Financial Services"
+    type: cname_target
+    query: "cuscal.com.au"
+    notes: "Australian payments infrastructure provider, confirmed from its own site. Aliased for open-banking and card services APIs, so it is a partner dependency rather than purchased software."
+
+  - id: cname-target-cybersource
+    vendor: "CyberSource"
+    category: "Payments"
+    type: cname_target
+    query: "cybersource.com"
+    confidence: medium
+    notes: "Visa's payment gateway. The vendor site sits behind a challenge page so the brand could not be read directly; the attribution rests on the domain being the product name."
+
+  - id: cname-target-corellium
+    vendor: "Corellium"
+    category: "Development"
+    type: cname_target
+    query: "corellium.com"
+    notes: "Virtual hardware for ARM device emulation, confirmed from the vendor's own site."
+
+  - id: cname-target-cvent
+    vendor: "Cvent"
+    category: "Scheduling & Events"
+    type: cname_target
+    query: "cventcustom.com"
+    confidence: medium
+    notes: "Cvent's custom event domain. DNS ownership is not confirmable (Route 53) and the domain serves no site."
 
   - id: cname-target-crowdicity
     vendor: "Crowdicity"
@@ -152,12 +448,34 @@ signatures:
     query: "crowdicity.com.au"
     notes: "Australian country domain for Crowdicity. DNS ownership was not confirmable (AWS-hosted nameservers), so this rests on the product name rather than on registry evidence."
 
+  - id: cname-target-cisco-sdwan
+    vendor: "Cisco SD-WAN"
+    category: "Infrastructure"
+    type: cname_target
+    query: "sdwan.cisco.com"
+    notes: "Cisco SD-WAN management plane, from the Viptela heritage — customer hostnames alias to manager or vmanage under sdwan.cisco.com. A hit means the network management console is reachable from the internet, which is worth reviewing rather than filing."
+
   - id: cname-target-cloudflare
     vendor: "Cloudflare"
     category: "Infrastructure"
     type: cname_target
     query: "cdn.cloudflare.net"
     confidence: medium
+
+  - id: cname-target-dataweavers
+    vendor: "Dataweavers"
+    category: "Content Management"
+    type: cname_target
+    query: "dataweavers.io"
+    notes: "Managed operations for digital experience and CMS platforms, confirmed from the vendor's own site. Often appears alongside a Sitecore or similar CMS signature."
+
+  - id: cname-target-docebo
+    vendor: "Docebo"
+    category: "HR & Learning"
+    type: cname_target
+    query: "docebosaas.com"
+    confidence: medium
+    notes: "Learning management system. Tenants appear as <customer>.docebosaas.com. DNS ownership is not confirmable (Route 53) and the domain serves no site, so the attribution rests on the product name."
 
   - id: cname-target-digicert-vmc
     vendor: "DigiCert"
@@ -177,6 +495,13 @@ signatures:
     category: "Collaboration"
     type: cname_target
     query: "discourse.cloud"
+
+  - id: cname-target-jamf-cloud
+    vendor: "Jamf"
+    category: "Device Management"
+    type: cname_target
+    query: "jamfcloud.com"
+    notes: "Jamf Pro cloud tenants, aliased as <customer>.jamfcloud.com. Corroborates the jamf-site-verification TXT token through a second channel."
 
   - id: cname-target-jrni
     vendor: "JRNI"
@@ -207,6 +532,13 @@ signatures:
     confidence: medium
     notes: "Serverless application platform. DNS ownership was not confirmable (Google Cloud DNS), so this rests on the product name rather than on registry evidence."
 
+  - id: cname-target-fluid-topics
+    vendor: "Fluid Topics"
+    category: "Documentation"
+    type: cname_target
+    query: "fluidtopics.net"
+    notes: "Technical content delivery platform. Ownership confirmed: fluidtopics.net is served by ns*.antidot.net with SOA hostmaster.antidot.net — Antidot is the vendor behind the product."
+
   - id: cname-target-fastly
     vendor: "Fastly"
     category: "Infrastructure"
@@ -214,11 +546,61 @@ signatures:
     query: "fastly.net"
     confidence: medium
 
+  - id: cname-target-formassembly
+    vendor: "FormAssembly"
+    category: "Productivity"
+    type: cname_target
+    query: "tfaforms.net"
+    notes: "FormAssembly's form hosting domain — tfaforms is the vendor's own abbreviation. Corroborated by the formassembly.com sender signature appearing on the same estate."
+
+  - id: cname-target-flowmailer
+    vendor: "Flowmailer"
+    category: "Email"
+    type: cname_target
+    query: "flowmailer.net"
+    notes: "Transactional email platform. Ownership confirmed: SOA contact.flowmailer.net."
+
   - id: cname-target-freshdesk
     vendor: "Freshdesk"
     category: "Service Desk"
     type: cname_target
     query: "freshdesk.com"
+
+  - id: cname-target-google-hosted
+    vendor: "Google Hosted Services"
+    category: "Productivity"
+    type: cname_target
+    query: "googlehosted.com"
+    confidence: medium
+    notes: "The generic ghs.googlehosted.com endpoint fronts several Google products — Sites, Blogger and Workspace custom domains among them — so it identifies Google but not which service."
+
+  - id: cname-target-grafana-cloud
+    vendor: "Grafana Cloud"
+    category: "Monitoring"
+    type: cname_target
+    query: "grafana.net"
+    notes: "Hosted observability, confirmed from the vendor's own site. Tenant hostnames often distinguish production from test."
+
+  - id: cname-target-flippingbook
+    vendor: "FlippingBook"
+    category: "Content Management"
+    type: cname_target
+    query: "flippingbook.com"
+    notes: "Digital publication hosting, confirmed from the vendor's own site. Usually aliased for reports and brochures."
+
+  - id: cname-target-freshservice
+    vendor: "Freshservice"
+    category: "Service Desk"
+    type: cname_target
+    query: "freshservice.com"
+    notes: "Freshworks' IT service management product, confirmed from the vendor's own site. Distinct from Freshdesk, which is the customer-support product carried separately."
+
+  - id: cname-target-firebase-hosting
+    vendor: "Firebase"
+    category: "Infrastructure"
+    type: cname_target
+    query: "web.app"
+    notes: "Firebase Hosting's default domain. The existing Firebase signature probes the realtime database over HTTP and so never matched this channel."
 
   - id: cname-target-github-pages
     vendor: "GitHub Pages"
@@ -244,6 +626,43 @@ signatures:
     type: cname_target
     query: "hs-sites.com"
 
+  - id: cname-target-group-ib
+    vendor: "Group-IB"
+    category: "Security"
+    type: cname_target
+    query: "group-ib.com"
+    notes: "Threat intelligence and anti-fraud, confirmed from the vendor's own site. On a customer domain this usually fronts fraud or bot-detection scoring on live traffic."
+
+  - id: cname-target-ibm-security-verify
+    vendor: "IBM Security Verify"
+    category: "Identity & Secrets"
+    type: cname_target
+    query: "verify.ibm.com"
+    notes: "IBM's identity and access management service. Ownership confirmed twice over: SOA root.verify.ibm.com on IBM-owned SoftLayer nameservers, and the tenant endpoint presents a certificate issued to International Business Machines. A hit means a second identity provider alongside whatever the tenant detector reports."
+
+  - id: cname-target-happydance
+    vendor: "Happydance"
+    category: "HR & Learning"
+    type: cname_target
+    query: "happydance.website"
+    confidence: medium
+    notes: "Careers site platform. DNS ownership is not confirmable (Cloudflare) and the domain serves no site, so the attribution rests on the product name."
+
+  - id: cname-target-heroku
+    vendor: "Heroku"
+    category: "Infrastructure"
+    type: cname_target
+    query: "herokudns.com"
+    confidence: medium
+    notes: "Heroku's custom-domain target, now part of Salesforce. DNS ownership is not confirmable and the domain serves no site."
+
+  - id: cname-target-icims
+    vendor: "iCIMS"
+    category: "HR & Learning"
+    type: cname_target
+    query: "career.page"
+    notes: "iCIMS talent community and careers sites, confirmed from the site the domain serves."
+
   - id: cname-target-imperva
     vendor: "Imperva"
     category: "Security"
@@ -265,6 +684,28 @@ signatures:
     query: "ivvy.com"
     notes: "Australian venue and event management platform, confirmed from the vendor's own site."
 
+  - id: cname-target-inmoment
+    vendor: "InMoment"
+    category: "Customer Experience"
+    type: cname_target
+    query: "inmoment.com.au"
+    notes: "Customer experience and feedback platform. The vendor's global site confirms the product and the Australian domain shares its DNS provider."
+
+  - id: cname-target-jive
+    vendor: "Jive"
+    category: "Collaboration"
+    type: cname_target
+    query: "jiveon.com"
+    confidence: medium
+    notes: "Enterprise community and intranet platform, now part of Aurea. DNS ownership is not confirmable (Route 53) and the domain serves no site."
+
+  - id: cname-target-intelligencebank
+    vendor: "IntelligenceBank"
+    category: "Content Management"
+    type: cname_target
+    query: "intelligencebank.com"
+    notes: "Australian digital asset and brand management platform, confirmed from the vendor's own site. Typically aliased at a brand or assets hostname."
+
   - id: cname-target-intercom
     vendor: "Intercom"
     category: "Service Desk"
@@ -277,12 +718,122 @@ signatures:
     type: cname_target
     query: "atlassian.com"
 
+  - id: cname-target-elcom
+    vendor: "Elcom"
+    category: "Collaboration"
+    type: cname_target
+    query: "elcom.com.au"
+    confidence: medium
+    notes: "Australian intranet and digital workplace platform. DNS ownership is not confirmable (Cloudflare) and the domain served no title, so the attribution rests on the product name."
+
+  - id: cname-target-everest-engagement
+    vendor: "Everest"
+    category: "Email"
+    type: cname_target
+    query: "everestengagement.com"
+    confidence: medium
+    notes: "Email engagement tracking. DNS ownership is not confirmable (Route 53); pairs with the everest.email DMARC signature seen on a different estate."
+
+  - id: cname-target-equisolve
+    vendor: "Equisolve"
+    category: "Investor Relations"
+    type: cname_target
+    query: "equisolve.com"
+    notes: "Investor relations website platform, confirmed from the vendor's own site."
+
+  - id: cname-target-eightfold
+    vendor: "Eightfold AI"
+    category: "HR & Learning"
+    type: cname_target
+    query: "eightfold.ai"
+    confidence: medium
+    notes: "Talent intelligence platform. Tenants appear as <customer>.eightfold.ai. DNS ownership is not confirmable (Route 53) and the domain serves no site."
+
+  - id: cname-target-f5-distributed-cloud
+    vendor: "F5 Distributed Cloud"
+    category: "Infrastructure"
+    type: cname_target
+    query: "ves.io"
+    notes: "F5's distributed cloud services, from the Volterra heritage. Confirmed from the site the domain serves."
+
+  - id: cname-target-fenergo
+    vendor: "Fenergo"
+    category: "Compliance & GRC"
+    type: cname_target
+    query: "fenergox.com"
+    confidence: medium
+    notes: "Client lifecycle management, KYC and financial compliance. The brand site confirms the product but sits on different nameservers from this platform domain, so the attribution rests on the name."
+
+  - id: cname-target-entrust
+    vendor: "Entrust"
+    category: "Certificates"
+    type: cname_target
+    query: "entrust.net"
+    notes: "Certificate authority. Ownership confirmed: SOA dnsadmin.entrust.net. Added chiefly so the BIMI detector can name the issuer of a Verified Mark Certificate instead of reporting bimi.entrust.net as a bare hostname — the same gap previously fixed for DigiCert."
+
+  - id: cname-target-entra-device-registration
+    vendor: "Microsoft MDM"
+    category: "Device Management"
+    type: cname_target
+    query: "enterpriseregistration.windows.net"
+    notes: "Device registration for Entra ID join. The companion signature is a cname lookup against the organisation's own enterpriseregistration hostname; this matches the same relationship when it surfaces as a certificate transparency target instead."
+
   - id: cname-target-exchange-online
     vendor: "Microsoft Exchange"
     category: "Email"
     type: cname_target
     query: "outlook.com"
     notes: "Covers autodiscover and mail routing aliases pointed at Exchange Online."
+
+  - id: cname-target-khoros
+    vendor: "Khoros"
+    category: "Collaboration"
+    type: cname_target
+    query: "lithium.com"
+    notes: "Community platform hosting, from the Lithium Technologies heritage — the company rebranded to Khoros and both domains remain in service. Ownership confirmed: SOA hostmaster.lithium.com. Reported as Khoros so it consolidates with the khoros-mail.com sender signature."
+
+  - id: cname-target-kinsta
+    vendor: "Kinsta"
+    category: "Content Management"
+    type: cname_target
+    query: "kinsta.cloud"
+    notes: "Managed WordPress hosting, confirmed from the vendor's own MyKinsta console. Frequently used for one-off microsites such as annual reports, so a hit often reveals several years of them."
+
+  - id: cname-target-kinsta-page
+    vendor: "Kinsta"
+    category: "Content Management"
+    type: cname_target
+    query: "kinsta.page"
+    notes: "Kinsta's second hosting domain, seen alongside kinsta.cloud on the same estate."
+
+  - id: cname-target-mailchimp-pages
+    vendor: "MailChimp"
+    category: "Marketing"
+    type: cname_target
+    query: "mailchi.mp"
+    notes: "Mailchimp's landing page and campaign domain, confirmed from the vendor's own site. Consolidates with the servers.mcsv.net and mandrillapp.com sender signatures."
+
+  - id: cname-target-mailgun
+    vendor: "Mailgun"
+    category: "Email"
+    type: cname_target
+    query: "mailgun.org"
+    notes: "Mailgun also appears as a CNAME target for tracking hostnames, not only as an SPF include. The sender signature is spf_include and so could not match this channel — vendors routinely surface on both."
+
+  - id: cname-target-duda
+    vendor: "Duda"
+    category: "Content Management"
+    type: cname_target
+    query: "multiscreensite.com"
+    confidence: medium
+    notes: "Duda's website hosting platform. DNS ownership is not confirmable (Route 53) and the domain serves no site."
+
+  - id: cname-target-microsoft-365-office365
+    vendor: "Microsoft 365"
+    category: "Identity & Secrets"
+    type: cname_target
+    query: "office365.com"
+    notes: "Aliases pointed at outlook.office365.com and similar. The outlook.com signature does not cover this second Microsoft domain."
 
   - id: cname-target-marketo
     vendor: "Marketo"
@@ -297,6 +848,85 @@ signatures:
     query: "mkto-*.com"
     notes: "Marketo mints a per-customer tracking domain of the form mkto-<instance>.com, so the registrable domain itself varies and the wildcard is anchored inside the label."
 
+  - id: cname-target-entra-app-proxy
+    vendor: "Microsoft Entra Application Proxy"
+    category: "Remote Access"
+    type: cname_target
+    query: "msappproxy.net"
+    notes: "Publishes an internal, on-premises application to the internet through Entra ID. Ownership confirmed: msappproxy.net is served by azure-dns with SOA msnhst.microsoft.com. Worth following up rather than filing: each hostname is an internal application deliberately exposed externally, and the tenant name and environment usually appear in the target."
+
+  - id: cname-target-mulesoft
+    vendor: "MuleSoft"
+    category: "Integration"
+    type: cname_target
+    query: "cloudhub.io"
+    confidence: medium
+    notes: "MuleSoft CloudHub, the deployment target for Anypoint integrations. DNS ownership is not confirmable (AWS nameservers); the region-coded hostnames such as usa-w2 match the platform's documented naming."
+
+  - id: cname-target-nab
+    vendor: "National Australia Bank"
+    category: "Financial Services"
+    type: cname_target
+    query: "nab.com.au"
+    notes: "A banking partner rather than a SaaS subscription: the organisation aliases an API hostname into the bank's infrastructure, typically for open banking. Worth recording as a third-party dependency even though nobody bought it as software."
+
+  - id: cname-target-mastercard
+    vendor: "Mastercard"
+    category: "Financial Services"
+    type: cname_target
+    query: "mastercard.com"
+    notes: "Ownership confirmed: SOA hostmaster.mastercard.com. A banking or scheme partner rather than purchased software, but a third-party dependency in the payment path."
+
+  - id: cname-target-manageengine
+    vendor: "ManageEngine"
+    category: "Service Desk"
+    type: cname_target
+    query: "manageengine.com"
+    notes: "Zoho's IT management suite, confirmed from the vendor's own site. Hostnames name the product, e.g. customer-sdpondemand for ServiceDesk Plus."
+
+  - id: cname-target-martian-logic
+    vendor: "Martian Logic"
+    category: "HR & Learning"
+    type: cname_target
+    query: "martianlogic.com"
+    notes: "Australian HRIS and recruitment platform, confirmed from the vendor's own site."
+
+  - id: cname-target-levels-fyi
+    vendor: "Levels.fyi"
+    category: "HR & Learning"
+    type: cname_target
+    query: "levels.fyi"
+    confidence: medium
+    notes: "Compensation benchmarking. An aliased hostname usually means a public salary-transparency page rather than an internal system."
+
+  - id: cname-target-mediaroom
+    vendor: "PR Newswire MediaRoom"
+    category: "Marketing"
+    type: cname_target
+    query: "mediaroom.com"
+    notes: "Hosted online newsroom, confirmed from the vendor's own site. Usually aliased at a newsroom or media hostname."
+
+  - id: cname-target-mulesoft-anypoint
+    vendor: "MuleSoft"
+    category: "Integration"
+    type: cname_target
+    query: "anypointdns.net"
+    notes: "MuleSoft Anypoint load balancer hostnames, e.g. <org>-nonprod.lb.anypointdns.net. Consolidates with the cloudhub.io signature and frequently exposes the environment."
+
+  - id: cname-target-mynewsdesk
+    vendor: "Mynewsdesk"
+    category: "Marketing"
+    type: cname_target
+    query: "mynewsdesk.com"
+    notes: "PR and newsroom platform, confirmed from the vendor's own site."
+
+  - id: cname-target-nasdaq-ir
+    vendor: "Nasdaq IR"
+    category: "Investor Relations"
+    type: cname_target
+    query: "gcs-web.com"
+    notes: "Nasdaq's investor relations website platform. Confirmed by fetching a tenant site, which serves Nasdaq-branded markup. Usually aliased from an ir.<domain> hostname."
+
   - id: cname-target-netlify
     vendor: "Netlify"
     category: "Infrastructure"
@@ -309,12 +939,136 @@ signatures:
     type: cname_target
     query: "okta.com"
 
+  - id: cname-target-omnissa-workspace-one-uem
+    vendor: "Omnissa Workspace ONE UEM"
+    category: "Device Management"
+    type: cname_target
+    query: "awmdm.com"
+    notes: "Unified endpoint management, formerly VMware Workspace ONE UEM and originally AirWatch — hence the awmdm domain. Ownership confirmed by TLS certificate: *.awmdm.com is issued to Omnissa, LLC, following the divestiture of VMware's end-user computing division. Device services hostnames look like ds<NNNN>.awmdm.com."
+
+  - id: cname-target-nudata
+    vendor: "NuData Security"
+    category: "Security"
+    type: cname_target
+    query: "nudatasecurity.com"
+    confidence: medium
+    notes: "Behavioural biometrics and fraud prevention, a Mastercard company. DNS ownership is not confirmable (AWS nameservers); the attribution rests on the product name. A hit means customer interaction data is scored by a third party."
+
   - id: cname-target-oracle-service-cloud
     vendor: "Oracle Service Cloud"
     category: "Service Desk"
     type: cname_target
     query: "custhelp.com"
     notes: "Oracle Service Cloud, formerly RightNow. Ownership confirmed: custhelp.com is served by ednsac0*.rightnowtech.com with SOA root.rightnowtech.com. Tenants appear as <customer>--<env>.custhelp.com, so the hostname also reveals the environment."
+
+  - id: cname-target-outsystems
+    vendor: "OutSystems"
+    category: "Development"
+    type: cname_target
+    query: "outsystemsenterprise.com"
+    confidence: medium
+    notes: "Low-code application platform. Tenants appear as <customer>.outsystemsenterprise.com. DNS ownership is not confirmable (Route 53) and the domain serves no site."
+
+  - id: cname-target-orange-logic
+    vendor: "Orange Logic"
+    category: "Content Management"
+    type: cname_target
+    query: "orangelogic.com"
+    notes: "Digital asset management, confirmed from the vendor's own site. Usually aliased at a dam. hostname."
+
+  - id: cname-target-pageup
+    vendor: "PageUp"
+    category: "HR & Learning"
+    type: cname_target
+    query: "pageuppeople.com"
+    notes: "Australian talent acquisition and HR platform, confirmed from the vendor's own site. Careers sites are aliased under careersite.pageuppeople.com, and the tenant host presents the customer's own certificate rather than the vendor's — so a certificate check on that host identifies the customer, not the platform."
+
+  - id: cname-target-palantir-foundry
+    vendor: "Palantir Foundry"
+    category: "Data"
+    type: cname_target
+    query: "palantirfoundry.com.au"
+    notes: "Data integration and analytics platform. Ownership confirmed by TLS certificate: the tenant host presents a certificate issued to Palantir Technologies. This is the Australian regional domain; other regions follow the same pattern under their own country domains, which are not covered here because they were not observed."
+
+  - id: cname-target-phenom
+    vendor: "Phenom"
+    category: "HR & Learning"
+    type: cname_target
+    query: "phenompeople.net"
+    notes: "Talent intelligence and recruitment marketing platform, confirmed from the vendor's own site at phenompeople.com. Careers sites are aliased as <customer>.phenompeople.net."
+
+  - id: cname-target-pingone
+    vendor: "Ping Identity"
+    category: "Identity & Secrets"
+    type: cname_target
+    query: "pingone.com"
+    notes: "PingOne, Ping's cloud identity service. Ownership confirmed: SOA hostmaster.pingidentity.com. Consolidates with the ping.cloud signature."
+
+  - id: cname-target-plenti
+    vendor: "Plenti"
+    category: "Financial Services"
+    type: cname_target
+    query: "plenti.com.au"
+    notes: "Australian consumer lender, confirmed from its own site. Aliased by partners who white-label its lending products, so a hit indicates a lending partnership rather than software procurement."
+
+  - id: cname-target-ping-identity
+    vendor: "Ping Identity"
+    category: "Identity & Secrets"
+    type: cname_target
+    query: "ping.cloud"
+    notes: "Ping Identity's hosted platform. DNS ownership is not confirmable (Route 53), but two independent name signals agree: the domain is the vendor's own and the hostname names the product, e.g. pingfederate.<tenant>.<region>.ping.cloud. A hit means an identity provider in addition to whatever the tenant detector reports, and the hostnames usually expose non-production environments too."
+
+  - id: cname-target-optimizely
+    vendor: "Optimizely"
+    category: "Content Management"
+    type: cname_target
+    query: "episerver.net"
+    confidence: medium
+    notes: "Optimizely's digital experience platform, still on the Episerver domain from before the rebrand. Tenant hostnames embed the customer domain, e.g. <customer-host>.dxcloud.episerver.net."
+
+  - id: cname-target-okta-preview
+    vendor: "Okta"
+    category: "Identity & Secrets"
+    type: cname_target
+    query: "oktapreview.com"
+    notes: "Okta's preview and sandbox environment. Distinct from okta.com, so the production signature does not match it — and a hit means a non-production identity tenant is publicly resolvable."
+
+  - id: cname-target-paradox
+    vendor: "Paradox"
+    category: "HR & Learning"
+    type: cname_target
+    query: "paradox.ai"
+    notes: "Conversational AI for recruiting, confirmed from the vendor's own site. Careers microsites are aliased under sites.<region>.paradox.ai."
+
+  - id: cname-target-pega
+    vendor: "Pega"
+    category: "Business Applications"
+    type: cname_target
+    query: "pegacloud.net"
+    confidence: medium
+    notes: "Pega Cloud. The brand site confirms the product but sits on different nameservers from this platform domain."
+
+  - id: cname-target-pirean
+    vendor: "Pirean"
+    category: "Identity & Secrets"
+    type: cname_target
+    query: "onpirean.com"
+    confidence: medium
+    notes: "Identity and access management, since acquired by Exostar. DNS ownership is not confirmable and neither domain serves a site, so the attribution rests on the name."
+
+  - id: cname-target-powerapps-portals
+    vendor: "Microsoft Power Apps Portals"
+    category: "Business Applications"
+    type: cname_target
+    query: "powerappsportals.com"
+    notes: "Externally facing Power Apps portals. Tenant hostnames usually name the application, e.g. <org><app>portal.powerappsportals.com."
+
+  - id: cname-target-proofpoint-hosted
+    vendor: "Proofpoint"
+    category: "Email Security"
+    type: cname_target
+    query: "pphosted.com"
+    notes: "Proofpoint's hosted mail platform seen as a CNAME target rather than in MX or SPF. The existing signatures cover those two channels only."
 
   - id: cname-target-pantheon
     vendor: "Pantheon"
@@ -328,11 +1082,62 @@ signatures:
     type: cname_target
     query: "pardot.com"
 
+  - id: cname-target-q4
+    vendor: "Q4"
+    category: "Investor Relations"
+    type: cname_target
+    query: "q4web.com"
+    confidence: medium
+    notes: "Investor relations website platform. DNS ownership is not confirmable (Route 53) and the domain serves no site, so the attribution rests on the product name."
+
+  - id: cname-target-qarad
+    vendor: "Qarad"
+    category: "Compliance & GRC"
+    type: cname_target
+    query: "eifu.online"
+    confidence: medium
+    notes: "Electronic instructions-for-use hosting for medical devices — a regulatory obligation rather than a discretionary purchase. The tenant hostname names the vendor, e.g. <customer>.custom.qarad.eifu.online."
+
+  - id: cname-target-qualtrics
+    vendor: "Qualtrics"
+    category: "Customer Experience"
+    type: cname_target
+    query: "qualtrics.com"
+    notes: "Ownership confirmed: SOA hostmaster.qualtrics.com. Consolidates with the qemailserver.com sender signature so survey hosting and survey mail report as one relationship."
+
   - id: cname-target-readme
     vendor: "ReadMe"
     category: "Documentation"
     type: cname_target
     query: "readme.io"
+
+  - id: cname-target-sap-btp
+    vendor: "SAP Business Technology Platform"
+    category: "Business Applications"
+    type: cname_target
+    query: "hana.ondemand.com"
+    notes: "Ownership confirmed twice over: hana.ondemand.com is served by ns*.sap.net with SOA dns.sap-ag.de, and the endpoint presents a certificate issued to SAP SE. Hostnames carry the region, e.g. api.cf.ap10.hana.ondemand.com for the Cloud Foundry API in the Australian region."
+
+  - id: cname-target-sap-successfactors-recruiting
+    vendor: "SAP SuccessFactors"
+    category: "HR & Learning"
+    type: cname_target
+    query: "jobs2web.com"
+    notes: "Careers and recruitment marketing sites, from the Jobs2web heritage. Ownership confirmed: SOA dns.sap-ag.de. Reported under SAP SuccessFactors so it consolidates with the sapsf.com sender signature rather than reporting as a separate vendor."
+
+  - id: cname-target-risk-solved
+    vendor: "Risk Solved"
+    category: "Insurance & Claims"
+    type: cname_target
+    query: "risksolved.com"
+    notes: "Underwriting risk assessment platform, confirmed from the vendor's own site."
+
+  - id: cname-target-sap-commerce-cloud
+    vendor: "SAP Commerce Cloud"
+    category: "eCommerce"
+    type: cname_target
+    query: "commerce.ondemand.com"
+    notes: "SAP Commerce Cloud, from the hybris heritage. Ownership confirmed: SOA dns.sap-ag.de. Kept distinct from the hana.ondemand.com signature because they are different products on the same parent domain."
 
   - id: cname-target-salesforce
     vendor: "Salesforce"
@@ -367,6 +1172,72 @@ signatures:
     query: "sfmc-content.com"
     notes: "The content and image delivery half of Salesforce Marketing Cloud, paired with sfmc-marketing.com."
 
+  - id: cname-target-oktopost
+    vendor: "Oktopost"
+    category: "Marketing"
+    type: cname_target
+    query: "okt.to"
+    notes: "Oktopost's link-shortening domain for B2B social media management, confirmed from the site it serves."
+
+  - id: cname-target-prnewswire-investorroom
+    vendor: "PR Newswire MediaRoom"
+    category: "Investor Relations"
+    type: cname_target
+    query: "investorroom.com"
+    notes: "PR Newswire's investor room product — the domain serves PR Newswire's own error page. Reported under the same vendor as mediaroom.com so one relationship does not split."
+
+  - id: cname-target-nasdaq-shareholder
+    vendor: "Nasdaq IR"
+    category: "Investor Relations"
+    type: cname_target
+    query: "shareholder.com"
+    confidence: medium
+    notes: "The older Shareholder.com platform, now part of Nasdaq's investor relations offering — reported under the same vendor as gcs-web.com so one relationship does not split. DNS ownership is not confirmable (Route 53)."
+
+  - id: cname-target-readthedocs
+    vendor: "Read the Docs"
+    category: "Documentation"
+    type: cname_target
+    query: "readthedocs.com"
+    notes: "Hosted documentation, confirmed from the vendor's own site."
+
+  - id: cname-target-refined
+    vendor: "Refined"
+    category: "Documentation"
+    type: cname_target
+    query: "refined.site"
+    notes: "Site builder for Confluence and Jira, confirmed from the vendor's own site."
+
+  - id: cname-target-seclore
+    vendor: "Seclore"
+    category: "Security"
+    type: cname_target
+    query: "seclorepoclabs.com"
+    confidence: medium
+    notes: "Data-centric security and rights management. The domain name suggests a proof-of-concept environment, so a hit may indicate an evaluation rather than production use."
+
+  - id: cname-target-sogolytics
+    vendor: "Sogolytics"
+    category: "Customer Experience"
+    type: cname_target
+    query: "sogosurvey.com"
+    notes: "Experience management and surveys, formerly SogoSurvey — the domain now serves the Sogolytics site."
+
+  - id: cname-target-safebase-live
+    vendor: "SafeBase"
+    category: "Compliance & GRC"
+    type: cname_target
+    query: "safebase.io"
+    confidence: medium
+    notes: "Hosted trust centre. Confirmed live, superseding the parked guess in the security pack — that entry had the right domain, and customers alias a portals. hostname under it."
+
+  - id: cname-target-securepay
+    vendor: "SecurePay"
+    category: "Payments"
+    type: cname_target
+    query: "securepay.com.au"
+    notes: "Australian payment gateway, now operated by Fat Zebra — its own site carries both names. A hit means a cardholder-facing payment path on the organisation's domain."
+
   - id: cname-target-sendgrid
     vendor: "SendGrid"
     category: "Email"
@@ -398,11 +1269,101 @@ signatures:
     type: cname_target
     query: "statuspage.io"
 
+  - id: cname-target-sitecore-content-hub
+    vendor: "Sitecore"
+    category: "Content Management"
+    type: cname_target
+    query: "sitecorecontenthub.cloud"
+    notes: "Sitecore Content Hub, the DAM and content operations product. Consolidates with the sitecore-domain-verification TXT signature."
+
+  - id: cname-target-sitecore-proxy
+    vendor: "Sitecore"
+    category: "Content Management"
+    type: cname_target
+    query: "sitecoreproxy.io"
+    notes: "Sitecore's edge delivery proxy, seen fronting content and media hostnames."
+
   - id: cname-target-squarespace
     vendor: "Squarespace"
     category: "Content Management"
     type: cname_target
     query: "squarespace.com"
+
+  - id: cname-target-tinubu
+    vendor: "Tinubu"
+    category: "Insurance & Claims"
+    type: cname_target
+    query: "tinubu.com"
+    notes: "Speciality insurance and credit risk platform, confirmed from the vendor's own site."
+
+  - id: cname-target-unity-cloud-business
+    vendor: "Unity Cloud"
+    category: "Business Applications"
+    type: cname_target
+    query: "unitycloud.io"
+    notes: >-
+      Low-code business application platform, confirmed from its own site
+      ("beautiful business software in days"). NOT the same company as Unity
+      Technologies, whose unity-sso-verification token is carried separately —
+      two unrelated vendors genuinely trade under similar names, so the
+      companion signature was renamed to keep them apart.
+
+  - id: cname-target-ubiquity
+    vendor: "UbiQuity"
+    category: "Marketing"
+    type: cname_target
+    query: "ubiquity.co.nz"
+    notes: "New Zealand marketing automation platform, confirmed from the vendor's own site. Customer hostnames are aliased under custom.engage.ubiquity.co.nz, and are often used for employee or member communications rather than external marketing."
+
+  - id: cname-target-ssnc
+    vendor: "SS&C Technologies"
+    category: "Financial Services"
+    type: cname_target
+    query: "ssnc.cloud"
+    notes: "Investment management and fund administration technology. Ownership confirmed: ssnc.cloud and the vendor's brand domain ssctech.com are delegated to the same nameservers, inetdns.ssnc.cloud."
+
+  - id: cname-target-squiz
+    vendor: "Squiz"
+    category: "Content Management"
+    type: cname_target
+    query: "squiz.cloud"
+    notes: "Australian digital experience platform. Ownership confirmed: SOA infrastructure.squiz.net."
+
+  - id: cname-target-statuspage-customer
+    vendor: "Statuspage"
+    category: "Monitoring"
+    type: cname_target
+    query: "stspg-customer.com"
+    notes: "Statuspage's custom-domain target seen as a CNAME. The companion signature is spf_include and so covered only the notification mail."
+
+  - id: cname-target-swoogo
+    vendor: "Swoogo"
+    category: "Scheduling & Events"
+    type: cname_target
+    query: "swoogo.com"
+    notes: "Event management platform, confirmed from the vendor's own site."
+
+  - id: cname-target-swift-digital
+    vendor: "Swift Digital"
+    category: "Marketing"
+    type: cname_target
+    query: "swiftdigital.com.au"
+    notes: "Australian marketing automation platform, confirmed from the vendor's own site. Commonly aliased for internal or corporate communications rather than external marketing."
+
+  - id: cname-target-tangelo
+    vendor: "Tangelo Software"
+    category: "Business Applications"
+    type: cname_target
+    query: "tangelo-software.com"
+    notes: "Corporate reporting platform covering XBRL, ESG and annual reports, confirmed from the vendor's own site. Aliased hostnames are typically per-year report microsites, so a hit often reveals several years of them at once."
+
+  - id: cname-target-umbraco
+    vendor: "Umbraco"
+    category: "Content Management"
+    type: cname_target
+    query: "umbraco.io"
+    confidence: medium
+    notes: "Umbraco Cloud, the hosted form of the .NET CMS. Tenants appear as <customer>.<region>.umbraco.io, so the hostname also reveals the hosting region."
 
   - id: cname-target-unbounce
     vendor: "Unbounce"
@@ -410,11 +1371,56 @@ signatures:
     type: cname_target
     query: "unbouncepages.com"
 
+  - id: cname-target-valimail
+    vendor: "Valimail"
+    category: "Email Security"
+    type: cname_target
+    query: "valimail.com"
+    notes: "Valimail hosts BIMI logos and Verified Mark Certificates at amplify.valimail.com. Without this the BIMI detector reported the bare hostname even where DMARC had already identified Valimail on the same domain, so one relationship split into two findings. DNS ownership is not confirmable (AWS nameservers), but the attribution is corroborated by the DMARC evidence rather than resting on the name."
+
+  - id: cname-target-radancy
+    vendor: "Radancy"
+    category: "HR & Learning"
+    type: cname_target
+    query: "talentbrew.com"
+    confidence: medium
+    notes: "TalentBrew careers sites, Radancy's recruitment marketing product. DNS ownership is not confirmable and the domain serves no site."
+
+  - id: cname-target-verint
+    vendor: "Verint"
+    category: "Customer Experience"
+    type: cname_target
+    query: "vovici.net"
+    confidence: medium
+    notes: "Survey platform from the Vovici acquisition. DNS ownership is not confirmable (Route 53) and the domain serves no site."
+
+  - id: cname-target-vanilla-forums
+    vendor: "Vanilla Forums"
+    category: "Collaboration"
+    type: cname_target
+    query: "onvanilla.net"
+    confidence: medium
+    notes: "Hosted community forum software. DNS ownership is not confirmable (Cloudflare nameservers); tenants appear as site-<id>.onvanilla.net and the aliased hostname is typically a public community site."
+
+  - id: cname-target-vercel-numbered
+    vendor: "Vercel"
+    category: "Infrastructure"
+    type: cname_target
+    query: "vercel-dns-*.com"
+    notes: "Vercel also serves customers from numbered domains such as vercel-dns-013.com. These are separate registrable names rather than subdomains of vercel-dns.com, so the companion signature does not match them — the same shape as the AWS load balancer gap."
+
   - id: cname-target-vercel
     vendor: "Vercel"
     category: "Infrastructure"
     type: cname_target
     query: "vercel-dns.com"
+
+  - id: cname-target-vanta-trust
+    vendor: "Vanta"
+    category: "Compliance & GRC"
+    type: cname_target
+    query: "vantatrust.com"
+    notes: "Vanta's hosted trust centre, confirmed from the vendor's own site. This is the domain customers actually alias — the parked vanta.com entry was written on an assumption and never fired. A hit implies a compliance automation platform with read access across the estate."
 
   - id: cname-target-verifone
     vendor: "Verifone"
@@ -423,11 +1429,26 @@ signatures:
     query: "verifone.cloud"
     notes: "Hosted payment pages. Confirmed by the vendor's own documentation portal on the same domain. A hit means cardholder-facing payment flows on the organisation's domain."
 
+  - id: cname-target-vivenu
+    vendor: "vivenu"
+    category: "Scheduling & Events"
+    type: cname_target
+    query: "vivenu.com"
+    notes: "Event ticketing platform, confirmed from the vendor's own site."
+
+  - id: cname-target-webland
+    vendor: "Webland"
+    category: "Infrastructure"
+    type: cname_target
+    query: "webland.ch"
+    notes: "Swiss web and mail hosting. Ownership confirmed: SOA postmaster.webland.ch."
+
   - id: cname-target-webflow
     vendor: "Webflow"
     category: "Content Management"
     type: cname_target
-    query: "proxy-ssl.webflow.com"
+    query: "webflow.com"
+    notes: "Broadened from proxy-ssl.webflow.com, which missed cdn.webflow.com — the fifth signature here written against a single observed hostname when the vendor serves several."
 
   - id: cname-target-wpengine
     vendor: "WP Engine"
@@ -448,6 +1469,21 @@ signatures:
     type: cname_target
     query: "wpenginepowered.com"
     notes: "A third WP Engine hosting domain alongside wpengine.com and wpeproxy.com."
+
+  - id: cname-target-zscaler-private-access
+    vendor: "Zscaler Private Access"
+    category: "Remote Access"
+    type: cname_target
+    query: "zpa-app.net"
+    notes: "Zero-trust access to internal applications. Ownership confirmed: zpa-app.net is served by ans*.zscaler9.net with SOA dns.zscaler.com. Deliberately kept distinct from the Zscaler internet-access signature: this one means internal applications are published to the internet behind authentication, which is attack surface rather than inventory."
+
+  - id: cname-target-zeroheight
+    vendor: "zeroheight"
+    category: "Documentation"
+    type: cname_target
+    query: "zeroheight.com"
+    confidence: medium
+    notes: "Design system documentation platform. DNS ownership is not confirmable (Route 53) and the domain served no title, so the attribution rests on the product name."
 
   - id: cname-target-zendesk
     vendor: "Zendesk"
