@@ -333,54 +333,7 @@ Leads — verify before acting (7) ───────────────
 176 DNS queries (12 served from cache), 73 HTTP requests, 479 signatures, 10.0s
 ```
 
-### Working on this repository
-
-Yowie is run against real organisations, and naming one of those domains
-anywhere that leaves your machine publishes the fact that it was assessed. That
-is rarely yours to disclose, and it cannot be retracted — rewriting history
-leaves the original commit reachable by SHA, and the push event is archived
-off-platform within the hour. Treat anything pushed as permanent.
-
-Three layers guard against that, all reading `.scanned-domains` (gitignored),
-which records every domain you scan:
-
-| Layer | Guards |
-|-------|--------|
-| `scripts/hooks/commit-msg` | Rejects a commit message naming a scanned domain |
-| `scripts/hooks/pre-push` | Rejects a push whose commits **or file content** name one — catches `--no-verify` commits and pre-existing history |
-| `scripts/preflight.sh` | Sweeps the remote too: issues, pull requests, release notes, repository description |
-
-Enable the hooks after cloning:
-
-```
-git config core.hooksPath scripts/hooks
-```
-
-Add a domain to `.scanned-domains` **before** scanning it, so the guard is in
-place before there is anything to leak.
-
-`preflight.sh` also checks three things a domain match cannot see, because they
-identify an organisation without naming its domain: **organisation names in
-prose**, **verification tokens** (unique to one domain and indexed by
-DNS-history services), and **tenant GUIDs**. Removing the obvious identifier is
-not the same as de-identifying. In examples use `acme.example`,
-`EXAMPLETOKEN…`, an all-zero GUID and the `203.0.113.0/24` documentation range —
-never a value copied from a scan. Every detection path is self-tested against a
-planted canary before any result is reported, so a guard that has silently
-stopped matching aborts instead of passing.
-
-Three limits cannot be closed mechanically, and are worth knowing rather than
-assuming away:
-
-- A scanned domain that is **also a vendor carried in the packs** cannot be
-  guarded, because the name has to be allowed to appear. Keep those as a
-  documented exclusion list and rely on the written rule.
-- **No hook reaches issue, pull request or release text.** `preflight.sh` sweeps
-  those after the fact; nothing blocks them at the point of writing.
-- **Every check matches text, so none can read an image.** A terminal screenshot
-  of a real scan carries the entire finding set — verification tokens, tenant
-  GUIDs, IP addresses, the shell prompt. Read screenshots by eye before adding
-  them.
+Have fun and feel free to submit new signatures and any bugs or feature requests.
 
 ### Licence
 
