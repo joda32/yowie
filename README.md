@@ -15,9 +15,8 @@ Finds the SaaS services an organisation subscribes to, using only externally
 observable data. Built for shadow IT discovery: the services worth finding are
 the ones nobody told you about.
 
-Named for the Australian bush cryptid, and for the same reason its predecessor
-was named after a sasquatch — you are hunting something everyone insists isn't
-there.
+Named for the Australian bush cryptid, because you are hunting something
+everyone insists isn't there.
 
 ![Yowie in action](docs/yowie-in-action.png)
 
@@ -156,7 +155,7 @@ typo cannot quietly cost you coverage in every future scan.
 
 | Pack | Contents |
 |------|----------|
-| `dns-txt`, `dns-cname`, `dns-mx` | Ported from the predecessor tool. Live. |
+| `dns-txt`, `dns-cname`, `dns-mx` | Verification tokens and delegated hostnames. Live. |
 | `email-spf`, `email-dmarc` | Senders and DMARC processors. Live. |
 | `vanity-tenants`, `http-endpoints` | Tenant hostnames and app fingerprints. Live. |
 | `cname-targets` | Hosting suffixes for CT-discovered subdomains. Live. |
@@ -299,7 +298,7 @@ discarding it.
 
 ### Illustrative output
 
-Anonymised — the shape of a real report, not a real organisation.
+Illustrative — the shape of a report, with placeholder values throughout.
 
 ```
 $ yowie acme.com.au acme acmecorp
@@ -337,13 +336,13 @@ Leads — verify before acting (7) ───────────────
 ### Working on this repository
 
 Yowie is run against real organisations, and naming one of those domains
-anywhere that leaves the machine publishes the fact that it was assessed. That
-is not ours to disclose, and it cannot be retracted — rewriting history leaves
-the original commit reachable by SHA, and the push event is archived
-off-platform within the hour.
+anywhere that leaves your machine publishes the fact that it was assessed. That
+is rarely yours to disclose, and it cannot be retracted — rewriting history
+leaves the original commit reachable by SHA, and the push event is archived
+off-platform within the hour. Treat anything pushed as permanent.
 
-`.scanned-domains` (gitignored) records every domain scanned. Three layers read
-it:
+Three layers guard against that, all reading `.scanned-domains` (gitignored),
+which records every domain you scan:
 
 | Layer | Guards |
 |-------|--------|
@@ -363,76 +362,26 @@ place before there is anything to leak.
 `preflight.sh` also checks three things a domain match cannot see, because they
 identify an organisation without naming its domain: **organisation names in
 prose**, **verification tokens** (unique to one domain and indexed by
-DNS-history services), and **tenant GUIDs**. All three exist because an
-anonymisation pass on a worked example replaced the domains and left a live
-token and a real GUID in place — removing the obvious identifier is not the same
-as de-identifying. Use `acme.example`, `EXAMPLETOKEN…`, an all-zero GUID and the
-`203.0.113.0/24` documentation range in examples, never a value copied from a
-scan.
+DNS-history services), and **tenant GUIDs**. Removing the obvious identifier is
+not the same as de-identifying. In examples use `acme.example`,
+`EXAMPLETOKEN…`, an all-zero GUID and the `203.0.113.0/24` documentation range —
+never a value copied from a scan. Every detection path is self-tested against a
+planted canary before any result is reported, so a guard that has silently
+stopped matching aborts instead of passing.
 
-Two limits are recorded rather than papered over. The guard cannot cover a
-domain that is also a vendor carried in the packs — several scanned
-organisations are themselves SaaS providers we detect — so those are listed as
-documented exclusions and rely on the written rule instead. And no hook reaches
-issue or release text; that depends on the rule being followed.
+Three limits cannot be closed mechanically, and are worth knowing rather than
+assuming away:
 
-`preflight.sh` self-tests every detection path against planted canaries before
-reporting anything. An earlier version piped into `grep -q`, which exits on
-first match and SIGPIPEs the writer; under `set -o pipefail` the pipeline then
-reported failure and the match was silently dropped. It passed on small inputs
-and missed matches in large ones — a guard that reports "ok" while detecting
-nothing is worse than no guard.
+- A scanned domain that is **also a vendor carried in the packs** cannot be
+  guarded, because the name has to be allowed to appear. Keep those as a
+  documented exclusion list and rely on the written rule.
+- **No hook reaches issue, pull request or release text.** `preflight.sh` sweeps
+  those after the fact; nothing blocks them at the point of writing.
+- **Every check matches text, so none can read an image.** A terminal screenshot
+  of a real scan carries the entire finding set — verification tokens, tenant
+  GUIDs, IP addresses, the shell prompt. Read screenshots by eye before adding
+  them.
 
 ### Licence
 
 Apache License 2.0 — see [LICENSE](LICENSE) and [NOTICE](NOTICE).
-
-### History
-
-Yowie is a Go rewrite of an earlier internal Python tool. The signature database
-was ported mechanically and has since grown to roughly 2.7 times its size — 174
-signatures to 479 — almost entirely in channels the predecessor did not have.
-The 87 TXT-token signatures are the inherited ones; everything added since is
-`cname_target`, `spf_include` or `dmarc_rua`.
-
-Most of that growth came from running the tool against real organisations and
-writing signatures for whatever the unattributed leads turned out to be, which
-is a loop the certificate transparency detector sustains on its own: it surfaces
-vendors nobody wrote a rule for, and each one found becomes a rule that then
-works everywhere else.
-
-Behavioural differences worth knowing:
-
-- Detectors run concurrently. A scan that took minutes takes seconds.
-- Findings are graded and deduplicated by vendor, rather than one line per hit.
-  Use `-compact` for output closer to the old style.
-- The old tool's trailing `*` on a vendor name (meaning "never confirmed against
-  a live sample") is now expressed as a medium confidence plus an explanatory
-  note.
-- SPF entries that were substring matches against the root TXT bundle are now
-  walked properly, so nested includes are caught.
-- The module entry point (`run()`) is replaced by importing `internal/engine`,
-  which returns a structured `model.Result` instead of accumulating into a
-  package global. The old `run()` never reset its results list, so a second call
-  in the same process returned the first call's findings too; that class of bug
-  is gone.
-
-#### Two defect classes to watch for
-
-Both fail silently — the signature looks like coverage while matching nothing —
-and both have recurred repeatedly:
-
-- **Writing a match against one observed hostname** when the vendor publishes
-  several. A Google netblock host missing its numbered siblings, Valimail's
-  report domain, Mandrill's bare include, Pardot's second sender and Webflow's
-  CDN were all written this way and all had to be broadened.
-- **Assuming a vendor appears on one channel.** Signature types are
-  channel-specific and vendors are not: a sender carried as `spf_include` cannot
-  match the same vendor appearing as a certificate transparency target. When you
-  add a vendor, ask which other channels it could surface on.
-
-A third, rarer but worse: **naming a shared multi-tenant platform after one of
-its customers.** On such a platform the tenant hostname presents the *tenant's*
-certificate, not the operator's, so a certificate subject identifies who the host
-serves rather than who runs it. Two signatures were wrong this way before the
-pattern was recognised.
