@@ -111,8 +111,35 @@ func (d *Tenant) userRealm(ctx context.Context, s *Scan) {
 		return
 	}
 
-	// Federated: something else owns sign-in. Name it from the AuthURL host.
+	// Federated: something else owns sign-in.
 	hosts := urlHosts(authURL)
+	ev := model.Evidence{
+		Method: model.MethodTenant,
+		Query:  url,
+		Value:  model.Truncate(authURL, 200) + brandSuffix(brand),
+		Detail: "NameSpaceType=Federated",
+	}
+	const federationNote = "Microsoft 365 sign-in for this domain is federated to this host. " +
+		"If it is not a sanctioned identity provider, it is a significant finding in its own right."
+
+	// Name the provider where a signature knows the host. Without this, an
+	// organisation federating to acme.okta.com reports both "Okta" and
+	// "acme.okta.com" as separate vendors.
+	if len(hosts) > 0 {
+		if sig, ok := s.AttributeHost(hosts[0]); ok {
+			f := model.Finding{
+				Vendor:     sig.Vendor,
+				Category:   sig.Category,
+				Confidence: model.ConfidenceHigh,
+				Signatures: []string{sig.ID},
+				Notes:      []string{federationNote},
+				Evidence:   []model.Evidence{ev},
+			}
+			s.Emit(f)
+			return
+		}
+	}
+
 	vendor := "Federated identity provider"
 	if len(hosts) > 0 {
 		vendor = hosts[0]
@@ -121,14 +148,10 @@ func (d *Tenant) userRealm(ctx context.Context, s *Scan) {
 		Vendor:     vendor,
 		Category:   "Identity & Secrets",
 		Confidence: model.ConfidenceHigh,
-		Notes: []string{"Microsoft 365 sign-in for this domain is federated to this host. " +
-			"If it is not a sanctioned identity provider, it is a significant finding in its own right."},
-		Evidence: []model.Evidence{{
-			Method: model.MethodTenant,
-			Query:  url,
-			Value:  model.Truncate(authURL, 200) + brandSuffix(brand),
-			Detail: "NameSpaceType=Federated",
-		}},
+		Notes: []string{federationNote + " The host is a custom sign-in domain that matches no known " +
+			"vendor, so it may still front a mainstream identity provider — check the URL path, which " +
+			"usually gives the platform away."},
+		Evidence: []model.Evidence{ev},
 	})
 }
 

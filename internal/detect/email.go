@@ -301,16 +301,24 @@ func (d *BIMI) Run(ctx context.Context, s *Scan) error {
 			if sameOrg(host, s.Domain) {
 				continue
 			}
+			ev := model.Evidence{
+				Method: model.MethodBIMI,
+				Query:  name,
+				Value:  model.Truncate(t, 200),
+			}
+			// Name the vendor where a signature knows the host, so a
+			// certificate authority reads as its product rather than as a bare
+			// hostname like "vmc.digicert.com".
+			if sig, ok := s.AttributeHost(host); ok {
+				s.EmitSig(sig, model.ConfidenceHigh, ev)
+				continue
+			}
 			s.Emit(model.Finding{
 				Vendor:     host,
 				Category:   "Brand & Certificates",
 				Confidence: model.ConfidenceLow,
 				Notes:      []string{"Hosts this domain's BIMI logo or Verified Mark Certificate."},
-				Evidence: []model.Evidence{{
-					Method: model.MethodBIMI,
-					Query:  name,
-					Value:  model.Truncate(t, 200),
-				}},
+				Evidence:   []model.Evidence{ev},
 			})
 		}
 	}

@@ -206,10 +206,18 @@ func (s *Signature) validate() error {
 		if s.Match.Contains != "" || s.Match.Present != "" || s.Match.Absent != "" {
 			return fmt.Errorf("%s: cname_target matches on query (the hosting suffix) and takes no match block", where)
 		}
-		// A "*" is allowed and matches exactly one label, for regionalised
-		// hostnames such as "execute-api.*.amazonaws.com".
+		// A "*" is allowed as a glob within one label, for regionalised
+		// hostnames such as "execute-api.*.amazonaws.com" and generated ones
+		// such as "mkto-*.com".
 		if strings.ContainsAny(s.Query, "{}/ ") {
 			return fmt.Errorf("%s: cname_target query must be a bare hosting suffix, e.g. \"zendesk.com\"", where)
+		}
+		// A leading bare "*" would claim every host under the remaining labels,
+		// so "*.com" would match the entire TLD. It also adds nothing: suffix
+		// matching already covers subdomains of a named suffix.
+		if strings.Split(s.Query, ".")[0] == "*" {
+			return fmt.Errorf("%s: cname_target query may not start with a bare \"*\" — %q would match far more than intended; "+
+				"drop the wildcard label, or anchor it like \"mkto-*.com\"", where, s.Query)
 		}
 	default: // txt, cname, mx, ns, spf_include, dmarc_rua
 		if s.Match.Contains == "" {

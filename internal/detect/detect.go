@@ -131,10 +131,28 @@ type expansion struct {
 	Candidate string
 }
 
-// registrableSuffix returns the portion of host that is in the same
-// organisation as the scanned domain, used to decide whether a mail or report
-// destination is third-party. It is a heuristic, not a public-suffix lookup:
-// it asks only whether host is the domain or a subdomain of it.
+// AttributeHost names the vendor behind an arbitrary hostname by testing it
+// against the cname_target signatures.
+//
+// Those signatures map hosting suffixes to vendors, and that mapping is useful
+// well beyond the CT detector that motivated it: any detector holding a bare
+// hostname can report a product name rather than the raw host.
+func (s *Scan) AttributeHost(host string) (signature.Signature, bool) {
+	if s.Sigs == nil {
+		return signature.Signature{}, false
+	}
+	for _, sig := range s.Sigs.ByType(signature.TypeCNAMETarget) {
+		if hostMatchesSuffix(host, sig.Query) {
+			return sig, true
+		}
+	}
+	return signature.Signature{}, false
+}
+
+// sameOrg reports whether host belongs to the scanned organisation, used to
+// decide whether a mail or report destination is third-party. It is a
+// heuristic, not a public-suffix lookup: it asks only whether host is the
+// domain or a subdomain of it.
 func sameOrg(host, domain string) bool {
 	host = strings.ToLower(strings.TrimSuffix(host, "."))
 	domain = strings.ToLower(strings.TrimSuffix(domain, "."))

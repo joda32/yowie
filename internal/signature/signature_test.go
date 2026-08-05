@@ -225,3 +225,27 @@ func TestNeedsCandidate(t *testing.T) {
 		t.Error("{candidate} should need a candidate")
 	}
 }
+
+// TestRejectsOverbroadCNAMETarget guards the wildcard against claiming a whole
+// TLD, which would attribute every unrelated host to one vendor.
+func TestRejectsOverbroadCNAMETarget(t *testing.T) {
+	_, err := LoadFS(pack(header + `
+  - id: a
+    vendor: A
+    type: cname_target
+    query: "*.com"
+`))
+	if err == nil || !strings.Contains(err.Error(), "may not start with a bare") {
+		t.Fatalf("expected a rejection of *.com, got %v", err)
+	}
+
+	// An anchored wildcard is fine.
+	if _, err := LoadFS(pack(header + `
+  - id: a
+    vendor: A
+    type: cname_target
+    query: "mkto-*.com"
+`)); err != nil {
+		t.Fatalf("anchored wildcard should be valid: %v", err)
+	}
+}

@@ -290,3 +290,57 @@ func TestHostMatchesSuffixWildcard(t *testing.T) {
 		}
 	}
 }
+
+func TestHostMatchesSuffixGlobWithinLabel(t *testing.T) {
+	cases := []struct {
+		host, suffix string
+		want         bool
+	}{
+		// Marketo mints a per-customer tracking domain, so the registrable
+		// domain itself varies.
+		{"mkto-sj180011.com", "mkto-*.com", true},
+		{"track.mkto-ab99.com", "mkto-*.com", true},
+		{"mkto.com", "mkto-*.com", false},
+		// The glob must not escape its label and swallow the whole TLD.
+		{"evil.com", "mkto-*.com", false},
+		{"notmkto-1.com", "mkto-*.com", false},
+		// Whole-label wildcards still work.
+		{"d-x.execute-api.ap-southeast-2.amazonaws.com", "execute-api.*.amazonaws.com", true},
+	}
+	for _, tc := range cases {
+		if got := hostMatchesSuffix(tc.host, tc.suffix); got != tc.want {
+			t.Errorf("hostMatchesSuffix(%q, %q) = %v, want %v", tc.host, tc.suffix, got, tc.want)
+		}
+	}
+}
+
+func TestCTFailureReason(t *testing.T) {
+	cases := []struct {
+		name, body string
+		status     int
+		want       string
+	}{
+		{"server-side timeout", `{"code":"timeout","message":"This query took longer than 15 seconds to complete"}`,
+			504, "will not help"},
+		{"rate limited", `{"code":"rate_limited","message":"You have exceeded the domain search rate limit"}`,
+			429, "wait before retrying"},
+		{"other structured error", `{"code":"bad_request","message":"unknown parameter"}`,
+			400, "unknown parameter"},
+		{"html error page", `<html>502 Bad Gateway</html>`, 502, "HTTP 502"},
+		{"empty body", ``, 503, "HTTP 503"},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			got := ctFailureReason(tc.status, tc.body)
+			if !strings.Contains(got, tc.want) {
+				t.Errorf("ctFailureReason(%d, %q) = %q, want it to mention %q", tc.status, tc.body, got, tc.want)
+			}
+		})
+	}
+
+	// A server-side timeout must not tell the reader to raise the client
+	// timeout, which is the advice the old message gave.
+	if got := ctFailureReason(504, `{"code":"timeout","message":"x"}`); strings.Contains(got, "raise -ct-timeout") {
+		t.Errorf("must not suggest raising the client timeout for a server-side timeout: %q", got)
+	}
+}

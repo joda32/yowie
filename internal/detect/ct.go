@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
+	"path"
 	"sort"
 	"strings"
 	"sync"
@@ -76,7 +77,8 @@ func (d *CertTransparency) Run(ctx context.Context, s *Scan) error {
 	if err != nil {
 		// crt.sh is frequently slow or unavailable. Degrading loudly is better
 		// than silently reporting fewer findings.
-		s.Warn("ct: %v — subdomain discovery skipped. Raise -ct-timeout, or -skip ct if the services are down.", err)
+		s.Warn("ct: %v. Subdomain discovery was skipped, so this scan covers less ground than usual — "+
+			"the other detectors only find vendors that already have a signature.", err)
 		return nil
 	}
 	if len(hosts) == 0 {
@@ -225,7 +227,7 @@ func (d *CertTransparency) fetch(ctx context.Context, s *Scan) ([]string, error)
 			continue
 		}
 		if resp.Status != 200 {
-			errs = append(errs, fmt.Sprintf("%s: HTTP %d", src.name, resp.Status))
+			errs = append(errs, fmt.Sprintf("%s: %s", src.name, ctFailureReason(resp.Status, resp.Body)))
 			continue
 		}
 		hosts, err := src.parse(resp.Body, s.Domain)
@@ -243,6 +245,31 @@ func (d *CertTransparency) fetch(ctx context.Context, s *Scan) ([]string, error)
 		return hosts, nil
 	}
 	return nil, fmt.Errorf("every source failed (%s)", strings.Join(errs, "; "))
+}
+
+// ctFailureReason turns a non-200 CT response into something a reader can act
+// on.
+//
+// The aggregators return a JSON error body explaining themselves, and the
+// distinction matters: a server-side query timeout is not fixed by raising the
+// client timeout, and being rate limited calls for waiting rather than
+// retrying. Reporting a bare status code sent people down the wrong path.
+func ctFailureReason(status int, body string) string {
+	var e struct {
+		Code    string `json:"code"`
+		Message string `json:"message"`
+	}
+	if err := json.Unmarshal([]byte(body), &e); err == nil && e.Code != "" {
+		switch e.Code {
+		case "timeout":
+			return fmt.Sprintf("HTTP %d, the service timed out running the query server-side "+
+				"(the domain has too many certificates for its budget) — raising -ct-timeout will not help", status)
+		case "rate_limited":
+			return fmt.Sprintf("HTTP %d, rate limited — wait before retrying", status)
+		}
+		return fmt.Sprintf("HTTP %d, %s", status, model.Truncate(e.Message, 120))
+	}
+	return fmt.Sprintf("HTTP %d", status)
 }
 
 // parseCrtSh reads crt.sh's JSON array.
@@ -326,9 +353,16 @@ func (c *hostCollector) hosts() []string {
 // hostMatchesSuffix reports whether host sits under the given hosting suffix.
 //
 // Matching is on a label boundary, so "notzendesk.com" never matches
-// "zendesk.com". A "*" in the suffix matches exactly one label, which is what
-// regionalised vendor hostnames need — "execute-api.*.amazonaws.com" has to
-// match every AWS region without enumerating them.
+// "zendesk.com". A "*" in the suffix is a glob confined to a single label,
+// which covers the two shapes vendors actually use:
+//
+//   - a whole variable label, as in "execute-api.*.amazonaws.com", which has to
+//     match every AWS region without enumerating them;
+//   - a generated name within a label, as in "mkto-*.com", where Marketo mints
+//     a per-customer tracking domain such as mkto-sj180011.com.
+//
+// The glob never spans a dot, so a pattern can never widen beyond the label it
+// was written for.
 func hostMatchesSuffix(host, suffix string) bool {
 	host = strings.ToLower(strings.TrimSuffix(host, "."))
 	suffix = strings.ToLower(strings.TrimSuffix(suffix, "."))
@@ -345,7 +379,10 @@ func hostMatchesSuffix(host, suffix string) bool {
 	// Compare the suffix against the trailing labels of the host.
 	tail := hostLabels[len(hostLabels)-len(suffixLabels):]
 	for i, want := range suffixLabels {
-		if want != "*" && want != tail[i] {
+		// path.Match treats "*" as matching any run of non-separator bytes, and
+		// a DNS label contains no "/", so the glob is naturally label-bound.
+		ok, err := path.Match(want, tail[i])
+		if err != nil || !ok {
 			return false
 		}
 	}
