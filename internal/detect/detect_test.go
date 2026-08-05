@@ -1,6 +1,7 @@
 package detect
 
 import (
+	"errors"
 	"strings"
 	"testing"
 
@@ -342,5 +343,104 @@ func TestCTFailureReason(t *testing.T) {
 	// timeout, which is the advice the old message gave.
 	if got := ctFailureReason(504, `{"code":"timeout","message":"x"}`); strings.Contains(got, "raise -ct-timeout") {
 		t.Errorf("must not suggest raising the client timeout for a server-side timeout: %q", got)
+	}
+}
+
+// TestHostMatchesSuffixAWSLoadBalancerForms covers both AWS load balancer
+// hostname shapes. The region sits on a different side of the "elb" label in
+// each, so a signature written for one form silently misses the other.
+func TestHostMatchesSuffixAWSLoadBalancerForms(t *testing.T) {
+	classic := "my-lb-1234567890.ap-southeast-2.elb.amazonaws.com"
+	modern := "hlb-public-main-nlb-89c783465efdc470.elb.ap-southeast-2.amazonaws.com"
+
+	if !hostMatchesSuffix(classic, "elb.amazonaws.com") {
+		t.Error("classic form should match the plain elb.amazonaws.com suffix")
+	}
+	if hostMatchesSuffix(modern, "elb.amazonaws.com") {
+		t.Error("modern form must NOT match the plain suffix — this was the gap")
+	}
+	if !hostMatchesSuffix(modern, "elb.*.amazonaws.com") {
+		t.Error("modern form should match the regional wildcard")
+	}
+	// The wildcard must not swallow unrelated AWS services.
+	if hostMatchesSuffix("d-abc.execute-api.ap-southeast-2.amazonaws.com", "elb.*.amazonaws.com") {
+		t.Error("regional wildcard must not match API Gateway")
+	}
+}
+
+func TestMergeCTResults(t *testing.T) {
+	// The motivating case: one source returns a strict subset of the other.
+	// Stopping at the first answer discarded the difference.
+	results := []ctResult{
+		{source: "primary", hosts: []string{"c.acme.com", "a.acme.com", "b.acme.com"}},
+		{source: "secondary", hosts: []string{"a.acme.com", "d.acme.com"}},
+	}
+	merged, contributed, failures := mergeCTResults(results)
+
+	want := []string{"a.acme.com", "b.acme.com", "c.acme.com", "d.acme.com"}
+	if len(merged) != len(want) {
+		t.Fatalf("merged = %v, want %v", merged, want)
+	}
+	for i := range want {
+		if merged[i] != want[i] {
+			t.Fatalf("merged = %v, want %v (sorted)", merged, want)
+		}
+	}
+	if len(failures) != 0 {
+		t.Errorf("failures = %v, want none", failures)
+	}
+	// The report must show what each source actually added, so a run where one
+	// source contributed nothing new is visible.
+	if !strings.Contains(contributed[0], "3, 3 new") {
+		t.Errorf("primary contribution = %q, want it to report 3 new", contributed[0])
+	}
+	if !strings.Contains(contributed[1], "2, 1 new") {
+		t.Errorf("secondary contribution = %q, want it to report 1 new", contributed[1])
+	}
+}
+
+func TestMergeCTResultsPartialFailure(t *testing.T) {
+	results := []ctResult{
+		{source: "primary", err: errors.New("HTTP 502")},
+		{source: "secondary", hosts: []string{"a.acme.com"}},
+	}
+	merged, contributed, failures := mergeCTResults(results)
+
+	if len(merged) != 1 {
+		t.Errorf("a surviving source should still yield its hosts, got %v", merged)
+	}
+	if len(failures) != 1 || !strings.Contains(failures[0], "primary") {
+		t.Errorf("failures = %v, want the failed source named", failures)
+	}
+	if len(contributed) != 1 || !strings.Contains(contributed[0], "secondary") {
+		t.Errorf("contributed = %v, want only the surviving source", contributed)
+	}
+}
+
+func TestMergeCTResultsTotalFailure(t *testing.T) {
+	results := []ctResult{
+		{source: "primary", err: errors.New("HTTP 502")},
+		{source: "secondary", err: errors.New("HTTP 429")},
+	}
+	merged, _, failures := mergeCTResults(results)
+	if len(merged) != 0 {
+		t.Errorf("merged = %v, want empty", merged)
+	}
+	if len(failures) != 2 {
+		t.Errorf("failures = %v, want both recorded", failures)
+	}
+}
+
+func TestMergeCTResultsDeduplicates(t *testing.T) {
+	results := []ctResult{
+		{source: "a", hosts: []string{"x.acme.com", "x.acme.com"}},
+		{source: "b", hosts: []string{"x.acme.com"}},
+	}
+	merged, contributed, _ := mergeCTResults(results)
+	if len(merged) != 1 {
+		t.Errorf("merged = %v, want one entry", merged)
+	}
+	if !strings.Contains(contributed[1], "1, 0 new") {
+		t.Errorf("second source added nothing new; contribution = %q", contributed[1])
 	}
 }

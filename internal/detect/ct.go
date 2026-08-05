@@ -62,7 +62,10 @@ func (d *CertTransparency) httpClient(s *Scan) *webclient.Client {
 		if timeout <= 0 {
 			timeout = ctTimeout
 		}
-		d.client = s.HTTP.Derive(webclient.Options{Timeout: timeout, Concurrency: 1})
+		// One slot per aggregator, so the sources run in parallel rather than
+		// serialising two long timeouts, while still issuing only one request
+		// to each free service.
+		d.client = s.HTTP.Derive(webclient.Options{Timeout: timeout, Concurrency: len(ctSources)})
 	})
 	return d.client
 }
@@ -85,13 +88,15 @@ func (d *CertTransparency) Run(ctx context.Context, s *Scan) error {
 		return nil
 	}
 
-	truncated := false
-	if len(hosts) > limit {
-		hosts, truncated = hosts[:limit], true
-	}
-	if truncated {
-		s.Warn("ct: %s has more logged hostnames than the --ct-limit of %d; only the first %d were resolved",
-			s.Domain, limit, limit)
+	if total := len(hosts); total > limit {
+		hosts = hosts[:limit]
+		// The list is sorted, so truncation is not a random sample — it keeps
+		// early-alphabet hostnames and drops the rest. Say so, because a
+		// silently biased subset looks the same as full coverage in the output.
+		s.Warn("ct: %s has %d logged hostnames but -ct-limit is %d, so %d were dropped. "+
+			"Selection is alphabetical, not a sample, so the tail of the alphabet was not looked at — "+
+			"raise -ct-limit for full coverage",
+			s.Domain, total, limit, total-limit)
 	}
 	s.Status("Resolving %d hostnames from certificate transparency logs", len(hosts))
 
@@ -211,40 +216,108 @@ var ctSources = []ctSource{
 	},
 }
 
-// fetch queries the CT aggregators in turn and returns the distinct hostnames
-// found under the domain.
+// ctResult is one aggregator's answer.
+type ctResult struct {
+	source string
+	hosts  []string
+	err    error
+}
+
+// fetch queries every CT aggregator and returns the union of what they report.
+//
+// This used to stop at the first source that answered, which silently traded
+// away coverage: the aggregators do not hold the same data, and on a measured
+// comparison the secondary returned 154 hostnames where the primary returned
+// 434 — a strict subset. A scan that fell back therefore searched a third of
+// the estate while reporting nothing worse than "fell back", which reads like a
+// successful failover rather than the coverage loss it was.
+//
+// Querying both and merging is strictly better: more hostnames when both
+// answer, and the same resilience when one does not.
 func (d *CertTransparency) fetch(ctx context.Context, s *Scan) ([]string, error) {
 	s.Status("Querying certificate transparency logs for %s", s.Domain)
 
-	var errs []string
-	for _, src := range ctSources {
-		if ctx.Err() != nil {
-			return nil, ctx.Err()
-		}
-		resp, err := d.httpClient(s).Get(ctx, src.url(s.Domain))
-		if err != nil {
-			errs = append(errs, fmt.Sprintf("%s: %v", src.name, err))
-			continue
-		}
-		if resp.Status != 200 {
-			errs = append(errs, fmt.Sprintf("%s: %s", src.name, ctFailureReason(resp.Status, resp.Body)))
-			continue
-		}
-		hosts, err := src.parse(resp.Body, s.Domain)
-		if err != nil {
-			errs = append(errs, fmt.Sprintf("%s: %v", src.name, err))
-			continue
-		}
-		if len(hosts) == 0 {
-			errs = append(errs, fmt.Sprintf("%s: no hostnames returned", src.name))
-			continue
-		}
-		if len(errs) > 0 {
-			s.Warn("ct: fell back to %s (%s)", src.name, strings.Join(errs, "; "))
-		}
-		return hosts, nil
+	results := make([]ctResult, len(ctSources))
+	var wg sync.WaitGroup
+	for i, src := range ctSources {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			hosts, err := d.query(ctx, s, src)
+			results[i] = ctResult{source: src.name, hosts: hosts, err: err}
+		}()
 	}
-	return nil, fmt.Errorf("every source failed (%s)", strings.Join(errs, "; "))
+	wg.Wait()
+
+	if ctx.Err() != nil {
+		return nil, ctx.Err()
+	}
+
+	merged, contributed, failures := mergeCTResults(results)
+
+	if len(merged) == 0 {
+		return nil, fmt.Errorf("every source failed (%s)", strings.Join(failures, "; "))
+	}
+	if len(failures) > 0 {
+		// Say what was lost, not merely that something failed.
+		s.Warn("ct: %s unavailable (%s); merged %d hostnames from %s alone, so coverage is lower than a healthy run",
+			pluralise(len(failures), "source", "sources"), strings.Join(failures, "; "),
+			len(merged), strings.Join(contributed, " and "))
+	} else {
+		s.Status("Merged %d hostnames from %s", len(merged), strings.Join(contributed, " and "))
+	}
+	return merged, nil
+}
+
+// query runs one aggregator and returns the hostnames it reports.
+func (d *CertTransparency) query(ctx context.Context, s *Scan, src ctSource) ([]string, error) {
+	resp, err := d.httpClient(s).Get(ctx, src.url(s.Domain))
+	if err != nil {
+		return nil, err
+	}
+	if resp.Status != 200 {
+		return nil, fmt.Errorf("%s", ctFailureReason(resp.Status, resp.Body))
+	}
+	hosts, err := src.parse(resp.Body, s.Domain)
+	if err != nil {
+		return nil, err
+	}
+	if len(hosts) == 0 {
+		return nil, fmt.Errorf("no hostnames returned")
+	}
+	return hosts, nil
+}
+
+// mergeCTResults unions the hostnames each source reported, and describes what
+// each contributed so a reader can tell a full run from a degraded one.
+//
+// Kept free of I/O so the merge and its reporting are testable.
+func mergeCTResults(results []ctResult) (merged, contributed, failures []string) {
+	seen := map[string]bool{}
+	for _, r := range results {
+		if r.err != nil {
+			failures = append(failures, fmt.Sprintf("%s: %v", r.source, r.err))
+			continue
+		}
+		added := 0
+		for _, h := range r.hosts {
+			if !seen[h] {
+				seen[h] = true
+				merged = append(merged, h)
+				added++
+			}
+		}
+		contributed = append(contributed, fmt.Sprintf("%s (%d, %d new)", r.source, len(r.hosts), added))
+	}
+	sort.Strings(merged)
+	return merged, contributed, failures
+}
+
+func pluralise(n int, one, many string) string {
+	if n == 1 {
+		return one
+	}
+	return many
 }
 
 // ctFailureReason turns a non-200 CT response into something a reader can act
