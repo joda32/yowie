@@ -174,7 +174,15 @@ signatures:
     match:
       contains: "250ok.net"
     confidence: medium
-    notes: "250ok, now part of Validity. DNS ownership is not confirmable (Route 53) and the domain serves no site, so the attribution rests on the product name."
+    notes: "250ok, now part of Validity. The zone is on Route 53 and the domain serves no site, so this one rests on the product name — unlike the Return Path signature alongside it, whose ownership is confirmable."
+
+  - id: dmarc-returnpath
+    vendor: "Validity"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "returnpath.net"
+    notes: "Return Path, now a Validity product. Ownership confirmed from the vendor's own redirect chain: returnpath.net answers 301 to returnpath.com, which answers 301 to validity.com/products/returnpath. Reports are addressed to auth.returnpath.net; matched on the bare domain to cover the other report hosts."
 
   - id: dmarc-proofpoint
     vendor: "Proofpoint"
@@ -211,3 +219,27 @@ signatures:
     match:
       contains: "vali.email"
     notes: "Valimail publishes aggregate reports to vali.email, not valimail.com. The longer form is kept as well because both appear in the wild."
+
+  - id: dmarc-dmarc25
+    vendor: "DMARC/25"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "dmarc25.jp"
+    notes: "Japanese cloud DMARC analysis service, confirmed from the site it serves at dmarc25.jp."
+
+  - id: dmarc-customers-mail-cloud
+    vendor: "Customers Mail Cloud"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "smtps.jp"
+    notes: "Japanese transactional email platform. Ownership confirmed from the site at www.smtps.jp, which serves the Customers Mail Cloud product page. Reports are addressed to dp.smtps.jp; matched on the bare domain."
+
+  - id: dmarc-mailhardener
+    vendor: "Mailhardener"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "mailhardener.com"
+    notes: "Email authentication monitoring service, confirmed from the site it serves. Reports are addressed to in.mailhardener.com; matched on the bare domain, which also covers the MTA-STS hosting it provides under the same name."

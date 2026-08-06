@@ -134,3 +134,58 @@ signatures:
       serve a site, and their certificates carry no organisation. Disabled until
       someone confirms the operator directly.
 
+  - id: cname-target-cdnetworks-cdnga
+    vendor: "CDNetworks"
+    category: "Infrastructure"
+    type: cname_target
+    query: "cdnga.net"
+    disabled: true
+    notes: "Observed fronting a live estate. Attribution is UNCONFIRMED and the entry is parked for that reason. Circumstantial only: cdnga.net delegates to ns1.cdngc.net and both resolve to 157.185.151.2, and cdngc.net has historically been CDNetworks infrastructure. Neither domain serves a site and neither SOA names an organisation, so nothing confirms the operator. Confirm before enabling."
+
+  - id: cname-target-shadan-kun
+    vendor: "Shadan-kun"
+    category: "Security"
+    type: cname_target
+    query: "shadan-kun.jp"
+    disabled: true
+    notes: "Observed as a random-labelled alias on a live estate, the usual shape of a WAF or scrubbing proxy. The domain is the product name, but the site would not load over http or https and the zone is on Route 53 with no organisation named in SOA, so the operator is UNCONFIRMED. Parked until a load of the vendor site or a customer reference confirms it."
+
+  - id: cname-target-go2cloud
+    vendor: "TUNE"
+    category: "Marketing"
+    type: cname_target
+    query: "go2cloud.org"
+    disabled: true
+    notes: "Tracking domain observed on the same estate as a confirmed hasoffers.com alias, with the same per-customer naming (<customer>-elb2.go2cloud.org), which is why TUNE is the suspected operator. UNCONFIRMED: the zone is on Route 53 with no organisation in SOA, and the apex, www and a live customer host all answer 404 over plain nginx, so nothing ties it to TUNE except co-occurrence. Two domains appearing on one estate is not ownership evidence. Confirm before enabling."
+
+  - id: cname-target-rs-stripe
+    vendor: "Stripe"
+    category: "Payments"
+    type: cname_target
+    query: "rs-stripe.com"
+    disabled: true
+    notes: "Seen as stripe.rs-stripe.com on three unrelated estates, which is a strong signal that it is a real shared service rather than one company's infrastructure. Attribution to Stripe rests on the name alone and is UNCONFIRMED: the zone is on Route 53 with no organisation in SOA, and the site sits behind a Cloudflare challenge that blocks verification. It could equally be a third-party integrator. Confirm before enabling — naming a payment provider wrongly is worse than reporting an unattributed host."
+
+  - id: cname-target-infonline
+    vendor: "INFOnline"
+    category: "Analytics"
+    type: cname_target
+    query: "iocnt.net"
+    disabled: true
+    notes: "German audience measurement, suspected from the iocnt name which matches INFOnline's counting service. UNCONFIRMED: the zone is on Google Cloud DNS with no organisation in SOA, www serves nothing, and infonline.de sits behind a Cloudflare challenge. Observed only on two estates under common ownership, so the recurrence is not independent."
+
+  - id: cname-target-utiq
+    vendor: "Utiq"
+    category: "Marketing"
+    type: cname_target
+    query: "utiq-aws.net"
+    disabled: true
+    notes: "European telco advertising consortium. utiq.com is confirmed as the product, but the observed host is utiq-aws.net, a separate domain on Route 53 with no organisation in SOA and no site. The link between the two rests on the name. UNCONFIRMED; observed only on two estates under common ownership."
+
+  - id: cname-target-yjs-cdn
+    vendor: "yjs-cdn"
+    category: "Infrastructure"
+    type: cname_target
+    query: "yjs-cdn.com"
+    disabled: true
+    notes: "A CDN observed on three estates under genuinely unrelated ownership — competitors, not group companies — which is the strongest recurrence signal in this campaign so far and makes it very likely a real commercial service. UNCONFIRMED all the same: the zone administers itself from ns1.yjs-cdn.com, serves no site, and names no organisation anywhere. There is no vendor to report, only a suffix. Enable once someone can put a company behind the name."

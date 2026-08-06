@@ -807,7 +807,7 @@ signatures:
     notes: "Kinsta's second hosting domain, seen alongside kinsta.cloud on the same estate."
 
   - id: cname-target-mailchimp-pages
-    vendor: "MailChimp"
+    vendor: "Mailchimp"
     category: "Marketing"
     type: cname_target
     query: "mailchi.mp"
@@ -1496,3 +1496,203 @@ signatures:
     category: "Collaboration"
     type: cname_target
     query: "zoom.us"
+
+  - id: cname-target-edgecenter
+    vendor: "EdgeCenter"
+    category: "Infrastructure"
+    type: cname_target
+    query: "edgecdn.ru"
+    confidence: medium
+    notes: "Russian CDN and edge cloud. Ownership confirmed from DNS: the edgecdn.ru SOA names support.edgecenter.ru and the zone is delegated to ns1.edgecdn.ru and ns2.eccdn.co. Customer aliases take the form cl-<hex>.edgecdn.ru. Content delivery identifies the provider, not the application behind it."
+
+  - id: cname-target-pro32-connect
+    vendor: "PRO32 Connect"
+    category: "Remote Access"
+    type: cname_target
+    query: "pro32connect.ru"
+    confidence: medium
+    notes: "Russian remote access and remote support product. Zone is the vendor's own, delegated to Selectel. Observed as a go.pro32connect.ru alias on a support subdomain — a shared entry point rather than a per-customer host, so it shows the product is in use without identifying the tenant."
+
+  - id: cname-target-shortio
+    vendor: "Short.io"
+    category: "Marketing"
+    type: cname_target
+    query: "short.io"
+    confidence: high
+    notes: "URL shortener with custom branded domains. cname.short.io is the documented alias target a customer points their own short domain at, so the alias is per-customer evidence rather than shared infrastructure."
+
+  - id: cname-target-akamai-akamaized
+    vendor: "Akamai"
+    category: "Infrastructure"
+    type: cname_target
+    query: "akamaized.net"
+    confidence: medium
+    notes: "Akamai's object-delivery suffix. Ownership confirmed: SOA hostmaster.akamai.com. Sits alongside edgekey.net, edgesuite.net and akadns.net, which were each written separately; this one was missing and the host went out as an unattributed lead."
+
+  - id: cname-target-akamai-edge
+    vendor: "Akamai"
+    category: "Infrastructure"
+    type: cname_target
+    query: "akamaiedge.net"
+    confidence: medium
+    notes: "Akamai edge mapping. Ownership confirmed: SOA hostmaster.akamai.com."
+
+  - id: cname-target-akamai-net
+    vendor: "Akamai"
+    category: "Infrastructure"
+    type: cname_target
+    query: "akamai.net"
+    confidence: medium
+    notes: "Akamai's original delivery suffix. Ownership confirmed: SOA hostmaster.akamai.com via internal.akamaitech.net."
+
+  - id: cname-target-ad-ebis
+    vendor: "AD EBiS"
+    category: "Marketing"
+    type: cname_target
+    query: "ebis.ne.jp"
+    confidence: high
+    notes: "Japanese advertising measurement and attribution platform, confirmed from the site it serves. Customer aliases take the form <id>.cname.ebis.ne.jp, so the alias is per-customer rather than shared infrastructure."
+
+  - id: cname-target-scutum
+    vendor: "Scutum"
+    category: "Security"
+    type: cname_target
+    query: "scutum.jp"
+    confidence: high
+    notes: "Japanese cloud WAF, confirmed from the site at www.scutum.jp. Protected sites are aliased as <customer-host>.scutum.jp, so the alias names the origin it fronts and is per-customer."
+
+  - id: cname-target-tune-hasoffers
+    vendor: "TUNE"
+    category: "Marketing"
+    type: cname_target
+    query: "hasoffers.com"
+    confidence: high
+    notes: "Partner and affiliate marketing platform, formerly HasOffers. Confirmed from the site it serves, which titles itself the TUNE Partner Marketing Platform. Customer aliases are <customer>.hasoffers.com, so the alias is per-customer."
+
+  - id: cname-target-beehiiv
+    vendor: "beehiiv"
+    category: "Marketing"
+    type: cname_target
+    query: "beehiiv.com"
+    confidence: high
+    notes: "Newsletter and audience platform, confirmed from the site it serves. cname.beehiiv.com is the documented alias target for a customer's own newsletter domain. Seen on two unrelated estates."
+
+  - id: cname-target-mailhardener
+    vendor: "Mailhardener"
+    category: "Email Security"
+    type: cname_target
+    query: "mailhardener.com"
+    confidence: high
+    notes: "Companion to the DMARC signature. Mailhardener hosts MTA-STS policies as <customer-domain>.mta-sts.mailhardener.com, so the alias names the customer and is per-customer evidence."
+
+  - id: cname-target-announcekit
+    vendor: "AnnounceKit"
+    category: "Productivity"
+    type: cname_target
+    query: "announcekit.app"
+    confidence: high
+    notes: "Changelog and in-app release notes tool, confirmed from the site it serves. cname.announcekit.app is the alias target for a customer's own changelog domain."
+
+  - id: cname-target-contentpass
+    vendor: "Contentpass"
+    category: "Customer Experience"
+    type: cname_target
+    query: "contentpass.net"
+    confidence: high
+    notes: "European consent and paid-access platform for publishers, confirmed from the site it serves. Customer aliases are opaque identifiers under with.contentpass.net."
+
+  - id: cname-target-omnivery
+    vendor: "Omnivery"
+    category: "Email"
+    type: cname_target
+    query: "omnivery.net"
+    confidence: high
+    notes: "SMTP and API sending platform, confirmed from omnivery.com and from www.omnivery.net which serves its tracker. The zone runs on the vendor's own nameservers."
+
+  - id: cname-target-workday-tenant
+    vendor: "Workday"
+    category: "HR & Learning"
+    type: cname_target
+    query: "myworkday.com"
+    confidence: high
+    notes: "Workday's tenant-hosting domain. Ownership confirmed: myworkday.com SOA is noc.workday.com. The packs already carried myworkdayjobs.com, the recruiting site, but not this one — the main HCM application — so an estate aliasing a custom domain to Workday reported nothing while the vendor counted as covered. Note the tenant is a path (wd5.myworkday.com/<tenant>), not a subdomain, so there is no vanity signature to write here."
+
+  - id: cname-target-oracle-taleo
+    vendor: "Oracle Taleo"
+    category: "HR & Learning"
+    type: cname_target
+    query: "taleo.net"
+    confidence: high
+    notes: "Oracle's applicant tracking system. Ownership confirmed: taleo.net is delegated to ns1.p201.dns.oraclecloud.net with SOA hostmaster.taleo.net. Customer instances are <customer>.taleo.net, so the alias names the tenant."
+
+  - id: cname-target-mailchimp-list-manage
+    vendor: "Mailchimp"
+    category: "Marketing"
+    type: cname_target
+    query: "list-manage.com"
+    confidence: high
+    notes: "Mailchimp's campaign link and hosted-form domain. Ownership confirmed: list-manage.com SOA is domains.mailchimp.com."
+
+  - id: cname-target-wordpress-vip
+    vendor: "WordPress VIP"
+    category: "Content Management"
+    type: cname_target
+    query: "go-vip.net"
+    confidence: high
+    notes: "Automattic's enterprise WordPress hosting, confirmed from the site it serves. Customer sites appear as <site>.go-vip.net, so the alias names the tenant. Seen on two unrelated estates, both using it for a blog or careers microsite alongside a differently-hosted main site — the usual shape of a marketing team procuring its own platform."
+
+  - id: cname-target-acoustic-pages
+    vendor: "Acoustic"
+    category: "Marketing"
+    type: cname_target
+    query: "pages04.net"
+    confidence: medium
+    notes: "Marketing automation landing pages, formerly IBM Watson Marketing and Silverpop. Ownership confirmed from DNS: pages04.net is delegated to ns1.acoustic-adm.com. The numbered domain is one of a series Acoustic operates, so sibling suffixes almost certainly exist and are not yet carried — the numbering is a warning that this entry is written against one observed host."
+
+  - id: cname-target-alibaba-cloud-oss
+    vendor: "Alibaba Cloud"
+    category: "Infrastructure"
+    type: cname_target
+    query: "aliyuncs.com"
+    confidence: medium
+    notes: "Alibaba Cloud's service domain, covering OSS object storage and other regional endpoints. Ownership confirmed: aliyuncs.com SOA is hidden-master.aliyun.com with hostmaster.aliyun-inc. Buckets appear as <name>.oss-<region>.aliyuncs.com, so the host names both the bucket and the region."
+
+  - id: cname-target-baidu-cloud-bos
+    vendor: "Baidu Cloud"
+    category: "Infrastructure"
+    type: cname_target
+    query: "bcebos.com"
+    confidence: medium
+    notes: "Baidu Object Storage. Ownership confirmed: bcebos.com is delegated to ns1.baidubce.com with SOA sa.baidu.com."
+
+  - id: cname-target-tencent-cloud
+    vendor: "Tencent Cloud"
+    category: "Infrastructure"
+    type: cname_target
+    query: "tencent-cloud.net"
+    confidence: medium
+    notes: "Tencent Cloud service endpoints. Ownership confirmed: SOA is ns-open1.qq.com with webmaster.qq.com."
+
+  - id: cname-target-dnspod
+    vendor: "DNSPod"
+    category: "Infrastructure"
+    type: cname_target
+    query: "dnsv1.com"
+    confidence: medium
+    notes: "DNSPod, Tencent Cloud's managed DNS and CDN acceleration. Ownership confirmed: SOA is enterprise3dnsadmin.dnspod.com. Observed on two estates under unrelated ownership, so it is sold as a service rather than being one company's internal infrastructure. Carried separately from Tencent Cloud because the product is bought on its own."
+
+  - id: cname-target-gitbook
+    vendor: "GitBook"
+    category: "Documentation"
+    type: cname_target
+    query: "gitbooks.io"
+    confidence: high
+    notes: "Hosted documentation. Confirmed from the site it serves, which identifies itself as GitBook (Legacy) — the domain is their older hosting suffix, so a hit may indicate documentation nobody has migrated or reviewed in years."
+
+  - id: cname-target-jiasule
+    vendor: "Jiasule"
+    category: "Infrastructure"
+    type: cname_target
+    query: "jiasule.org"
+    confidence: medium
+    notes: "Chinese CDN and WAF. Ownership confirmed only to the extent that the zone administers itself from mail.jiasule.net, so the operator behind the brand is not named in DNS; the brand itself is unambiguous. A sibling suffix jiashule.com was observed on another estate and is not carried, because nothing confirms the two are the same operator rather than a lookalike."

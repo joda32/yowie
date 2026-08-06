@@ -202,4 +202,4 @@ signatures:
     type: cname_target
     query: "workday.com"
     disabled: true
-    notes: "Applies only to subdomains discovered via certificate transparency; organisations often alias a careers or login hostname here."
+    notes: "Applies only to subdomains discovered via certificate transparency; organisations often alias a careers or login hostname here. Distinct from cname-target-workday-tenant, which covers myworkday.com: the label-boundary rule means workday.com does not match myworkday.com, so both suffixes need their own entry."

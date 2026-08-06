@@ -160,7 +160,7 @@ signatures:
     notes: "SAP SuccessFactors human capital management. Ownership confirmed: sapsf.com is served by ns*.sap.net with SOA dns.sap-ag.de. The datacentre is visible in the include host, e.g. _spf-dc10.sapsf.com. Holds employee and payroll data."
 
   - id: spf-mailchimp
-    vendor: "MailChimp"
+    vendor: "Mailchimp"
     category: "Marketing"
     type: spf_include
     query: "{domain}"
@@ -169,7 +169,7 @@ signatures:
     confidence: high
 
   - id: spf-mailchimp-2
-    vendor: "MailChimp"
+    vendor: "Mailchimp"
     category: "Marketing"
     type: spf_include
     query: "{domain}"
@@ -230,8 +230,9 @@ signatures:
     type: spf_include
     query: "{domain}"
     match:
-      contains: "mailsenders.netsuite.com"
+      contains: "netsuite.com"
     confidence: high
+    notes: "Broadened from mailsenders.netsuite.com, which missed outboundips.netsuite.com — the same one-observed-hostname defect that produced the netblocks.google.com and webflow entries. NetSuite publishes several sending hosts under the one domain."
 
   - id: spf-proof-point
     vendor: "Proofpoint"
@@ -907,3 +908,103 @@ signatures:
     match:
       contains: "zendesk.com"
     confidence: high
+
+  - id: spf-sendsay
+    vendor: "Sendsay"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "sendsay.ru"
+    confidence: high
+    notes: "Russian omnichannel customer data and marketing automation platform. Observed as include:spf.sendsay.ru; matched on the bare domain so the other sending hosts it publishes are covered too."
+
+  - id: spf-yandex-360
+    vendor: "Yandex 360"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "yandex.ru"
+    confidence: high
+    notes: "Yandex 360 business mail. Ownership confirmed: yandex.ru SOA is sysadmin.yandex-team.ru. The published chain is _spf.yandex.ru including _spf-ipv4-yc and _spf-ipv6; matched on the bare domain so every member of the chain counts."
+
+  - id: spf-yandex-360-net
+    vendor: "Yandex 360"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "yandex.net"
+    confidence: high
+    notes: "Companion to the yandex.ru signature. _spf.yandex.net is a redirect to _spf.yandex.ru, so a domain using the .net form resolves to the same senders; carried separately because a redirect target is worth matching on its own name."
+
+  - id: spf-lark
+    vendor: "Lark"
+    category: "Collaboration"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "onlarksuite.com"
+    confidence: high
+    notes: "Lark Suite, ByteDance's collaboration platform, and a significant gap outside the Anglosphere. Ownership confirmed: onlarksuite.com SOA is dnsadmin.bytedance.com."
+
+  - id: spf-cloudflare-email-routing
+    vendor: "Cloudflare Email Routing"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "mx.cloudflare.net"
+    confidence: high
+    notes: "Cloudflare Email Routing, distinct from the Cloudflare DMARC signature alongside it. Confirmed live: _spf.mx.cloudflare.net publishes a real sender range."
+
+  - id: spf-zuora
+    vendor: "Zuora Subscription Management"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "zuora.com"
+    confidence: high
+    notes: "Companion to the TXT verification signature, which was the only channel carried. Zuora was already 'covered' while an estate authorising a:zgateway.zuora.com went unreported — the same right-vendor-wrong-channel gap the pack notes warn about."
+
+  - id: spf-firebase
+    vendor: "Firebase"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "firebasemail.com"
+    confidence: high
+    notes: "Firebase's outbound mail domain, used for authentication and extension email. Ownership confirmed: firebasemail.com SOA is cloud-dns-hostmaster.google.com. Its own record includes sendgrid.net and _spf.google.com, so a domain carrying it will often show SendGrid too."
+
+  - id: spf-sparkpost
+    vendor: "SparkPost"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "sparkpostmail.com"
+    confidence: high
+    notes: "Transactional and marketing email API, confirmed from the site it serves. A notable gap: SparkPost is a major sender and nothing in the packs carried it."
+
+  - id: spf-freshworks
+    vendor: "Freshworks"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "freshemail.io"
+    confidence: high
+    notes: "Freshworks' platform-level sending domain, confirmed at www.freshemail.io which serves the Freshworks Neo Platform. Distinct from the Freshdesk and Freshservice hosting signatures: this is the sender shared across their products, so it fires where the product-specific aliases do not."
+
+  - id: spf-alibaba-cloud-mail
+    vendor: "Alibaba Cloud Mail"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "mail.aliyun.com"
+    confidence: high
+    notes: "Alibaba Cloud enterprise mail. Senders authorise a.staff.mail.aliyun.com and siblings under the same name; matched on mail.aliyun.com so the whole family counts without capturing unrelated aliyun.com services."
