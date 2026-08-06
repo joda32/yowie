@@ -20,7 +20,7 @@ everyone insists isn't there.
 
 ![Yowie in action](docs/yowie-in-action.png)
 
-**479 signatures covering 346 vendors** across nine detectors, plus 74 parked
+**518 signatures covering 376 vendors** across nine detectors, plus 81 parked
 awaiting confirmation. Findings are graded and every one carries the record or
 response that produced it.
 
