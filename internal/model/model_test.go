@@ -88,3 +88,67 @@ func TestTruncateCollapsesWhitespace(t *testing.T) {
 		t.Errorf("Truncate = %q, want %q", got, "abcd…")
 	}
 }
+
+// Several tenants named after the same candidate are one assumption repeated,
+// not independent corroboration. Without this the corroboration bonus would
+// promote a contested finding to high the moment a second vendor matched.
+func TestContestedFindingsDoNotCorroborateEachOther(t *testing.T) {
+	s := NewFindingSet()
+	s.Add(Finding{Vendor: "Salesforce", Confidence: ConfidenceHigh, ContestedNamespace: true,
+		Signatures: []string{"vanity-salesforce"},
+		Evidence:   []Evidence{ev(MethodA, "abc.my.salesforce.com", "136.146.27.240")}})
+	s.Add(Finding{Vendor: "Salesforce", Confidence: ConfidenceMedium, ContestedNamespace: true,
+		Signatures: []string{"http-salesforce"},
+		Evidence:   []Evidence{ev(MethodHTTP, "https://abc.lightning.force.com", "Salesforce")}})
+
+	f := s.Findings()[0]
+	if f.Confidence != ConfidenceMedium {
+		t.Errorf("confidence = %q, want medium: two candidate-namespace matches are the same claim twice", f.Confidence)
+	}
+	if !f.ContestedNamespace {
+		t.Error("finding should still be marked contested")
+	}
+}
+
+// One domain-scoped match settles ownership, and the cap must lift.
+func TestDomainScopedEvidenceLiftsTheContestedCap(t *testing.T) {
+	s := NewFindingSet()
+	s.Add(Finding{Vendor: "Salesforce", Confidence: ConfidenceMedium, ContestedNamespace: true,
+		Signatures: []string{"vanity-salesforce"},
+		Evidence:   []Evidence{ev(MethodA, "abc.my.salesforce.com", "136.146.27.240")}})
+	s.Add(Finding{Vendor: "Salesforce", Confidence: ConfidenceHigh,
+		Signatures: []string{"txt-salesforce"},
+		Evidence:   []Evidence{ev(MethodTXT, "abc.example", "salesforce-domain-verification=x")}})
+
+	f := s.Findings()[0]
+	if f.ContestedNamespace {
+		t.Error("a domain-scoped match should clear the contested mark")
+	}
+	if f.Confidence != ConfidenceHigh {
+		t.Errorf("confidence = %q, want high once ownership is proven", f.Confidence)
+	}
+}
+
+// Order must not matter: the domain-scoped match may arrive first.
+func TestContestedCapIsOrderIndependent(t *testing.T) {
+	s := NewFindingSet()
+	s.Add(Finding{Vendor: "Okta", Confidence: ConfidenceHigh,
+		Evidence: []Evidence{ev(MethodTXT, "acme.com", "okta-verification=x")}})
+	s.Add(Finding{Vendor: "Okta", Confidence: ConfidenceHigh, ContestedNamespace: true,
+		Evidence: []Evidence{ev(MethodCNAME, "acm.okta.com", "ok6-crtrs.tng.okta.com")}})
+
+	if f := s.Findings()[0]; f.Confidence != ConfidenceHigh || f.ContestedNamespace {
+		t.Errorf("confidence = %q contested = %v, want high and not contested", f.Confidence, f.ContestedNamespace)
+	}
+}
+
+// A lone contested match arriving as high is capped on insert, not only on merge.
+func TestLoneContestedFindingIsCappedOnInsert(t *testing.T) {
+	s := NewFindingSet()
+	s.Add(Finding{Vendor: "Zoom", Confidence: ConfidenceHigh, ContestedNamespace: true,
+		Evidence: []Evidence{ev(MethodA, "abc.zoom.us", "170.114.52.2")}})
+
+	if f := s.Findings()[0]; f.Confidence != ConfidenceMedium {
+		t.Errorf("confidence = %q, want medium", f.Confidence)
+	}
+}

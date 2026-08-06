@@ -98,6 +98,10 @@ Two independent detectors agreeing on a vendor promotes a Probable finding to
 Confirmed. Every finding carries the exact record or response that triggered it,
 so a report is defensible without re-running the tool.
 
+The promotion has one exception, and it is the difference between "this tenant
+exists" and "this tenant is yours" — see the namespace note under
+[accuracy](#notes-on-accuracy).
+
 `-no-unknown` drops the unattributed leads if you want signal only.
 
 ### Output formats
@@ -290,6 +294,27 @@ discarding it.
   when the "exists" state is an error code. A signature with only
   `match.status` matches on the code alone, for vendors serving an identical
   single-page-application shell either way.
+- **A tenant named after a candidate is capped at Probable when the name is
+  contested.** Vendor tenant namespaces are global and first-come-first-served,
+  so `acme.zendesk.com` proves a tenant called `acme` exists — not that it is
+  your `acme`. Two rules apply, both to vanity and to HTTP findings:
+
+  A candidate of four characters or fewer is treated as contested outright.
+  Short names are heavily oversubscribed, and the collision is invisible in the
+  output because the tenant resolves exactly like a real one.
+
+  A tenant page that *names an organisation* unrelated to the candidate and the
+  domain is also treated as contested, and the report says which name it saw.
+  Acronym expansion deliberately does not count as a relation — a shared acronym
+  is why two organisations wanted the same tenant name, so treating it as a
+  match would suppress the very case worth catching.
+
+  Contested findings do not corroborate each other. Five vendors all matching
+  the same short candidate is one unproven assumption restated five times, not
+  five independent signals, so the corroboration bonus is suppressed and the cap
+  holds. A single domain-scoped match — a verification token, an SPF include, a
+  subdomain of yours in CT — settles ownership and lifts it. The JSON carries
+  `contested_namespace` so downstream tooling can filter on it.
 - SPF walking honours the RFC 7208 ten-lookup limit and warns when a domain
   exceeds it, since receivers may then reject the record outright.
 - Nothing here authenticates to anything. All checks use publicly observable

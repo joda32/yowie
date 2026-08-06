@@ -92,8 +92,13 @@ type Finding struct {
 	Signatures []string `json:"signatures,omitempty"`
 	// Notes carries analyst guidance from the signature pack, e.g. a caveat
 	// about false positives.
-	Notes    []string   `json:"notes,omitempty"`
-	Evidence []Evidence `json:"evidence"`
+	Notes []string `json:"notes,omitempty"`
+	// ContestedNamespace marks a finding that rests entirely on a tenant named
+	// after a candidate string, where the tenant could plausibly belong to a
+	// different organisation. Such a finding is capped at medium however much
+	// evidence accumulates, because the evidence is all the same claim restated.
+	ContestedNamespace bool       `json:"contested_namespace,omitempty"`
+	Evidence           []Evidence `json:"evidence"`
 	// FirstSeen is set by the engine when the finding is recorded.
 	FirstSeen time.Time `json:"first_seen"`
 }
@@ -142,6 +147,12 @@ func NewFindingSet() *FindingSet {
 // is appended and the confidence is promoted to the strongest observed. Two
 // independent medium-confidence hits promote to high: corroboration across
 // unrelated channels is exactly the signal we want to reward.
+//
+// Contested findings are the exception. Several tenants named after the same
+// candidate are not independent corroboration — they are one unproven
+// assumption about who owns that name, repeated per vendor. Confidence is
+// therefore capped at medium for as long as every contributing match is
+// contested, and the cap lifts the moment one domain-scoped match arrives.
 func (s *FindingSet) Add(f Finding) {
 	k := f.key()
 	existing, ok := s.byVendor[k]
@@ -149,6 +160,9 @@ func (s *FindingSet) Add(f Finding) {
 		cp := f
 		if cp.FirstSeen.IsZero() {
 			cp.FirstSeen = time.Now().UTC()
+		}
+		if cp.ContestedNamespace && cp.Confidence == ConfidenceHigh {
+			cp.Confidence = ConfidenceMedium
 		}
 		s.byVendor[k] = &cp
 		s.order = append(s.order, k)
@@ -175,6 +189,10 @@ func (s *FindingSet) Add(f Finding) {
 		existing.Category = f.Category
 	}
 
+	// A finding stays contested only while every contributor is contested. One
+	// match that did not come from a candidate namespace settles ownership.
+	existing.ContestedNamespace = existing.ContestedNamespace && f.ContestedNamespace
+
 	if f.Confidence.Score() > existing.Confidence.Score() {
 		existing.Confidence = f.Confidence
 	}
@@ -183,6 +201,11 @@ func (s *FindingSet) Add(f Finding) {
 	if existing.Confidence == ConfidenceMedium && len(existing.Evidence) > before &&
 		distinctMethods(existing.Evidence) > 1 {
 		existing.Confidence = ConfidenceHigh
+	}
+	// Applied last, so it overrides both the promotion above and any high-
+	// confidence contested match that arrived on its own.
+	if existing.ContestedNamespace && existing.Confidence == ConfidenceHigh {
+		existing.Confidence = ConfidenceMedium
 	}
 }
 

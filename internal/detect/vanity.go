@@ -3,6 +3,7 @@ package detect
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/joda32/yowie/internal/model"
 	"github.com/joda32/yowie/internal/signature"
@@ -90,11 +91,27 @@ func (v *Vanity) Run(ctx context.Context, s *Scan) error {
 						"which is weaker evidence than a plain NXDOMAIN baseline — confirm before reporting."
 				}
 
+				// A tenant exists. Whether it is *this* organisation's tenant is
+				// a separate question, and a short candidate cannot answer it.
+				contested := contestedByLength(candidate)
+				if contested {
+					if conf == model.ConfidenceHigh {
+						conf = model.ConfidenceMedium
+					}
+					notes = strings.TrimSpace(notes + fmt.Sprintf(
+						" Candidate %q is %d characters, short enough that the tenant is likely to "+
+							"belong to a different organisation of the same initials — vendor namespaces "+
+							"are global and first-come-first-served. Capped at probable: confirm the "+
+							"tenant is yours before reporting it.",
+						candidate, len([]rune(candidate))))
+				}
+
 				f := model.Finding{
-					Vendor:     sig.Vendor,
-					Category:   sig.Category,
-					Confidence: conf,
-					Signatures: []string{sig.ID},
+					Vendor:             sig.Vendor,
+					Category:           sig.Category,
+					Confidence:         conf,
+					ContestedNamespace: contested,
+					Signatures:         []string{sig.ID},
 					Evidence: []model.Evidence{{
 						Method: method,
 						Query:  host,
