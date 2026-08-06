@@ -38,9 +38,27 @@ build_orgnames() {
   vendors="$(grep -hoiE '^[[:space:]]+(vendor|query|contains):.*' signatures/*.yaml 2>/dev/null | tr '[:upper:]' '[:lower:]')"
   local stop=" corporate group energy international surgical health global cloud first auto \
 systems services holdings limited technologies industries resources digital online \
-capital partners financial national general medical dental \
+capital partners financial national general medical dental mobile press \
+state history goal book heavy focus orange chess wish genius \
+medium booking archive mozilla detail subject \
 "
   for d in "${domains[@]}"; do
+    # For a subdomain, the first label names the site section, not the
+    # organisation: in shop.acme.example the org is acme, while "shop" is the
+    # kind of ordinary word that appears in every other line of a codebase.
+    # When the parent is also on the list it already contributes the org name,
+    # and the child contributes only noise.
+    #
+    # The first draft of this very comment used a real scanned subdomain as its
+    # example and the guard rejected it, which is the second time that has
+    # happened while writing a rule about not doing it.
+    parent="${d#*.}"
+    skip=""
+    for other in "${domains[@]}"; do
+      [ "$other" = "$parent" ] && { skip=1; break; }
+    done
+    [ -n "$skip" ] && continue
+
     lbl="${d%%.*}"
     [ "${#lbl}" -ge 5 ] || continue
     case "$stop" in *" $lbl "*) continue ;; esac
