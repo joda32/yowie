@@ -38,7 +38,8 @@ signatures:
     type: dmarc_rua
     query: "{domain}"
     match:
-      contains: "easydmarc.com"
+      contains: "easydmarc."
+    notes: "Matched on the bare name rather than easydmarc.com, because the vendor collects reports on several TLDs — .pro and .us were both observed in use while the .com-only match silently ignored them. The trailing dot keeps the match anchored to the label boundary."
 
   - id: dmarc-fraudmarc
     vendor: "Fraudmarc"
@@ -243,3 +244,56 @@ signatures:
     match:
       contains: "mailhardener.com"
     notes: "Email authentication monitoring service, confirmed from the site it serves. Reports are addressed to in.mailhardener.com; matched on the bare domain, which also covers the MTA-STS hosting it provides under the same name."
+
+  # --- Added from the eighth, ninth and tenth signature-mining sweeps ------
+  #
+  # Ranked by the number of distinct organisations each sender appeared on.
+  # Entries whose operator could not be established from DNS ship disabled,
+  # with the negative result recorded in notes so it is not rediscovered.
+
+  - id: dmarc-sendmarc-sdmarc
+    vendor: "Sendmarc"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "sdmarc.net"
+    notes: "Sendmarc's report-collection domain, distinct from the sendmarc.com destination the existing signature matches. Confirmed by DNS: sdmarc.net has SOA ns1.sendmarc.net. Observed as an unmatched DMARC destination on 4 organisations, with 11 further per-customer hostnames under the same suffix."
+
+  - id: dmarc-dmarcadvisor
+    vendor: "DMARC Advisor"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "dmarcadvisor.com"
+    disabled: true
+    notes: "UNCONFIRMED operator. The most frequent unmatched DMARC destination in the sweep by a wide margin — 12 organisations, via ag.eu.dmarcadvisor.com and fr.eu.dmarcadvisor.com, the regional split implying a European processor. Ownership is not confirmable from DNS: the zone is on Google Cloud DNS with no organisation in the SOA. Confirm against the vendor's own site before enabling."
+
+  - id: dmarc-cisco-dmarc-management
+    vendor: "Cisco Email Security"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "dmp.cisco.com"
+    disabled: true
+    notes: "UNCONFIRMED as a distinct product. Observed as rua.dmp.cisco.com and ruf.dmp.cisco.com on 5 organisations. The domain is unambiguously Cisco's, but which product line collects these — and whether it should report as Cisco Email Security or as its own entry — has not been established. Enabling it under the wrong vendor name would split or merge findings incorrectly."
+
+  - id: dmarc-cisa-federal
+    vendor: "CISA Federal DMARC"
+    category: "Compliance & GRC"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "dmarc.cyber.dhs.gov"
+    disabled: true
+    notes: "UNCONFIRMED framing rather than unconfirmed ownership — the domain is plainly the US Department of Homeland Security's. Observed on 8 organisations, all US federal. This is a compliance mandate (BOD 18-01) rather than a purchased SaaS subscription, so it may not belong in a shadow-IT report at all. Decide whether the tool should surface obligations as well as subscriptions before enabling."
+
+  - id: dmarc-lovable
+    vendor: "Lovable"
+    category: "Development"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "lovable.dev"
+    confidence: low
+    disabled: true
+    notes: "UNCONFIRMED, and parked as much for its shape as its ownership. The observation is a DMARC rua destination of dmarcreports@lovable.dev on one organisation — not an SPF include, which is how this entry was first drafted and why it silently failed to fire until tested. lovable.dev is an AI application builder, and a report destination there is not a product feature it advertises; the likelier explanation is that whoever built the site pointed DMARC at their own domain. That makes it a finding about a supplier relationship rather than a SaaS subscription, and attributing it to the vendor would misdescribe it. Identify what is actually collecting these reports before enabling."

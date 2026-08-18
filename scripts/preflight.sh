@@ -32,6 +32,18 @@ echo "Checking ${#domains[@]} scanned domain(s) against every published surface.
 # exception: a domain may appear because we detect the product, not because the
 # organisation was assessed. Short and ordinary-English labels are skipped too,
 # or every note mentioning "corporate" or "group" would fire.
+#
+# Four words joined that set across the eighth and ninth sweeps, and they are
+# worth a note because each is core vocabulary here rather than incidental prose:
+# how the confidence model describes corroborating detectors, how the status-only
+# HTTP signatures describe a single-page-application's HTML, how the engine
+# describes collapsing a repeated warning, and how the ct detector reports a
+# hostname count against its limit. Every one of them is also somebody's domain
+# label, which is the hazard: the larger the scanned list grows, the more
+# ordinary English it swallows, and each word added here is a word the prose
+# check can no longer see. The literal-domain check still covers all four, so
+# this comment does not name them — writing the example out is what tripped the
+# guard the last three times, including this one.
 orgnames=()
 build_orgnames() {
   local vendors lbl
@@ -41,6 +53,7 @@ systems services holdings limited technologies industries resources digital onli
 capital partners financial national general medical dental mobile press \
 state history goal book heavy focus orange chess wish genius \
 medium booking archive mozilla detail subject \
+independent shell times total universal \
 "
   for d in "${domains[@]}"; do
     # For a subdomain, the first label names the site section, not the
