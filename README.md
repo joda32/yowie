@@ -20,7 +20,7 @@ everyone insists isn't there.
 
 ![Yowie in action](docs/yowie-in-action.png)
 
-**560 signatures covering 401 vendors** across nine detectors, plus 95 parked
+**574 signatures covering 412 vendors** across nine detectors, plus 104 parked
 awaiting confirmation. Findings are graded and every one carries the record or
 response that produced it.
 
@@ -189,9 +189,9 @@ parked entries as research notes, not latent coverage.
 
 ```
 $ ./yowie -validate
-560 signatures across 13 packs, covering 401 vendors
+574 signatures across 13 packs, covering 412 vendors
 ...
-95 signature(s) parked behind `disabled: true`, awaiting confirmation against a live tenant:
+104 signature(s) parked behind `disabled: true`, awaiting confirmation against a live tenant:
 
   ai-services.yaml (24)
     txt-fireflies-ai                         Fireflies.ai
@@ -355,7 +355,7 @@ Leads — verify before acting (7) ───────────────
       ! 9 subdomain(s) point at service-now.com, which matches no known vendor signature.
 
 33 services across 18 confirmed, 8 probable, 7 leads
-176 DNS queries (12 served from cache), 73 HTTP requests, 560 signatures, 10.0s
+176 DNS queries (12 served from cache), 73 HTTP requests, 574 signatures, 10.0s
 ```
 
 Have fun and feel free to submit new signatures and any bugs or feature requests.

@@ -1337,7 +1337,7 @@ signatures:
       contains: "nfco-mailout.com"
     confidence: low
     disabled: true
-    notes: "UNCONFIRMED, operator unidentified. Observed on 8 organisations, which makes it the second most frequent unmatched sender in the sweep and the most interesting unknown in it. The zone is on Cloudflare with no organisation in the SOA. The vendor field is the bare domain because no product name could be established. Worth identifying before anything else in this file."
+    notes: "UNCONFIRMED, operator unidentified. Seen on 12 organisations across three sweeps, and still nobody can say whose it is — the longest-standing unknown in the packs. The zone is on Cloudflare with no organisation in the SOA. The vendor field is the bare domain because no product name could be established. Worth identifying before anything else in this file."
 
   - id: spf-exclaimer-signatures
     vendor: "Exclaimer"
@@ -1348,7 +1348,7 @@ signatures:
       contains: "emailsignatures365.com"
     confidence: medium
     disabled: true
-    notes: "UNCONFIRMED. The name points strongly at a centrally-managed email-signature product for Microsoft 365, of which Exclaimer is the best known, but the zone is on DNS Made Easy with no organisation in the SOA and nothing in DNS ties it to that vendor. Naming it Exclaimer on the strength of the string alone is exactly the reasoning this repository has been wrong about before. Observed on 6 organisations in the ninth sweep and 3 more in the tenth, 9 in total, which makes it the best-attested unconfirmed entry in the packs. The tenth sweep also showed it uses per-country subdomains, so any eventual signature should match the bare domain rather than a regional host."
+    notes: "UNCONFIRMED. The name points strongly at a centrally-managed email-signature product for Microsoft 365, of which Exclaimer is the best known, but the zone is on DNS Made Easy with no organisation in the SOA and nothing in DNS ties it to that vendor. Naming it Exclaimer on the strength of the string alone is exactly the reasoning this repository has been wrong about before. Seen on 14 organisations across three sweeps. The tenth sweep also showed it uses per-country subdomains, so any eventual signature should match the bare domain rather than a regional host."
 
   - id: spf-zoho-campaigns
     vendor: "Zoho Campaigns"
@@ -1359,7 +1359,7 @@ signatures:
       contains: "zcsend.net"
     confidence: medium
     disabled: true
-    notes: "UNCONFIRMED. The zc prefix suggests Zoho Campaigns and the other Zoho domains in this file all resolve to zohocorp nameservers, but this one does not: SOA is ns1.vtitan.com, which belongs to a different operator. Either the attribution is wrong or Zoho delegates this domain elsewhere. Resolve which before enabling. Observed on 2 organisations."
+    notes: "UNCONFIRMED. The zc prefix suggests Zoho Campaigns and the other Zoho domains in this file all resolve to zohocorp nameservers, but this one does not: SOA is ns1.vtitan.com, which belongs to a different operator. Either the attribution is wrong or Zoho delegates this domain elsewhere. Two further pieces of evidence have since accumulated and both point at Zoho: the domain is delegated to the same nsone.net and ultradns nameservers as the confirmed Zoho zones, and it appears as au.zcsend.net, matching the country-prefix pattern the confirmed Zoho regional domains use. That is circumstantial, not proof, and the SOA still contradicts it. Now seen on 17 organisations across four sweeps, which makes this the best-attested unconfirmed entry in the packs — one check against vendor documentation from being enabled."
 
   - id: spf-godaddy-secureserver
     vendor: "GoDaddy"
@@ -1451,7 +1451,7 @@ signatures:
       contains: "dmarcinput.com"
     confidence: low
     disabled: true
-    notes: "UNCONFIRMED, operator unidentified. A DMARC-processing domain seen on 2 organisations. Zone is on AWS with no organisation in the SOA. Vendor field is the bare domain because no product name could be established."
+    notes: "UNCONFIRMED, operator unidentified. A DMARC-processing domain seen on 6 organisations across three sweeps. Zone is on AWS with no organisation in the SOA. Vendor field is the bare domain because no product name could be established."
 
   - id: spf-antispamcloud
     vendor: "antispamcloud.com"
@@ -1462,7 +1462,7 @@ signatures:
       contains: "antispamcloud.com"
     confidence: low
     disabled: true
-    notes: "UNCONFIRMED. A filtering platform resold under many brands, which is why the domain is generic and why naming the operator matters before this is enabled — attributing it to the wrong reseller would be worse than leaving it unattributed. Observed on 2 organisations. Zone is on AWS with no organisation in the SOA."
+    notes: "UNCONFIRMED. A filtering platform resold under many brands, which is why the domain is generic and why naming the operator matters before this is enabled — attributing it to the wrong reseller would be worse than leaving it unattributed. Seen on 8 organisations across two sweeps. Zone is on AWS with no organisation in the SOA."
 
   - id: spf-contacta
     vendor: "contacta.io"
@@ -1473,7 +1473,7 @@ signatures:
       contains: "contacta.io"
     confidence: low
     disabled: true
-    notes: "UNCONFIRMED, operator unidentified. Observed on 2 organisations. Zone is on Cloudflare with no organisation in the SOA."
+    notes: "UNCONFIRMED, operator unidentified. Seen on 4 organisations across two sweeps. Zone is on Cloudflare with no organisation in the SOA."
 
   - id: spf-ventraip
     vendor: "VentraIP"
@@ -1533,3 +1533,248 @@ signatures:
       contains: "easydmarc."
     confidence: high
     notes: "EasyDMARC's managed SPF, a separate product from the report collection the dmarc_rua signature detects and a separate channel it cannot see. Published as _spf<n>.<customer-domain>._d.easydmarc.pro, so the customer domain is embedded in the sender name. Matched on the bare vendor name because the platform operates on several TLDs — .pro carries the SPF service while .us and .eu carry report collection. A domain can appear on one channel without the other, which is why both signatures are needed."
+
+  # --- Added from the eleventh sweep ---------------------------------------
+  #
+  # Run with the eighth-to-tenth entries already live, so the unattributed rate
+  # fell to 22% from 34% on a comparable population and what remained was
+  # genuinely uncovered rather than newly added.
+
+  - id: spf-siteground-dnssmarthost
+    vendor: "SiteGround"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "dnssmarthost.net"
+    confidence: high
+    notes: "SiteGround's per-customer SPF delegation. Ownership confirmed at the registry: dnssmarthost.net is delegated to ns1.siteground.net and ns2.siteground.net. Observed on 32 organisations, the largest single presence in the sweep. Note that the apex answers REFUSED to an SOA query while the customer records resolve normally — an apex query is not a valid test of whether this service is working, and reading one as a broken zone was an error made once already."
+
+  - id: spf-siteground-mailspamprotection
+    vendor: "SiteGround"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "mailspamprotection.com"
+    confidence: high
+    notes: "The second half of SiteGround's mail path, reached by include from the dnssmarthost.net delegation above and also published directly. Attribution is by that chain rather than by its own SOA, which is on Google Cloud DNS and names no organisation. Observed on 31 organisations, almost the same set as the sibling entry; both report under one vendor name so they merge into a single finding."
+
+  - id: spf-ventraip-hostyourservices
+    vendor: "VentraIP"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "hostyourservices.net"
+    confidence: high
+    notes: "A fifth VentraIP sending domain, and the busiest of them at 15 organisations — more than the four already carried put together. Ownership confirmed: SOA ns1.corp.ventraip.net.au. Unlike the others it carries no .au suffix, so it would never have been found by looking for Australian-shaped names."
+
+  - id: spf-ventraip-synergywholesale
+    vendor: "VentraIP"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "synergywholesale.com"
+    confidence: high
+    notes: "VentraIP's wholesale brand, and a sixth sending domain for the same operator. Ownership confirmed: SOA ns1.corp.ventraip.net.au. Observed on 4 organisations. Reported under the VentraIP vendor name because the infrastructure is shared; if the reseller relationship matters to a reader, the evidence line still shows which domain was seen."
+
+  - id: spf-hostinger
+    vendor: "Hostinger"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "hostinger.com"
+    confidence: high
+    notes: "Shared hosting provider. The include is the vendor's own primary domain. Observed on 12 organisations."
+
+  - id: spf-titan-email
+    vendor: "Titan"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "titan.email"
+    confidence: high
+    notes: "Business mail platform bundled by several registrars. The include is the vendor's own primary domain, published as _spf1 through _spf3 beneath it. Observed on 9 organisations."
+
+  - id: spf-syrahost
+    vendor: "SyraHost"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "syrahost.com"
+    confidence: high
+    notes: "Hosting provider. Ownership confirmed: the domain is self-hosted, SOA names1.syrahost.com. Observed on 8 organisations."
+
+  - id: spf-proton-mail
+    vendor: "Proton Mail"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "protonmail.ch"
+    confidence: high
+    notes: "Proton Mail's sending domain, still on the original Swiss name rather than proton.me. Observed on 6 organisations. A hit is worth noting beyond the fact of the subscription: an organisation routing business mail through an end-to-end encrypted provider has usually made a deliberate confidentiality choice, and that is context a reader wants."
+
+  - id: spf-zoho-inventory-au
+    vendor: "Zoho Inventory"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "zoho-inventory.com"
+    confidence: high
+    notes: "Zoho Inventory, sending from its own product domain rather than shared Zoho mail infrastructure. Ownership confirmed: SOA ns1.zohocorp.com on zoho-inventory.com.au. The match omits the country suffix so other regions are covered. Observed on 4 organisations. This is the third distinct Zoho product domain found across the sweeps, after Books and ZeptoMail — the vendor fragments its sending by product as well as by region."
+
+  - id: spf-mailersend
+    vendor: "MailerSend"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "mailersend.net"
+    confidence: high
+    notes: "Transactional email platform from the MailerLite group. The include is the vendor's own domain."
+
+  - id: spf-spamhero
+    vendor: "SpamHero"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "spamhero.com"
+    confidence: high
+    notes: "Hosted mail filtering. The include is the vendor's own primary domain."
+
+  - id: spf-blackbaud
+    vendor: "Blackbaud"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "blackbaud.net"
+    confidence: high
+    notes: "Fundraising and constituent management software for the not-for-profit sector. The include is the vendor's own domain. Observed on 2 organisations, both charities, which is what the product is sold for — a hit is a strong sector signal as well as a subscription."
+
+  - id: spf-miclub
+    vendor: "MiClub"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "miclub.com.au"
+    confidence: high
+    notes: "Australian golf club membership and booking platform. Ownership confirmed: the domain is self-hosted, SOA ns1.miclub.com.au. A narrow vertical product, carried because vertical SaaS is precisely what a generic signature list misses."
+
+  - id: spf-inspectrealestate
+    vendor: "InspectRealEstate"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "inspectrealestate.com.au"
+    confidence: high
+    notes: "Australian property inspection and leasing platform. The include is the vendor's own primary domain."
+
+  - id: spf-jetsmtp
+    vendor: "jetsmtp.net"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "jetsmtp.net"
+    confidence: low
+    disabled: true
+    notes: "UNCONFIRMED, operator unidentified. Observed on 10 organisations, which makes it the most frequent unknown in this sweep. The zone is on Cloudflare with no organisation in the SOA and the name is a generic description of the function. Vendor field is the bare domain because no product name could be established."
+
+  - id: spf-hosting-cloud
+    vendor: "hosting-cloud.net"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "hosting-cloud.net"
+    confidence: low
+    disabled: true
+    notes: "UNCONFIRMED, operator unidentified. Observed on 9 organisations. The domain is self-hosted, SOA ns1-corp.hosting-cloud.net, which proves only that it runs its own DNS — the name is generic and identifies nobody."
+
+  - id: spf-rackspace-emailsrvr
+    vendor: "Rackspace"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "emailsrvr.com"
+    confidence: medium
+    disabled: true
+    notes: "UNCONFIRMED. emailsrvr.com is widely understood to be Rackspace's hosted mail platform, and at 7 organisations it is worth closing, but the zone is on UltraDNS with no organisation in the SOA and nothing in DNS ties it to that vendor. Confirm against vendor documentation before enabling."
+
+  - id: spf-ds-network
+    vendor: "ds.network"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "ds.network"
+    confidence: low
+    disabled: true
+    notes: "UNCONFIRMED, operator unidentified. Observed on 7 organisations. Self-hosted, SOA names1.ds.network. Also note the string is short and spans a label boundary, so it would match inside an unrelated hostname ending in that sequence — if this is ever enabled it needs the same false-positive check the VentraIP mxs entry carries."
+
+  - id: spf-mysecurecloudhost
+    vendor: "mysecurecloudhost.com"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "mysecurecloudhost.com"
+    confidence: low
+    disabled: true
+    notes: "UNCONFIRMED, operator unidentified. Observed on 5 organisations. Zone is on Cloudflare with no organisation in the SOA."
+
+  - id: spf-v6send
+    vendor: "v6send.net"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "v6send.net"
+    confidence: low
+    disabled: true
+    notes: "UNCONFIRMED, operator unidentified. Observed on 4 organisations, and on 1 in the ninth sweep, so it recurs across unrelated populations. Zone is on AWS with no organisation in the SOA."
+
+  - id: spf-gohighlevel-leadconnector
+    vendor: "GoHighLevel"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "leadconnectorhq.com"
+    confidence: medium
+    disabled: true
+    notes: "UNCONFIRMED. leadconnectorhq.com is the infrastructure domain behind the GoHighLevel agency marketing platform, but the name says so nowhere and the zone is on Cloudflare with no organisation in the SOA. Observed on 3 organisations, all small marketing agencies, which fits the product's market. Confirm before enabling."
+
+  - id: spf-tpp-wholesale
+    vendor: "TPP Wholesale"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "tppwholesale.com.au"
+    confidence: medium
+    disabled: true
+    notes: "UNCONFIRMED. An Australian domain and hosting wholesaler; the name matches a known operator but the zone is on AWS with no organisation in the SOA. Observed on 2 organisations."
+
+  - id: spf-neo-space
+    vendor: "neo.space"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "neo.space"
+    confidence: low
+    disabled: true
+    notes: "UNCONFIRMED, operator unidentified. Observed on 2 organisations. Zone is on AWS with no organisation in the SOA. Short and label-spanning, so it carries the same false-positive caveat as the ds.network entry."
