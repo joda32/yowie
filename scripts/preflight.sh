@@ -53,7 +53,7 @@ systems services holdings limited technologies industries resources digital onli
 capital partners financial national general medical dental mobile press \
 state history goal book heavy focus orange chess wish genius \
 medium booking archive mozilla detail subject \
-independent shell times total universal \
+independent shell times total universal joins \
 "
   for d in "${domains[@]}"; do
     # For a subdomain, the first label names the site section, not the
