@@ -19,6 +19,24 @@
 set -uo pipefail
 
 msg_file="$1"
+
+# Strip assistant attribution before anything else looks at the message.
+#
+# The owner is the author of this repository. An assistant that helped write a
+# commit is a tool, not a contributor, and a Co-Authored-By trailer puts it in
+# the GitHub contributor list — which is a claim about provenance that the owner
+# has not made and does not want.
+#
+# This is stripped mechanically rather than left to whoever writes the message,
+# because it has now been added back more than once by an assistant following
+# its own defaults. A rule that depends on the tool remembering is not a rule.
+if grep -qiE '^[[:space:]]*(co-authored-by:.*(claude|anthropic)|.*generated with .*claude)' "$msg_file"; then
+  tmp="$(mktemp)"
+  grep -viE '^[[:space:]]*(co-authored-by:.*(claude|anthropic)|.*generated with .*claude)' "$msg_file" \
+    | awk 'BEGIN{blank=0} {if ($0 ~ /^[[:space:]]*$/) {blank++} else {blank=0}; if (blank<2) print}' > "$tmp"
+  mv "$tmp" "$msg_file"
+  echo "  commit-msg: removed assistant attribution trailer" >&2
+fi
 list="$(git rev-parse --show-toplevel)/.scanned-domains"
 [ -f "$list" ] || exit 0
 
