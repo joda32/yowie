@@ -245,12 +245,29 @@ func TestParseCertSpotter(t *testing.T) {
 	assertHosts(t, got, []string{"acme.com", "api.acme.com", "support.acme.com"})
 }
 
+func TestParseCtlogsDev(t *testing.T) {
+	// ctlogs.dev returns one row per hostname under a "hosts" key, and like the
+	// others reports neighbouring names that must be filtered out.
+	body := `{"hosts":[
+	  {"host":"support.acme.com","certs":3},
+	  {"host":"ACME.COM","certs":1},
+	  {"host":"api.acme.com","certs":2},
+	  {"host":"unrelated.example.net","certs":1}
+	],"has_next":false}`
+	got, err := parseCtlogsDev(body, "acme.com")
+	if err != nil {
+		t.Fatalf("parse: %v", err)
+	}
+	assertHosts(t, got, []string{"acme.com", "api.acme.com", "support.acme.com"})
+}
+
 func TestCTParsersRejectNonJSON(t *testing.T) {
-	// Both services return an HTML error page under load; that must surface as
-	// an error so the caller falls through to the next source.
+	// Every source returns an HTML error page under load; that must surface as
+	// an error so the caller falls through to the other sources.
 	for name, parse := range map[string]func(string, string) ([]string, error){
 		"crt.sh":      parseCrtSh,
 		"certspotter": parseCertSpotter,
+		"ctlogs.dev":  parseCtlogsDev,
 	} {
 		if _, err := parse("<html>502 Bad Gateway</html>", "acme.com"); err == nil {
 			t.Errorf("%s: expected an error for a non-JSON body", name)

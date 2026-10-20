@@ -194,10 +194,16 @@ type ctSource struct {
 	parse func(body, domain string) ([]string, error)
 }
 
-// ctSources are tried in order. crt.sh is richer but is frequently overloaded
-// or returning 502s, so Cert Spotter backs it up; between them the channel is
-// usually available, which matters because it is the only detector that finds
-// vendors nobody wrote a signature for.
+// ctSources are all queried and their results merged (see fetch). crt.sh is the
+// richest but is frequently overloaded or returning 502s — during the
+// government sweep that prompted the third source it was failing on 90%+ of
+// scans — so Cert Spotter and ctlogs.dev back it up. Between the three the
+// channel is usually available, which matters because CT is the only detector
+// that finds vendors nobody wrote a signature for.
+//
+// crtlog.com was evaluated as a fourth source and rejected: its log index
+// returned zero hostnames for well-covered domains, and its anonymous tier is
+// capped at 20 requests a day, so it would add failure noise without coverage.
 var ctSources = []ctSource{
 	{
 		name: "crt.sh",
@@ -213,6 +219,13 @@ var ctSources = []ctSource{
 				"&include_subdomains=true&expand=dns_names"
 		},
 		parse: parseCertSpotter,
+	},
+	{
+		name: "ctlogs.dev",
+		url: func(d string) string {
+			return "https://api.ctlogs.dev/v1/hosts/" + url.PathEscape(d)
+		},
+		parse: parseCtlogsDev,
 	},
 }
 
@@ -381,6 +394,31 @@ func parseCertSpotter(body, domain string) ([]string, error) {
 		for _, n := range e.DNSNames {
 			c.add(n)
 		}
+	}
+	return c.hosts(), nil
+}
+
+// parseCtlogsDev reads ctlogs.dev's /v1/hosts response, which returns one row
+// per distinct hostname rather than one per certificate.
+//
+// Keyless access returns only the first page (around 100 hosts); deeper paging
+// needs an API key, and has_next in the body signals when there is more. That
+// is an acceptable limitation for a fallback source — it still carries the
+// channel when crt.sh is down — but it means a very large estate is sampled,
+// not enumerated, through this source alone.
+func parseCtlogsDev(body, domain string) ([]string, error) {
+	var r struct {
+		Hosts []struct {
+			Host string `json:"host"`
+		} `json:"hosts"`
+	}
+	if err := json.Unmarshal([]byte(body), &r); err != nil {
+		return nil, fmt.Errorf("response was not valid JSON (the service may be rate limiting): %w", err)
+	}
+
+	c := newHostCollector(domain)
+	for _, h := range r.Hosts {
+		c.add(h.Host)
 	}
 	return c.hosts(), nil
 }
