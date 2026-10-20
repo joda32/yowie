@@ -9,6 +9,10 @@
 *.jsonl
 !signatures/*.yaml
 
+# Signature-discovery run output (per-domain JSON + reports = assessed orgs).
+# Never commit.
+/discovery-runs/
+
 # Editor and OS noise
 .DS_Store
 *.swp
@@ -17,6 +21,9 @@
 
 # Record of assessed organisations. Never commit.
 .scanned-domains
+
+# Targets awaiting a CT re-run (a subset of the assessed organisations). Never commit.
+.ct-retry
 
 # Local working-agreements file. Never commit.
 CLAUDE.md
