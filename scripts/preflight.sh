@@ -54,6 +54,9 @@ capital partners financial national general medical dental mobile press \
 state history goal book heavy focus orange chess wish genius \
 medium booking archive mozilla detail subject \
 independent shell times total universal joins \
+copyright acquisition border asset consumer \
+heritage budget classification fitness publishers \
+interaction dictionary \
 "
   for d in "${domains[@]}"; do
     # For a subdomain, the first label names the site section, not the
