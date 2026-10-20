@@ -1696,3 +1696,852 @@ signatures:
     query: "jiasule.org"
     confidence: medium
     notes: "Chinese CDN and WAF. Ownership confirmed only to the extent that the zone administers itself from mail.jiasule.net, so the operator behind the brand is not named in DNS; the brand itself is unambiguous. A sibling suffix jiashule.com was observed on another estate and is not carried, because nothing confirms the two are the same operator rather than a lookalike."
+
+  - id: cname-target-blulogix
+    vendor: "BluLogix"
+    category: "Finance & Procurement"
+    type: cname_target
+    query: "blulogix.com"
+    confidence: medium
+    notes: "Subscription and usage-based billing platform (product BluIQ), BluLogix LLC. Customer billing portals appear as a tenant-named subdomain aliased to portal.blulogix.com. Ownership is not named in DNS — the zone is on Route 53 with Amazon in the SOA — so attribution rests on the unambiguous brand domain and the portal pattern; confidence held at medium. Observed on 1 organisation."
+
+  - id: cname-target-blulogix-sandbox
+    vendor: "BluLogix"
+    category: "Finance & Procurement"
+    type: cname_target
+    query: "blu-sandbox.com"
+    confidence: low
+    disabled: true
+    notes: "UNCONFIRMED. A tenant-named host aliased to blu-sandbox.com was seen alongside a confirmed BluLogix portal on the same estate, suggesting a BluLogix sandbox environment — but the only link is the shared 'blu' prefix and the co-located tenant, and the zone is on Route 53 with Amazon in the SOA. Confirm the operator before enabling. Observed on 1 organisation."
+
+  - id: cname-target-netacent
+    vendor: "Netacent"
+    category: "Business Applications"
+    type: cname_target
+    query: "netacent.com"
+    confidence: medium
+    notes: "Unemployment-insurance software for US state workforce agencies (Data Station / ICON / iUS platform), Netacent Inc. of Boise, Idaho. Claimant portals appear as a tenant-named subdomain aliased to <tenant>.netacent.com. Ownership is not named in DNS — the zone is on Azure DNS with Microsoft in the SOA — so attribution rests on the vendor's product line matching the observed claimant-portal host; confidence held at medium. Observed on 1 organisation."
+
+  - id: cname-target-powerapps-portals-usgov
+    vendor: "Microsoft Power Apps Portals"
+    category: "Business Applications"
+    type: cname_target
+    query: "powerappsportals.us"
+    notes: "US Government cloud variant of powerappsportals.com. Ownership confirmed in DNS: the zone is delegated to azuregov-dns.us with azuredns-hostmaster.microsoft.com in the SOA. Same tenant-hostname shape as the commercial suffix."
+
+  - id: cname-target-azure-traffic-manager-usgov
+    vendor: "Azure Traffic Manager"
+    category: "Infrastructure"
+    type: cname_target
+    query: "usgovtrafficmanager.net"
+    confidence: medium
+    notes: "US Government cloud variant of trafficmanager.net, delegated to the Azure Traffic Manager nameserver pattern (*.dns-tm.us / *.edgedns-tm.us) and self-administered in the SOA. As with the commercial suffix, this is DNS-level load balancing in front of something else; the real service is whatever the profile resolves on to."
+
+  # --- Added from the 100-org government discovery run (CT host targets). ---
+
+  - id: cname-target-socrata
+    vendor: "Tyler Technologies (Socrata)"
+    category: "Business Applications"
+    type: cname_target
+    query: "socrata.net"
+    confidence: medium
+    notes: "Open-data and performance-analytics platform, now Tyler Data & Insights. Org subdomains are aliased to a tenant host under cust.socrata.net. Observed on 1 organisation."
+
+  - id: cname-target-contensis
+    vendor: "Contensis (Zengenti)"
+    category: "Business Applications"
+    type: cname_target
+    query: "contensis.com"
+    confidence: medium
+    notes: "Enterprise CMS by Zengenti, common in UK public sector. Org subdomains are aliased to <tenant>.cloud.contensis.com. Ownership confirmed: the zone is delegated to Zengenti nameservers (ns0/ns1.zengenti.com). Observed on 1 organisation."
+
+  - id: cname-target-objective
+    vendor: "Objective"
+    category: "Business Applications"
+    type: cname_target
+    query: "objective.co.uk"
+    confidence: medium
+    notes: "Objective Corporation content, planning and regulatory software. A UK org subdomain was aliased to online.objective.co.uk. Observed on 1 organisation."
+
+  - id: cname-target-opencounter
+    vendor: "OpenCounter"
+    category: "Business Applications"
+    type: cname_target
+    query: "opencounter.com"
+    confidence: medium
+    notes: "Government business-permitting and licensing portals. Org subdomains are aliased to <tenant>.ssl.opencounter.com. Observed on 1 organisation."
+
+  - id: cname-target-openobjects
+    vendor: "Open Objects (Idox)"
+    category: "Business Applications"
+    type: cname_target
+    query: "openobjects.com"
+    confidence: medium
+    notes: "Local-government directory and 'Local Offer' / family-information services, part of Idox. Org subdomains are aliased to <subdomain>.openobjects.com. Observed on 1 organisation."
+
+  - id: cname-target-pressero
+    vendor: "Aleyant Pressero"
+    category: "Business Applications"
+    type: cname_target
+    query: "pressero.com"
+    confidence: medium
+    notes: "Web-to-print storefront platform by Aleyant. An org print-shop subdomain was aliased to a tenant host under pressero.com. Observed on 1 organisation."
+
+  - id: cname-target-opencities
+    vendor: "Granicus"
+    category: "Business Applications"
+    type: cname_target
+    query: "opencities.com"
+    confidence: medium
+    notes: "OpenCities government website/CMS platform, now part of Granicus. Org subdomains are aliased to a tenant host under opencities.com. Zone is self-administered (support.opencities.com in the SOA), which confirms ownership. Observed on 1 organisation."
+
+  - id: cname-target-citysmarti
+    vendor: "citysmarti"
+    category: "Business Applications"
+    type: cname_target
+    query: "citysmarti.co.uk"
+    confidence: low
+    disabled: true
+    notes: "UNCONFIRMED. A parking/enforcement org subdomain was aliased to a tenant host under citysmarti.co.uk. Zone is on Route 53 with Amazon in the SOA and the operator was not confirmed. Identify the vendor before enabling. Observed on 1 organisation."
+
+  # --- Added from the 100-org Australian discovery run (CT host targets). ---
+
+  - id: cname-target-vision6
+    vendor: "Vision6"
+    category: "Marketing"
+    type: cname_target
+    query: "v6send.net"
+    confidence: medium
+    notes: "Australian email and SMS marketing platform. Tracking subdomains (comms.<org>, link.<org>) are aliased to appN.au.v6send.net. The SPF pack already carries the sending side; this covers the hosted tracking host. Observed on 8 organisations."
+
+  - id: cname-target-smtp2go
+    vendor: "SMTP2GO"
+    category: "Email"
+    type: cname_target
+    query: "smtp2go.net"
+    confidence: medium
+    notes: "Email delivery service. Link-tracking subdomains are aliased to track.smtp2go.net. The SPF pack carries smtp2go.com; this covers the .net tracking host. Observed on 7 organisations."
+
+  - id: cname-target-campaign-monitor
+    vendor: "Campaign Monitor"
+    category: "Marketing"
+    type: cname_target
+    query: "createsend.com"
+    confidence: medium
+    notes: "Email marketing platform. Org subdomains are aliased to cname.createsend.com. The SPF side is carried separately; this covers the hosted host. Observed on 3 organisations."
+
+  - id: cname-target-converlens
+    vendor: "ConverLens"
+    category: "Business Applications"
+    type: cname_target
+    query: "converlens.com"
+    confidence: medium
+    notes: "Community engagement and consultation platform, common on Australian government estates. Org subdomains are aliased to app.converlens.com. Observed on 2 organisations."
+
+  - id: cname-target-jotform
+    vendor: "Jotform"
+    category: "Business Applications"
+    type: cname_target
+    query: "jotform.com"
+    confidence: medium
+    notes: "Online form and survey builder. Org subdomains are aliased to <tenant>.jotform.com. Observed on 2 organisations."
+
+  - id: cname-target-nationbuilder
+    vendor: "NationBuilder"
+    category: "Business Applications"
+    type: cname_target
+    query: "nationbuilder.com"
+    confidence: medium
+    notes: "Advocacy, campaign and community website platform. Org sites are aliased to proxy-<id>.nationbuilder.com. Zone is self-administered (ns1.nationbuilder.com), which confirms ownership. Observed on 2 organisations."
+
+  - id: cname-target-payments2us
+    vendor: "Payments2Us"
+    category: "Finance & Procurement"
+    type: cname_target
+    query: "payments2us.com"
+    confidence: medium
+    notes: "Donation and payment management (a Salesforce app), common among Australian nonprofits. Org subdomains are aliased to <tenant>.payments2us.com. Observed on 2 organisations."
+
+  - id: cname-target-platformsh
+    vendor: "Platform.sh"
+    category: "Infrastructure"
+    type: cname_target
+    query: "platformsh.site"
+    confidence: medium
+    notes: "Application hosting PaaS. Org subdomains are aliased to a generated tenant host under <region>.platformsh.site. Observed on 2 organisations."
+
+  - id: cname-target-raisely
+    vendor: "Raisely"
+    category: "Finance & Procurement"
+    type: cname_target
+    query: "raiselysite.com"
+    confidence: medium
+    notes: "Fundraising and donation platform. Org subdomains are aliased to hosting.raiselysite.com. Observed on 2 organisations."
+
+  - id: cname-target-raisely-app
+    vendor: "Raisely"
+    category: "Finance & Procurement"
+    type: cname_target
+    query: "raisely.com"
+    confidence: medium
+    notes: "Raisely's primary hosting suffix (hosting.raisely.com, <tenant>.raisely.com), paired with raiselysite.com. Observed on 1 organisation."
+
+  - id: cname-target-uptimerobot
+    vendor: "UptimeRobot"
+    category: "Monitoring"
+    type: cname_target
+    query: "uptimerobot.com"
+    confidence: medium
+    notes: "Uptime monitoring and public status pages. Status subdomains are aliased to stats.uptimerobot.com. Observed on 2 organisations."
+
+  - id: cname-target-blackbaud-sky
+    vendor: "Blackbaud"
+    category: "Business Applications"
+    type: cname_target
+    query: "blackbaud.com"
+    confidence: medium
+    notes: "Nonprofit and education CRM/fundraising (Blackbaud Sky). Org subdomains are aliased to <tenant>.sky.blackbaud.com. The SPF pack carries blackbaud.net; this covers the hosted side. Observed on 1 organisation."
+
+  - id: cname-target-brightspace
+    vendor: "D2L Brightspace"
+    category: "Business Applications"
+    type: cname_target
+    query: "brightspace.com"
+    confidence: medium
+    notes: "Learning-management system. Org subdomains are aliased to <tenant>.brightspace.com. Observed on 1 organisation."
+
+  - id: cname-target-catalyst-moodle
+    vendor: "Catalyst IT"
+    category: "Business Applications"
+    type: cname_target
+    query: "catalyst-au.net"
+    confidence: medium
+    notes: "Managed Moodle/Totara hosting. Learning subdomains are aliased to a tenant host under catalyst-au.net. Observed on 1 organisation."
+
+  - id: cname-target-catalyst-moodle-nz
+    vendor: "Catalyst IT"
+    category: "Business Applications"
+    type: cname_target
+    query: "catlearn.nz"
+    confidence: medium
+    notes: "Catalyst IT's Moodle hosting (New Zealand), confirmed from the Catalyst IT nameservers the zone is delegated to. Observed on 1 organisation."
+
+  - id: cname-target-pukunui
+    vendor: "Pukunui"
+    category: "Business Applications"
+    type: cname_target
+    query: "pukunui.net"
+    confidence: medium
+    notes: "Managed Moodle hosting (Australia). Learning subdomains are aliased to <tenant>.moodlesite.pukunui.net. Observed on 1 organisation."
+
+  - id: cname-target-kaltura
+    vendor: "Kaltura"
+    category: "Collaboration"
+    type: cname_target
+    query: "kaltura.com"
+    confidence: medium
+    notes: "Video platform. Org subdomains are aliased to a tenant host under kaf.kaltura.com. Observed on 1 organisation."
+
+  - id: cname-target-springshare-libcal
+    vendor: "Springshare"
+    category: "Business Applications"
+    type: cname_target
+    query: "libcal.com"
+    confidence: medium
+    notes: "Library scheduling and room booking (Springshare LibCal). Org subdomains are aliased to secure-<region>.libcal.com. Observed on 1 organisation."
+
+  - id: cname-target-springshare-libguides
+    vendor: "Springshare"
+    category: "Business Applications"
+    type: cname_target
+    query: "libguides.com"
+    confidence: medium
+    notes: "Library research guides (Springshare LibGuides). Org subdomains are aliased to region-<x>.libguides.com. Observed on 1 organisation."
+
+  - id: cname-target-innovative-interfaces
+    vendor: "Innovative Interfaces"
+    category: "Business Applications"
+    type: cname_target
+    query: "iii.com"
+    confidence: medium
+    notes: "Library services platform (Sierra). Org subdomains are aliased to <tenant>.iii.com. Observed on 1 organisation."
+
+  - id: cname-target-exlibris-intersearch
+    vendor: "Prosentient Systems"
+    category: "Business Applications"
+    type: cname_target
+    query: "intersearch.com.au"
+    confidence: medium
+    notes: "Library repository and discovery hosting. Repository subdomains are aliased to <tenant>.intersearch.com.au. Zone is administered by Prosentient Systems (prosentient.com.au in the SOA), which names the operator. Observed on 2 organisations."
+
+  - id: cname-target-netsuite
+    vendor: "NetSuite"
+    category: "Business Applications"
+    type: cname_target
+    query: "netsuite.com"
+    confidence: medium
+    notes: "Oracle NetSuite ERP. Org subdomains are aliased to <tenant>.hosting.netsuite.com. The SPF pack carries the sending side; this covers the hosted application. Observed on 1 organisation."
+
+  - id: cname-target-workato
+    vendor: "Workato"
+    category: "Business Applications"
+    type: cname_target
+    query: "workato.com"
+    confidence: medium
+    notes: "Integration/automation platform (iPaaS). API subdomains are aliased to apim-custom.<region>.workato.com. Observed on 1 organisation."
+
+  - id: cname-target-pega-platform
+    vendor: "Pega"
+    category: "Business Applications"
+    type: cname_target
+    query: "pega.net"
+    confidence: medium
+    notes: "Pega low-code/BPM platform. Service subdomains are aliased to <tenant>.pega.net. Zone is self-administered (hostmaster.pega.com), which confirms ownership. Complements the pegacloud.net entry already carried. Observed on 1 organisation."
+
+  - id: cname-target-haloitsm
+    vendor: "Halo ITSM"
+    category: "Service Desk"
+    type: cname_target
+    query: "haloitsm.com"
+    confidence: medium
+    notes: "IT service management platform. Service subdomains are aliased to <tenant>.haloitsm.com. Observed on 1 organisation."
+
+  - id: cname-target-cayzu
+    vendor: "Cayzu"
+    category: "Service Desk"
+    type: cname_target
+    query: "cayzu.com"
+    confidence: medium
+    notes: "Help-desk platform. Org subdomains are aliased to <tenant>.cayzu.com. Observed on 1 organisation."
+
+  - id: cname-target-crisp
+    vendor: "Crisp"
+    category: "Service Desk"
+    type: cname_target
+    query: "crisp.email"
+    confidence: medium
+    notes: "Customer messaging/live chat. Org subdomains are aliased to a custom host under crisp.email. Observed on 1 organisation."
+
+  - id: cname-target-userecho
+    vendor: "UserEcho"
+    category: "Service Desk"
+    type: cname_target
+    query: "userecho.com"
+    confidence: medium
+    notes: "Customer feedback and support community. Org subdomains are aliased to <tenant>.userecho.com. Zone is self-administered, which confirms ownership. Observed on 1 organisation."
+
+  - id: cname-target-smartcommunications
+    vendor: "Smart Communications"
+    category: "Business Applications"
+    type: cname_target
+    query: "smartcommunications.cloud"
+    confidence: medium
+    notes: "Customer communications management. Org subdomains are aliased to a tenant host under <region>.smartcommunications.cloud. Observed on 1 organisation."
+
+  - id: cname-target-digistorm
+    vendor: "Digistorm"
+    category: "Business Applications"
+    type: cname_target
+    query: "digistorm.com"
+    confidence: medium
+    notes: "School engagement and enrolment software (Australia). Enrolment subdomains are aliased to a tenant host under secure.app.digistorm.com. Observed on 1 organisation."
+
+  - id: cname-target-edalex
+    vendor: "Edalex"
+    category: "Business Applications"
+    type: cname_target
+    query: "edalex.com"
+    confidence: medium
+    notes: "Education data and credentialing platform. Org subdomains are aliased to <tenant>.edalex.com. Observed on 1 organisation."
+
+  - id: cname-target-ereserve
+    vendor: "EReserve"
+    category: "Business Applications"
+    type: cname_target
+    query: "ereserve.com.au"
+    confidence: medium
+    notes: "Course-readings/digital reserves platform (Australian higher education). Reading-list subdomains are aliased to <tenant>.lb.ereserve.com.au. Observed on 1 organisation."
+
+  - id: cname-target-terradotta
+    vendor: "Terra Dotta"
+    category: "Business Applications"
+    type: cname_target
+    query: "terradotta.com"
+    confidence: medium
+    notes: "Education-abroad and travel-risk management for universities. Org subdomains are aliased to <tenant>.terradotta.com. Observed on 1 organisation."
+
+  - id: cname-target-pointnclick
+    vendor: "Point and Click Solutions"
+    category: "Business Applications"
+    type: cname_target
+    query: "pointnclick.com"
+    confidence: medium
+    notes: "Student health and wellbeing management. Org subdomains are aliased to <tenant>.<region>.pointnclick.com. Observed on 1 organisation."
+
+  - id: cname-target-topclass
+    vendor: "ASI TopClass"
+    category: "Business Applications"
+    type: cname_target
+    query: "topclassu.com"
+    confidence: medium
+    notes: "Learning-management system for associations (ASI TopClass). Learning subdomains are aliased to a host under topclassu.com. Observed on 1 organisation."
+
+  - id: cname-target-fnz
+    vendor: "FNZ"
+    category: "Finance & Procurement"
+    type: cname_target
+    query: "fnz.com"
+    confidence: medium
+    notes: "Wealth-management platform. Member/admin subdomains are aliased to a tenant host under fnz.com. Observed on 1 organisation."
+
+  - id: cname-target-funraisin
+    vendor: "Funraisin"
+    category: "Finance & Procurement"
+    type: cname_target
+    query: "funraisin.com.au"
+    confidence: medium
+    notes: "Peer-to-peer fundraising platform (Australia). Fundraising subdomains are aliased to <tenant>.funraisin.com.au. Observed on 1 organisation."
+
+  - id: cname-target-ultracommerce
+    vendor: "Ultra Commerce"
+    category: "Business Applications"
+    type: cname_target
+    query: "ultracommerce.co"
+    confidence: medium
+    notes: "E-commerce platform. Storefront subdomains are aliased to a tenant host under uc-prod.ultracommerce.co. Observed on 1 organisation."
+
+  - id: cname-target-revelex
+    vendor: "Revelex"
+    category: "Business Applications"
+    type: cname_target
+    query: "revelex.com"
+    confidence: medium
+    notes: "Travel booking platform. Booking subdomains are aliased to a host under gslb.revelex.com. Observed on 1 organisation."
+
+  - id: cname-target-optisigns
+    vendor: "OptiSigns"
+    category: "Business Applications"
+    type: cname_target
+    query: "optisigns.net"
+    confidence: medium
+    notes: "Digital signage platform. Signage subdomains are aliased to <tenant>.optisigns.net. Observed on 1 organisation."
+
+  - id: cname-target-publuu
+    vendor: "Publuu"
+    category: "Business Applications"
+    type: cname_target
+    query: "publuu.com"
+    confidence: medium
+    notes: "Online flipbook/document publishing. Document subdomains are aliased to my.publuu.com. Observed on 1 organisation."
+
+  - id: cname-target-ownlocal
+    vendor: "OwnLocal"
+    category: "Marketing"
+    type: cname_target
+    query: "ownlocal.com"
+    confidence: medium
+    notes: "Digital advertising services for local media. Org subdomains are aliased to local.ownlocal.com. Observed on 1 organisation."
+
+  - id: cname-target-wingarc
+    vendor: "WingArc"
+    category: "Business Applications"
+    type: cname_target
+    query: "wingarc.com.au"
+    confidence: medium
+    notes: "Data output and reporting platform. Reporting subdomains are aliased to a host under service.wingarc.com.au. Observed on 1 organisation."
+
+  - id: cname-target-ironstar
+    vendor: "Ironstar"
+    category: "Infrastructure"
+    type: cname_target
+    query: "ironstar.net"
+    confidence: medium
+    notes: "Managed application hosting (Australia). Org sites are aliased to a tenant host under <region>.ironstar.net. Observed on 1 organisation."
+
+  - id: cname-target-render
+    vendor: "Render"
+    category: "Infrastructure"
+    type: cname_target
+    query: "onrender.com"
+    confidence: medium
+    notes: "Application hosting PaaS. Org subdomains are aliased to <tenant>.onrender.com. Observed on 1 organisation."
+
+  - id: cname-target-aaf
+    vendor: "Australian Access Federation"
+    category: "Identity & Secrets"
+    type: cname_target
+    query: "idp-cname.aaf.edu.au"
+    confidence: medium
+    notes: "Identity federation for Australian research and education. Identity-provider subdomains are aliased to <hash>.idp-cname.aaf.edu.au. Observed on 3 organisations."
+
+  - id: cname-target-govcms
+    vendor: "GovCMS (Australian Government)"
+    category: "Business Applications"
+    type: cname_target
+    query: "govcms.gov.au"
+    confidence: medium
+    notes: "The Australian Government's shared Drupal website platform, run by the Department of Finance (govhosting.finance.gov.au in the SOA). Org sites are aliased to paascdn.govcms.gov.au. Observed on 1 organisation."
+
+  # --- Added from the 150-org New Zealand discovery run (CT host targets). ---
+
+  - id: cname-target-aotal
+    vendor: "Aotal"
+    category: "Infrastructure"
+    type: cname_target
+    query: "aotal.cloud"
+    confidence: medium
+    notes: "New Zealand cloud hosting/email platform. Org subdomains are aliased to a tenant host under aotal.cloud. Observed on 3 organisations."
+
+  - id: cname-target-brandkit
+    vendor: "BrandKit"
+    category: "Marketing"
+    type: cname_target
+    query: "brandkitapp.com"
+    confidence: medium
+    notes: "Brand and digital-asset management. Org subdomains are aliased to a tenant host under brandkitapp.com. Observed on 2 organisations."
+
+  - id: cname-target-frontify
+    vendor: "Frontify"
+    category: "Marketing"
+    type: cname_target
+    query: "frontify.com"
+    confidence: medium
+    notes: "Brand-management platform. Org subdomains are aliased to <tenant>.frontify.com. Observed on 1 organisation."
+
+  - id: cname-target-gtranslate
+    vendor: "GTranslate"
+    category: "Business Applications"
+    type: cname_target
+    query: "gtranslate.net"
+    confidence: medium
+    notes: "Website translation/localisation service. Org subdomains are aliased to a host under gtranslate.net. Observed on 1 organisation."
+
+  - id: cname-target-booqable
+    vendor: "Booqable"
+    category: "Business Applications"
+    type: cname_target
+    query: "booqabledomain.com"
+    confidence: medium
+    notes: "Rental-business management software. Org subdomains are aliased to a tenant host under booqabledomain.com. Observed on 1 organisation."
+
+  - id: cname-target-section
+    vendor: "Section"
+    category: "Infrastructure"
+    type: cname_target
+    query: "section.io"
+    confidence: medium
+    notes: "Edge compute/CDN platform. Org subdomains are aliased to a host under section.io. Observed on 1 organisation."
+
+  - id: cname-target-mailjet
+    vendor: "Mailjet"
+    category: "Marketing"
+    type: cname_target
+    query: "mailjet.com"
+    confidence: medium
+    notes: "Email marketing and delivery. Org subdomains are aliased to a host under mailjet.com. Zone is self-administered (abuse.mailjet.com), which confirms ownership. Observed on 1 organisation."
+
+  - id: cname-target-roller
+    vendor: "ROLLER"
+    category: "Business Applications"
+    type: cname_target
+    query: "roller.app"
+    confidence: medium
+    notes: "Venue and attraction management (ticketing, POS). Org subdomains are aliased to a host under roller.app. Observed on 1 organisation."
+
+  - id: cname-target-shift72
+    vendor: "Shift72"
+    category: "Collaboration"
+    type: cname_target
+    query: "shift72.com"
+    confidence: medium
+    notes: "Video-on-demand platform (New Zealand). Org subdomains are aliased to a tenant host under shift72.com. Observed on 1 organisation."
+
+  - id: cname-target-freshworks-host
+    vendor: "Freshworks"
+    category: "Service Desk"
+    type: cname_target
+    query: "myfreshworks.com"
+    confidence: medium
+    notes: "Freshworks product hosting (Freshdesk/Freshservice and others). Org subdomains are aliased to a tenant host under myfreshworks.com. Observed on 1 organisation."
+
+  - id: cname-target-njuko
+    vendor: "Njuko"
+    category: "Business Applications"
+    type: cname_target
+    query: "njuko.com"
+    confidence: medium
+    notes: "Event registration platform for sports/mass-participation events. Org subdomains are aliased to a host under njuko.com. Observed on 1 organisation."
+
+  - id: cname-target-infonetica-erm
+    vendor: "Infonetica (Ethical Review Manager)"
+    category: "Business Applications"
+    type: cname_target
+    query: "ethicalreviewmanager.com"
+    confidence: medium
+    notes: "Research ethics and governance workflow platform, common in universities. Org subdomains are aliased to a host under ethicalreviewmanager.com. Observed on 1 organisation."
+
+  - id: cname-target-europ-assistance
+    vendor: "Europ Assistance"
+    category: "Business Applications"
+    type: cname_target
+    query: "europ-assistance.com"
+    confidence: medium
+    notes: "Travel-assistance and insurance services. Org subdomains are aliased to a host under europ-assistance.com. Observed on 1 organisation."
+
+  # --- Added from the second 100-org Australian discovery run (CT host targets). ---
+
+  - id: cname-target-highq
+    vendor: "Thomson Reuters HighQ"
+    category: "Business Applications"
+    type: cname_target
+    query: "highq.com"
+    confidence: medium
+    notes: "Legal collaboration and document-management platform. Org subdomains are aliased to a tenant host under highq.com. Observed on 2 organisations."
+
+  - id: cname-target-hubspot-coscdn
+    vendor: "HubSpot"
+    category: "Marketing"
+    type: cname_target
+    query: "hscoscdn-ap1.net"
+    confidence: medium
+    notes: "HubSpot CMS content-delivery host (APAC). Org CMS subdomains are aliased to a host under hscoscdn-ap1.net. Complements the HubSpot entries already carried. Observed on 2 organisations."
+
+  - id: cname-target-kineo
+    vendor: "Kineo"
+    category: "Business Applications"
+    type: cname_target
+    query: "kineoplatforms.net"
+    confidence: medium
+    notes: "Learning platform and Totara/Moodle hosting. Learning subdomains are aliased to a tenant host under kineoplatforms.net. Observed on 2 organisations."
+
+  - id: cname-target-omnistar
+    vendor: "OmniStar (F1 Solutions)"
+    category: "Business Applications"
+    type: cname_target
+    query: "omnistar.cloud"
+    confidence: medium
+    notes: "Research and grants management platform. Org subdomains are aliased to a tenant host under omnistar.cloud. Observed on 2 organisations."
+
+  - id: cname-target-coviu
+    vendor: "Coviu"
+    category: "Business Applications"
+    type: cname_target
+    query: "coviu.com"
+    confidence: medium
+    notes: "Telehealth video-consultation platform (Australia). Org subdomains are aliased to a tenant host under coviu.com. Observed on 1 organisation."
+
+  - id: cname-target-klaviyo
+    vendor: "Klaviyo"
+    category: "Marketing"
+    type: cname_target
+    query: "klaviyo.com"
+    confidence: medium
+    notes: "Marketing automation platform. Org subdomains are aliased to a host under klaviyo.com (and klaviyodns.com). The dns-txt pack carries the verification token; this covers the hosted host. Observed on 1 organisation."
+
+  - id: cname-target-clickfunnels
+    vendor: "ClickFunnels"
+    category: "Marketing"
+    type: cname_target
+    query: "clickfunnels.com"
+    confidence: medium
+    notes: "Marketing funnel/landing-page builder. Org subdomains are aliased to a tenant host under clickfunnels.com. Observed on 1 organisation."
+
+  - id: cname-target-leadpages
+    vendor: "Leadpages"
+    category: "Marketing"
+    type: cname_target
+    query: "leadpages.net"
+    confidence: medium
+    notes: "Landing-page builder. Org subdomains are aliased to a host under leadpages.net. Observed on 1 organisation."
+
+  - id: cname-target-loopreturns
+    vendor: "Loop Returns"
+    category: "Business Applications"
+    type: cname_target
+    query: "loopreturns.com"
+    confidence: medium
+    notes: "E-commerce returns management. Org subdomains are aliased to a host under loopreturns.com. Observed on 1 organisation."
+
+  - id: cname-target-rosterfy
+    vendor: "Rosterfy"
+    category: "Human Resources"
+    type: cname_target
+    query: "rosterfy.co"
+    confidence: medium
+    notes: "Volunteer and workforce engagement platform (Australia). Org subdomains are aliased to a host under rosterfy.co. Observed on 1 organisation."
+
+  - id: cname-target-sailthru
+    vendor: "Sailthru (Marigold)"
+    category: "Marketing"
+    type: cname_target
+    query: "sailthru.com"
+    confidence: medium
+    notes: "Email and cross-channel marketing. Org subdomains are aliased to a host under sailthru.com. The SPF pack carries the sending side; this covers the hosted host. Observed on 1 organisation."
+
+  - id: cname-target-smugmug
+    vendor: "SmugMug"
+    category: "Business Applications"
+    type: cname_target
+    query: "smugmug.com"
+    confidence: medium
+    notes: "Photo hosting and sales. Org subdomains are aliased to a host under smugmug.com. Observed on 1 organisation."
+
+  - id: cname-target-framer
+    vendor: "Framer"
+    category: "Business Applications"
+    type: cname_target
+    query: "framer.app"
+    confidence: medium
+    notes: "Website design and hosting platform. Org sites are aliased to a host under framer.app. Observed on 1 organisation."
+
+  - id: cname-target-paperform
+    vendor: "Paperform"
+    category: "Business Applications"
+    type: cname_target
+    query: "paperform.app"
+    confidence: medium
+    notes: "Online form and payment builder (Australia). Org subdomains are aliased to a host under paperform.app. Observed on 1 organisation."
+
+  - id: cname-target-helpjuice
+    vendor: "Helpjuice"
+    category: "Service Desk"
+    type: cname_target
+    query: "helpjuice.com"
+    confidence: medium
+    notes: "Knowledge-base software. Org subdomains are aliased to a host under helpjuice.com. Observed on 1 organisation."
+
+  - id: cname-target-go1
+    vendor: "Go1"
+    category: "Business Applications"
+    type: cname_target
+    query: "go1portals.com"
+    confidence: medium
+    notes: "Learning content and LMS platform (Australia). Org subdomains are aliased to a host under go1portals.com. Observed on 1 organisation."
+
+  - id: cname-target-inntopia
+    vendor: "Inntopia"
+    category: "Business Applications"
+    type: cname_target
+    query: "inntopia.travel"
+    confidence: medium
+    notes: "Travel/resort commerce and marketing platform. Org subdomains are aliased to a host under inntopia.travel. Observed on 1 organisation."
+
+  - id: cname-target-inplace
+    vendor: "InPlace Software"
+    category: "Business Applications"
+    type: cname_target
+    query: "inplacesoftware.com"
+    confidence: medium
+    notes: "Work-integrated-learning placement management for universities. Org subdomains are aliased to a host under inplacesoftware.com. Observed on 1 organisation."
+
+  - id: cname-target-moengage
+    vendor: "MoEngage"
+    category: "Marketing"
+    type: cname_target
+    query: "moengage.com"
+    confidence: medium
+    notes: "Customer-engagement and marketing automation. Org subdomains are aliased to a host under moengage.com. Observed on 1 organisation."
+
+  - id: cname-target-surveymonkey-apply
+    vendor: "SurveyMonkey Apply"
+    category: "Business Applications"
+    type: cname_target
+    query: "secure-platform.com"
+    confidence: medium
+    notes: "Application and grant-management platform (SurveyMonkey Apply / FluidReview). Org subdomains are aliased to a host under secure-platform.com. Observed on 1 organisation."
+
+  - id: cname-target-optimy
+    vendor: "Optimy"
+    category: "Business Applications"
+    type: cname_target
+    query: "optimytool.com"
+    confidence: medium
+    notes: "Grants, sponsorship and community-investment management. Org subdomains are aliased to a host under optimytool.com. Observed on 1 organisation."
+
+  - id: cname-target-ownid
+    vendor: "OwnID"
+    category: "Identity & Secrets"
+    type: cname_target
+    query: "ownid.com"
+    confidence: medium
+    notes: "Passwordless authentication service. Org subdomains are aliased to a host under ownid.com. Observed on 1 organisation."
+
+  - id: cname-target-swipepages
+    vendor: "Swipe Pages"
+    category: "Marketing"
+    type: cname_target
+    query: "swipepages.net"
+    confidence: medium
+    notes: "Landing-page builder. Org subdomains are aliased to a host under swipepages.net. Observed on 1 organisation."
+
+  - id: cname-target-piano
+    vendor: "Piano"
+    category: "Business Applications"
+    type: cname_target
+    query: "tinypass.com"
+    confidence: medium
+    notes: "Subscription, paywall and audience platform (Piano, formerly Tinypass). Org subdomains are aliased to a host under tinypass.com. Observed on 1 organisation."
+
+  - id: cname-target-meteor-galaxy
+    vendor: "Meteor (Galaxy)"
+    category: "Infrastructure"
+    type: cname_target
+    query: "meteor.com"
+    confidence: medium
+    notes: "Meteor application hosting (Galaxy). Org subdomains are aliased to a host under meteor.com. Observed on 1 organisation."
+
+  - id: cname-target-donorsupport
+    vendor: "DonorSupport"
+    category: "Finance & Procurement"
+    type: cname_target
+    query: "donorsupport.co"
+    confidence: medium
+    notes: "Fundraising and donor-management platform. Org subdomains are aliased to a host under donorsupport.co. Observed on 1 organisation."
+
+  - id: cname-target-bunnycdn
+    vendor: "Bunny CDN"
+    category: "Infrastructure"
+    type: cname_target
+    query: "b-cdn.net"
+    confidence: medium
+    notes: "Bunny CDN pull-zone host. Org subdomains are aliased to <zone>.b-cdn.net. CDN fronting identifies the provider but not the application behind it. Observed on 1 organisation."
+
+  - id: cname-target-cloudflare-pages
+    vendor: "Cloudflare Pages"
+    category: "Infrastructure"
+    type: cname_target
+    query: "pages.dev"
+    confidence: medium
+    notes: "Cloudflare Pages static/app hosting. Org subdomains are aliased to <tenant>.pages.dev. Observed on 1 organisation."
+
+  - id: cname-target-wix
+    vendor: "Wix"
+    category: "Business Applications"
+    type: cname_target
+    query: "wixdns.net"
+    confidence: medium
+    notes: "Wix website hosting. Org subdomains are aliased to a host under wixdns.net. Observed on 1 organisation."
+
+  - id: cname-target-androgogic
+    vendor: "Androgogic"
+    category: "Business Applications"
+    type: cname_target
+    query: "androgogic.com.au"
+    confidence: medium
+    notes: "Australian learning-platform integration and hosting. Org subdomains are aliased to a redirect host under androgogic.com.au; complements the SPF entry. Observed on 1 organisation."
+
+  - id: cname-target-highlevel
+    vendor: "HighLevel"
+    category: "Marketing"
+    type: cname_target
+    query: "msgsndr.com"
+    confidence: medium
+    notes: "HighLevel (LeadConnector) marketing/CRM platform. Org subdomains are aliased to a host under msgsndr.com. Observed on 1 organisation."
+
+  - id: cname-target-ferve
+    vendor: "Ferve"
+    category: "Business Applications"
+    type: cname_target
+    query: "ferve.tickets"
+    confidence: medium
+    notes: "Event ticketing platform. Org subdomains are aliased to a host under ferve.tickets. Observed on 1 organisation."

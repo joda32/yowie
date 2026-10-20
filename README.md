@@ -20,7 +20,7 @@ everyone insists isn't there.
 
 ![Yowie in action](docs/yowie-in-action.png)
 
-**574 signatures covering 412 vendors** across nine detectors, plus 104 parked
+**786 signatures covering 593 vendors** across nine detectors, plus 109 parked
 awaiting confirmation. Findings are graded and every one carries the record or
 response that produced it.
 
@@ -189,9 +189,9 @@ parked entries as research notes, not latent coverage.
 
 ```
 $ ./yowie -validate
-574 signatures across 13 packs, covering 412 vendors
+786 signatures across 13 packs, covering 593 vendors
 ...
-104 signature(s) parked behind `disabled: true`, awaiting confirmation against a live tenant:
+109 signature(s) parked behind `disabled: true`, awaiting confirmation against a live tenant:
 
   ai-services.yaml (24)
     txt-fireflies-ai                         Fireflies.ai

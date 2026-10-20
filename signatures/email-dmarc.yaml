@@ -297,3 +297,47 @@ signatures:
     confidence: low
     disabled: true
     notes: "UNCONFIRMED, and parked as much for its shape as its ownership. The observation is a DMARC rua destination of dmarcreports@lovable.dev on one organisation — not an SPF include, which is how this entry was first drafted and why it silently failed to fire until tested. lovable.dev is an AI application builder, and a report destination there is not a product feature it advertises; the likelier explanation is that whoever built the site pointed DMARC at their own domain. That makes it a finding about a supplier relationship rather than a SaaS subscription, and attributing it to the vendor would misdescribe it. Identify what is actually collecting these reports before enabling."
+
+  # --- Added from the 100-org government discovery run. ---
+
+  - id: dmarc-barracuda
+    vendor: "Barracuda"
+    category: "Email Security"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "dmarc.barracudanetworks.com"
+    notes: "Barracuda's DMARC aggregate/forensic processor. The destination is Barracuda's own domain, so attribution is unambiguous; complements the Barracuda SPF and MX signatures already carried, which do not cover the reporting side. Observed on 4 organisations."
+
+  - id: dmarc-sns-prod
+    vendor: "sns-prod"
+    category: "Email Security"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "sns-prod.com"
+    confidence: low
+    disabled: true
+    notes: "UNCONFIRMED. A DMARC report destination (sns-prod.com) on one organisation. Zone is on GoDaddy nameservers with no organisation in the SOA, and the processor behind the domain was not identified. Identify what is collecting these reports before enabling. Observed on 1 organisation."
+
+  # --- Added from the 100-org Australian discovery run. ---
+
+  - id: dmarc-dmarcwise
+    vendor: "DMARCwise"
+    category: "Compliance & GRC"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "dmarcwise.email"
+    confidence: medium
+    notes: "DMARC monitoring platform. Aggregate reports are sent to rua+<id>@dmarcwise.email. Observed on 1 organisation."
+
+  - id: dmarc-dmarcdigests
+    vendor: "DMARC Digests"
+    category: "Compliance & GRC"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "dmarcdigests.com"
+    confidence: medium
+    notes: "DMARC monitoring platform. Aggregate reports are sent to a destination under inbound.dmarcdigests.com. Observed on 1 organisation."

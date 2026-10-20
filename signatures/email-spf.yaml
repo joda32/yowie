@@ -1778,3 +1778,1095 @@ signatures:
     confidence: low
     disabled: true
     notes: "UNCONFIRMED, operator unidentified. Observed on 2 organisations. Zone is on AWS with no organisation in the SOA. Short and label-spanning, so it carries the same false-positive caveat as the ds.network entry."
+
+  - id: spf-saashr
+    vendor: "UKG (SaaShr / Workforce Ready)"
+    category: "Human Resources"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "saashr.com"
+    confidence: medium
+    notes: "Cloud workforce management, payroll and HR. SaaShr, Inc. was acquired by Kronos and is now part of UKG; the product is sold as UKG/Kronos Workforce Ready, and saashr.com remains its sending domain. The graph authorises spf.saashr.com and the numbered siblings spf1/spf2.saashr.com. Zone is on Google Cloud DNS with no organisation in the SOA, so attribution rests on the SaaShr product lineage rather than DNS; confidence held at medium. Observed on 1 organisation."
+
+  - id: spf-enhanced-voting
+    vendor: "Enhanced Voting"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "enhancedvoting.com"
+    confidence: medium
+    notes: "Election-administration platform (electronic ballot delivery, results publishing, ballot tracking), Enhanced Voting of Jacksonville, Florida. Authorised as a sender via include:_spf.enhancedvoting.com. Zone is on Cloudflare with no organisation in the SOA, so attribution rests on the unambiguous brand domain; confidence held at medium. A hit is election mail, a meaningful shadow-IT signal on a government estate. Observed on 1 organisation."
+
+  - id: spf-meritec
+    vendor: "Meritec"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "meritec.co.uk"
+    confidence: medium
+    notes: "UK public-sector software vendor (information-governance, waste-management and low-code case-management SaaS, on the UK G-Cloud framework), Meritec Limited of Nelson, Lancashire. Authorised as a sender via include:merspf.meritec.co.uk. Zone is on GoDaddy nameservers with no organisation in the SOA, but the vendor is confirmed from its own G-Cloud listings and contact domain; confidence held at medium pending a live-tenant confirmation. Observed on 1 organisation."
+
+  - id: spf-uksmtp
+    vendor: "UKSMTP"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "uksmtp.co.uk"
+    confidence: medium
+    notes: "UK outbound mail-relay service. The graph authorises spf-a.uksmtp.co.uk, and per-customer relays appear as <customer>.mta.uksmtp.co.uk — the per-tenant shape of a managed relay. The zone administers itself (hostmaster.uksmtp.co.uk in the SOA), which confirms the service domain, but the operating company behind the brand was not independently identified; treat as a relay provider, not a named vendor. Observed on 1 organisation."
+
+  # --- Added from the 100-org government discovery run (sender-based). ---
+
+  - id: spf-mgovcloud-in
+    vendor: "India Government Email (mGovCloud)"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "mgovcloud.in"
+    confidence: medium
+    notes: "Shared Indian government email platform. The graph authorises mgovcloud.in and spf.mgovcloud.in. The zone is operated via vTitan infrastructure (dnsadmin.vtitan.com in the SOA, Zoho/UltraDNS nameservers), so the operator is named only indirectly; attribution rests on the consistent recurrence across unrelated Indian government domains. Observed on 5 organisations."
+
+  - id: spf-mailcloud-in
+    vendor: "India Government Email (mGovCloud)"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "mailcloud.in"
+    confidence: medium
+    notes: "Sibling sending domain of mgovcloud.in, co-occurring on the same Indian government estates and on the same vTitan/Zoho infrastructure. Carried as the same platform. Observed on 2 organisations."
+
+  - id: spf-nec-software-necsws
+    vendor: "NEC Software Solutions"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "necsws.com"
+    confidence: medium
+    notes: "UK public-sector software vendor (formerly Northgate Public Services). Authorised as a sender via _spf-ext.necsws.com. Zone is managed through CSC (cscdns.net) with no organisation in the SOA, so attribution rests on the unambiguous brand domain. Observed on 2 organisations."
+
+  - id: spf-nec-software-northgate
+    vendor: "NEC Software Solutions"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "northgateps.com"
+    confidence: medium
+    notes: "The former Northgate Public Services sending domain, now part of NEC Software Solutions (necsws.com). The zone is self-administered (ns3.northgateps.com in the SOA), which confirms ownership. Observed on 1 organisation."
+
+  - id: spf-freshservice
+    vendor: "Freshworks (Freshservice)"
+    category: "Service Desk"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "freshservice.com"
+    confidence: medium
+    notes: "Cloud IT service management (Freshservice, by Freshworks). Authorised as a sender via emailus.freshservice.com. Observed on 2 organisations."
+
+  - id: spf-mycoi
+    vendor: "myCOI"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "mycoitracking.com"
+    confidence: medium
+    notes: "Certificate-of-insurance tracking and compliance platform. Authorised as a sender via spf-a.mycoitracking.com. Zone is on Cloudflare with no organisation in the SOA; attribution rests on the brand domain. Observed on 2 organisations."
+
+  - id: spf-granicus-govaccess
+    vendor: "Granicus"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "granicusgovaccess.net"
+    confidence: medium
+    notes: "Government digital-services and citizen-engagement platform (Granicus GovAccess). Authorised as a sender via spf-us.appmail.granicusgovaccess.net. Observed on 2 organisations."
+
+  - id: spf-granicus-visioninternet
+    vendor: "Granicus"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "visioninternet.com"
+    confidence: medium
+    notes: "Vision Internet, the government-website product acquired by Granicus. Authorised as a sender via enotify.visioninternet.com. Carried as Granicus. Observed on 1 organisation."
+
+  - id: spf-accela
+    vendor: "Accela"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "accela.com"
+    confidence: medium
+    notes: "Government permitting, licensing and code-enforcement platform. Authorised as a sender via _spf-sg.accela.com. Zone is on Cloudflare; attribution rests on the brand domain. Observed on 1 organisation."
+
+  - id: spf-tylertech
+    vendor: "Tyler Technologies"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "tylertech.com"
+    confidence: medium
+    notes: "US public-sector software (ERP, courts, payments and more). Authorised as a sender via spf_ips.tylertech.com. Observed on 1 organisation."
+
+  - id: spf-topdesk
+    vendor: "TOPdesk"
+    category: "Service Desk"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "topdesk.net"
+    confidence: medium
+    notes: "IT and enterprise service-management platform. Authorised as a sender via spf.topdesk.net. Observed on 1 organisation."
+
+  - id: spf-zivver
+    vendor: "Zivver"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "zivver.com"
+    confidence: medium
+    notes: "Secure email and large-file transfer, common in UK/NL public sector. Authorised as a sender via _spf.zivver.com. Observed on 1 organisation."
+
+  - id: spf-axiell
+    vendor: "Axiell"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "axiell.com"
+    confidence: medium
+    notes: "Collections and case-management software for libraries, museums and archives. Authorised as a sender via _uk.axiell.com. Zone is self-administered (hostmaster.axiell.com in the SOA), which confirms ownership. Observed on 1 organisation."
+
+  - id: spf-appian-gov
+    vendor: "Appian (Government Cloud)"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "appian-gov-customer.com"
+    confidence: medium
+    notes: "Appian low-code platform, US Government cloud tenancy. Authorised as a sender via us-gov-east-1.spf.outbound-mail.appian-gov-customer.com. The domain names the vendor outright. Observed on 1 organisation."
+
+  - id: spf-zellis
+    vendor: "Zellis"
+    category: "Human Resources"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "zellis.com"
+    confidence: medium
+    notes: "UK/Ireland payroll and HR platform. Seen as an SPF a: mechanism (dcmailrelay.zellis.com). Observed on 1 organisation."
+
+  - id: spf-servelec
+    vendor: "Servelec"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "servelec-group.com"
+    confidence: medium
+    notes: "UK social-care, health and education case-management software. Seen as an SPF a: mechanism (group-smtp01.cloud.servelec-group.com). Observed on 1 organisation."
+
+  - id: spf-bartec-systems
+    vendor: "Bartec"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "bartec-systems.com"
+    confidence: medium
+    notes: "UK municipal waste and street-scene management software. Seen as an SPF a: mechanism (colo.bartec-systems.com). Observed on 1 organisation."
+
+  - id: spf-bartec-municipal
+    vendor: "Bartec"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "bartecmunicipal.com"
+    confidence: medium
+    notes: "Bartec sending domain, sharing DNS Made Easy nameservers with bartec-systems.com. Carried as the same vendor. Observed on 1 organisation."
+
+  - id: spf-kallidus
+    vendor: "Kallidus"
+    category: "Human Resources"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "kallidus-suite.com"
+    confidence: medium
+    notes: "Learning-management and talent platform. Authorised as a sender via kallidus-suite.com. Observed on 1 organisation."
+
+  - id: spf-spektrix
+    vendor: "Spektrix"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "spektrix.com"
+    confidence: medium
+    notes: "Ticketing, CRM and fundraising platform for arts and cultural venues. Authorised as a sender via system.spektrix.com. Observed on 1 organisation."
+
+  - id: spf-tribal
+    vendor: "Tribal"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "tribal-cs.com"
+    confidence: medium
+    notes: "Student-management and education software. Authorised as a sender via spf.tribal-cs.com. Observed on 1 organisation."
+
+  - id: spf-skillcast
+    vendor: "Skillcast"
+    category: "Human Resources"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "skillcast.com"
+    confidence: medium
+    notes: "Compliance e-learning and training platform. Authorised as a sender via spf.skillcast.com. Zone is on GoDaddy nameservers with no organisation in the SOA; attribution rests on the brand domain. Observed on 1 organisation."
+
+  - id: spf-rmscloud
+    vendor: "RMS Cloud"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "rmscloud.com"
+    confidence: medium
+    notes: "Property and reservation management platform. Authorised as a sender via _spf.rmscloud.com. Observed on 1 organisation."
+
+  - id: spf-community-brands-yourmembership
+    vendor: "Community Brands (YourMembership)"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "yourmembership.com"
+    confidence: medium
+    notes: "Membership and association management platform. Authorised as a sender via mail.yourmembership.com. Zone is self-administered via Community Brands (ns1.dns.communitybrands.com), which confirms ownership. Observed on 1 organisation."
+
+  - id: spf-dyn-oracle
+    vendor: "Dyn (Oracle)"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "dynect.net"
+    confidence: medium
+    notes: "Dyn email delivery / managed DNS, now part of Oracle. Authorised as a sender via spf.dynect.net. Zone is self-administered (hostmaster.dyndns.com, Dynamic Network Services nameservers), which confirms ownership. Observed on 3 organisations."
+
+  - id: spf-livehelpnow
+    vendor: "LiveHelpNow"
+    category: "Service Desk"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "livehelpnow.net"
+    confidence: medium
+    notes: "Live-chat and customer-support platform. Authorised as a sender via spf.livehelpnow.net. Observed on 1 organisation."
+
+  - id: spf-slicedtech
+    vendor: "Sliced Tech"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "slicedtech.com.au"
+    confidence: medium
+    notes: "Australian government-certified cloud hosting. Authorised as a sender via _spf.slicedtech.com.au and per-region _cbrN.slicedtech.com.au. Zone is self-administered (support.slicedtech.com.au, sliceddns.net.au nameservers), which confirms ownership. Observed on 1 organisation."
+
+  - id: spf-oracle-taleo
+    vendor: "Oracle Taleo"
+    category: "Human Resources"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "taleo.net"
+    confidence: medium
+    notes: "Oracle Taleo recruiting/applicant-tracking. Seen as an SPF a: mechanism (ldxrelay11.taleo.net). The cname-targets pack already carries taleo.net as a host suffix; this covers the mail side. Observed on 1 organisation."
+
+  - id: spf-zoho
+    vendor: "Zoho"
+    category: "Productivity"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "spf.zoho.com"
+    confidence: medium
+    notes: "Zoho mail sending host, complementing the zohomail.com / zoho.com.au entries already carried. Observed on 1 organisation."
+
+  - id: spf-getresponse-com
+    vendor: "GetResponse"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "_spf.getresponse.com"
+    confidence: medium
+    notes: "GetResponse email-marketing sending host, complementing the getresponse-mail.com entry already carried. Observed on 1 organisation."
+
+  - id: spf-amazee-io
+    vendor: "amazee.io"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "spf.amazee.io"
+    confidence: medium
+    notes: "amazee.io application hosting (Lagoon). Authorised as a sender via spf.amazee.io. Observed on 1 organisation."
+
+  - id: spf-m365-usgov
+    vendor: "Microsoft 365 (US Government)"
+    category: "Productivity"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "spf.protection.office365.us"
+    confidence: medium
+    notes: "US Government cloud variant of Exchange Online Protection (office365.us rather than outlook.com). Observed on 1 organisation."
+
+  - id: spf-recruitmail
+    vendor: "recruitmail"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "recruitmail.com"
+    confidence: low
+    disabled: true
+    notes: "UNCONFIRMED. A recruitment-advertising mail sender (recruitmail.com and spf.recruitmail.com). Zone is on Route 53 with Amazon in the SOA and the operating company is not named anywhere queryable. Confirm the operator before enabling. Observed on 1 organisation."
+
+  - id: spf-mailanyone
+    vendor: "mailanyone"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "mailanyone.net"
+    confidence: low
+    disabled: true
+    notes: "UNCONFIRMED. A hosted mail-filtering/relay service (spf.mailanyone.net). Zone is on NS1 managed DNS with no organisation in the SOA; the operator behind the brand was not confirmed. Observed on 1 organisation."
+
+  # --- Added from the 100-org Australian discovery run (sender-based). ---
+
+  - id: spf-keypay
+    vendor: "KeyPay (Employment Hero Payroll)"
+    category: "Human Resources"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "yourpayroll.io"
+    confidence: medium
+    notes: "Cloud payroll platform (KeyPay / Employment Hero Payroll). Authorised as a sender via spf.yourpayroll.io. Observed on 2 organisations."
+
+  - id: spf-technologyone-t1cloud
+    vendor: "TechnologyOne"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "t1cloud.com"
+    confidence: medium
+    notes: "TechnologyOne SaaS (T1 Cloud) ERP, widely used across Australian government and education. Seen as an SPF a: mechanism (mta001.t1cloud.com). Observed on 1 organisation."
+
+  - id: spf-pageup
+    vendor: "PageUp"
+    category: "Human Resources"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "pageuppeople.com"
+    confidence: medium
+    notes: "Recruitment and talent-management platform (Australia). Authorised as a sender via rec-marketing.<dc>.pageuppeople.com. The cname-targets pack already carries the hosted side; this covers the mail side. Observed on 1 organisation."
+
+  - id: spf-elluciancloud
+    vendor: "Ellucian"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "elluciancloud.com"
+    confidence: medium
+    notes: "Higher-education ERP/SIS. Authorised as a sender via spf.elluciancloud.com. Observed on 1 organisation."
+
+  - id: spf-exlibris
+    vendor: "Ex Libris"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "exlibrisgroup.com"
+    confidence: medium
+    notes: "Library services platform (Alma/Primo). Authorised as a sender via spf-ap.exlibrisgroup.com. Zone is self-administered (hostmaster.exlibrisgroup.com), which confirms ownership. Observed on 1 organisation."
+
+  - id: spf-imis
+    vendor: "ASI iMIS"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "imismailcenter.com"
+    confidence: medium
+    notes: "Association/membership management (ASI iMIS). Authorised as a sender via mail.imismailcenter.com. Zone resolves to advsol.com (Advanced Solutions International), which names the operator. Observed on 1 organisation."
+
+  - id: spf-axcelerate
+    vendor: "aXcelerate"
+    category: "Human Resources"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "axcelerate.com.au"
+    confidence: medium
+    notes: "Training and student management for Australian RTOs. Seen as an SPF a: mechanism (mail01.axcelerate.com.au). Observed on 1 organisation."
+
+  - id: spf-micropay
+    vendor: "Micropay (The Access Group)"
+    category: "Human Resources"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "micropay.com.au"
+    confidence: medium
+    notes: "Australian payroll platform. Authorised as a sender via spf.cloud.micropay.com.au. Observed on 1 organisation."
+
+  - id: spf-chargebee
+    vendor: "Chargebee"
+    category: "Finance & Procurement"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "email.chargebee.com"
+    confidence: medium
+    notes: "Subscription billing platform. Authorised as a sender via email.chargebee.com. The cname-targets/finance pack carries the hosted side; this covers the mail side. Observed on 1 organisation."
+
+  - id: spf-qvalent
+    vendor: "Qvalent"
+    category: "Finance & Procurement"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "qvalent.com"
+    confidence: medium
+    notes: "Payment gateway operated via DXC. Authorised as a sender via qvalent.com. Observed on 1 organisation."
+
+  - id: spf-retailexpress
+    vendor: "Retail Express (Maropost)"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "retailexpress.com.au"
+    confidence: medium
+    notes: "Retail point-of-sale and inventory platform (Australia). Authorised as a sender via retailexpress.com.au. Observed on 1 organisation."
+
+  - id: spf-travelclick
+    vendor: "TravelClick (Amadeus)"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "travelclick.com"
+    confidence: medium
+    notes: "Hospitality reservations and marketing. Authorised as a sender via _spf.travelclick.com. Zone is self-administered (hostmaster.travelclick.com), which confirms ownership. Observed on 1 organisation."
+
+  - id: spf-jangomail
+    vendor: "JangoMail"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "jangomail.com"
+    confidence: medium
+    notes: "Email marketing and delivery. Authorised as a sender via jangomail.com and the spf-a..d.jangomail.com siblings. Observed on 1 organisation."
+
+  - id: spf-informz
+    vendor: "Informz (Higher Logic)"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "informz.net"
+    confidence: medium
+    notes: "Email marketing for associations and nonprofits (Higher Logic Informz). Authorised as a sender via informz.net. Observed on 1 organisation."
+
+  - id: spf-carma
+    vendor: "Carma"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "carmacloud.com"
+    confidence: medium
+    notes: "Email marketing/delivery (Australia). Seen as an SPF a: mechanism (mail.carmacloud.com). Zone is self-administered, which confirms the service domain. Observed on 1 organisation."
+
+  - id: spf-smtp-com
+    vendor: "SMTP.com"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "_spf.smtp.com"
+    confidence: medium
+    notes: "Email delivery service. Authorised as a sender via _spf.smtp.com. Observed on 1 organisation."
+
+  - id: spf-kinsta
+    vendor: "Kinsta"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "kinstamailservice.com"
+    confidence: medium
+    notes: "Managed WordPress/application hosting mail relay. Authorised as a sender via relay.kinstamailservice.com. Observed on 1 organisation."
+
+  - id: spf-micron21
+    vendor: "Micron21"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "micron21.com"
+    confidence: medium
+    notes: "Australian hosting and data-centre provider. Authorised as a sender via spf.micron21.com. Zone is self-administered (m21dns.net / support.micron21.com), which confirms ownership. Observed on 1 organisation."
+
+  - id: spf-atguard
+    vendor: "atGuard"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "atguard.com.au"
+    confidence: medium
+    notes: "Australian hosted email security/relay. Authorised as a sender via mx01.atguard.com.au. Zone is self-administered (hostmaster.atguard.com.au), which confirms ownership. Observed on 1 organisation."
+
+  - id: spf-secureintellicentre
+    vendor: "Secure Intellicentre"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "secureintellicentre.net.au"
+    confidence: medium
+    notes: "Australian managed security/email gateway. Authorised as a sender via da.secureintellicentre.net.au. Zone is self-administered, which confirms ownership. Observed on 1 organisation."
+
+  - id: spf-boardbooks
+    vendor: "BoardBooks"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "boardbooks.com"
+    confidence: medium
+    notes: "Board-meeting and governance portal. Authorised as a sender via spf.boardbooks.com. Zone is self-administered (itservices.boardbooks.com), which confirms ownership. Observed on 1 organisation."
+
+  - id: spf-androgogic
+    vendor: "Androgogic"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "androgogic.com.au"
+    confidence: medium
+    notes: "Australian learning-platform integration and hosting. Authorised as a sender via _spf1.androgogic.com.au; also seen as a CNAME target (<org>lmsredirect.androgogic.com.au). Observed on 1 organisation."
+
+  # --- Added from the 150-org New Zealand discovery run (sender-based). ---
+
+  - id: spf-sitehost
+    vendor: "SiteHost"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "sitehost.co.nz"
+    confidence: medium
+    notes: "New Zealand web hosting provider. Authorised as a sender via _spf.sitehost.co.nz / smtp.sitehost.co.nz. Zone is self-administered, which confirms ownership. Observed on 7 organisations."
+
+  - id: spf-aotal
+    vendor: "Aotal"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "aotal.cloud"
+    confidence: medium
+    notes: "New Zealand cloud hosting/email platform. Authorised as a sender via _spf.aotal.cloud; also seen as a CNAME target. Observed on 6 organisations."
+
+  - id: spf-1stdomains
+    vendor: "1st Domains (Net24)"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "1stdomains.co.nz"
+    confidence: medium
+    notes: "New Zealand domain registrar and host (a Net24 brand; the zone is administered from net24.net.nz). Authorised as a sender via _spf.1stdomains.co.nz. Observed on 2 organisations."
+
+  - id: spf-voyager-nz
+    vendor: "Voyager"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "voyager.co.nz"
+    confidence: medium
+    notes: "New Zealand internet and voice provider. Authorised as a sender via _spf.smtp.voyager.co.nz. Zone is self-administered, which confirms ownership. Observed on 2 organisations."
+
+  - id: spf-crossware
+    vendor: "Crossware"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "crossware.co.nz"
+    confidence: medium
+    notes: "Email signature management (New Zealand). Authorised as a sender via aus-k1.o365.crossware.co.nz. Observed on 2 organisations."
+
+  - id: spf-smx
+    vendor: "SMX"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "smxemail.com"
+    confidence: medium
+    notes: "New Zealand email security/filtering. Authorised as a sender via spf.nz.smxemail.com. Zone is self-administered (hostmaster.smxemail.com), which confirms ownership. Observed on 2 organisations."
+
+  - id: spf-arlo
+    vendor: "Arlo"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "_spf.arlo.co"
+    confidence: medium
+    notes: "Training and course management software (New Zealand). Authorised as a sender via _spf.arlo.co. Observed on 2 organisations."
+
+  - id: spf-jobadder
+    vendor: "JobAdder"
+    category: "Human Resources"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "jobadder.com"
+    confidence: medium
+    notes: "Recruitment and applicant-tracking platform (Australia/New Zealand). Authorised as a sender via _spf.jobadder.com and e.jobadder.com. Observed on 2 organisations."
+
+  - id: spf-unimarket
+    vendor: "Unimarket"
+    category: "Finance & Procurement"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "_spf.unimarket.com"
+    confidence: medium
+    notes: "E-procurement platform, common in higher education. Authorised as a sender via _spf.unimarket.com. Observed on 1 organisation."
+
+  - id: spf-clickdimensions
+    vendor: "ClickDimensions"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "clickdimensions.com"
+    confidence: medium
+    notes: "Marketing automation for Microsoft Dynamics. Authorised as a sender via customers.clickdimensions.com. Observed on 1 organisation."
+
+  - id: spf-bigcommerce
+    vendor: "BigCommerce"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "_spf.bigcommerce.com"
+    confidence: medium
+    notes: "E-commerce platform. Authorised as a sender via _spf.bigcommerce.com. The cname-targets pack carries the hosted side; this covers the mail side. Observed on 1 organisation."
+
+  - id: spf-gettyimages
+    vendor: "Getty Images"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "gettyimages.com"
+    confidence: medium
+    notes: "Stock media. Authorised as a sender via _spf1/_spf2.gettyimages.com. Zone is self-administered (dnsadmin.gettyimages.com), which confirms ownership. Observed on 1 organisation."
+
+  - id: spf-messagefocus
+    vendor: "MessageFocus (Adestra)"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "msgfocus.com"
+    confidence: medium
+    notes: "Email marketing platform (Adestra/Upland MessageFocus). Authorised as a sender via msgfocus.com. Observed on 1 organisation."
+
+  - id: spf-naviga
+    vendor: "Naviga"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "navigacloud.com"
+    confidence: medium
+    notes: "Media and publishing software platform. Authorised as a sender via navigacloud.com. Observed on 1 organisation."
+
+  - id: spf-sonicwall-hes
+    vendor: "SonicWall (Hosted Email Security)"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "snwlhostedeu.com"
+    confidence: medium
+    notes: "SonicWall Hosted Email Security. Authorised as a sender via _spf.snwlhostedeu.com. Zone is self-administered (hostmaster.colo.sonicwall.com), which confirms ownership. Observed on 1 organisation."
+
+  - id: spf-cleanmail
+    vendor: "CleanMail"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "cleanmail.nz"
+    confidence: medium
+    notes: "New Zealand email security/filtering. Authorised as a sender via cleanmail.nz. Observed on 1 organisation."
+
+  - id: spf-vpscity
+    vendor: "VPS City"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "vpscity.co.nz"
+    confidence: medium
+    notes: "New Zealand VPS hosting provider. Authorised as a sender via _mxservers.vpscity.co.nz. Zone is self-administered, which confirms ownership. Observed on 1 organisation."
+
+  - id: spf-intergen
+    vendor: "Intergen"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "intergen.net.nz"
+    confidence: medium
+    notes: "New Zealand IT services and managed hosting (now Empired). Authorised as a sender via spf.relays.intergen.net.nz. Zone is self-administered, which confirms ownership. Observed on 1 organisation."
+
+  - id: spf-softlink
+    vendor: "Softlink"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "softlinkhosting.com.au"
+    confidence: medium
+    notes: "Library management software hosting (Australia/New Zealand). Authorised as a sender via ic1smtp.softlinkhosting.com.au. Observed on 1 organisation."
+
+  - id: spf-mailpost-nz
+    vendor: "Mailpost"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "mailpost.co.nz"
+    confidence: medium
+    notes: "New Zealand hosted email/mailout service. Per-customer senders appear as <org>.mailpost.co.nz. Observed on 2 organisations."
+
+  - id: spf-orderbox
+    vendor: "Orderbox (LogicBoxes)"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "myorderbox.com"
+    confidence: medium
+    notes: "Domain-reseller storefront and mail (LogicBoxes Orderbox). Authorised as a sender via _spf.myorderbox.com. Observed on 1 organisation."
+
+  # --- Added from the second 100-org Australian discovery run (sender-based). ---
+
+  - id: spf-mailguard
+    vendor: "MailGuard"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "mailguard.com.au"
+    confidence: medium
+    notes: "Australian email security/filtering. Authorised as a sender via spf_a/spf_b.mailguard.com.au and customer.mailguard.com.au. The dns-mx pack carries the inbound side; this covers the outbound. Observed on 1 organisation."
+
+  - id: spf-squiz
+    vendor: "Squiz"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "squiz.net"
+    confidence: medium
+    notes: "Australian web experience/CMS platform. Authorised as a sender via wec.spf.squiz.net. The cname-targets pack carries the hosted side; this covers the mail side. Observed on 1 organisation."
+
+  - id: spf-fundraiseup
+    vendor: "Fundraise Up"
+    category: "Finance & Procurement"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "spf.fundraiseup.com"
+    confidence: medium
+    notes: "Online donation and fundraising platform. Authorised as a sender via spf.fundraiseup.com. Observed on 1 organisation."
+
+  - id: spf-firstaml
+    vendor: "First AML"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "firstaml.com"
+    confidence: medium
+    notes: "Anti-money-laundering and KYC platform (Australia/New Zealand). Authorised as a sender via app-spf.firstaml.com / apac-app-spf.firstaml.com. Observed on 1 organisation."
+
+  - id: spf-talkbox
+    vendor: "TalkBox"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "talkbox.email"
+    confidence: medium
+    notes: "Email and SMS marketing platform (Australia). Authorised as a sender via _spf.talkbox.email. Observed on 1 organisation."
+
+  - id: spf-cloudiq
+    vendor: "CloudIQ"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "cloud-iq.com"
+    confidence: medium
+    notes: "Marketing/e-commerce engagement platform. Authorised as a sender via _spf.cloud-iq.com. Observed on 1 organisation."
+
+  - id: spf-brightspace
+    vendor: "D2L Brightspace"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "_spf.brightspace.com"
+    confidence: medium
+    notes: "D2L Brightspace learning-management system. Authorised as a sender via a/b._spf.brightspace.com. The cname-targets pack carries the hosted side; this covers the mail side. Observed on 1 organisation."
+
+  - id: spf-synxis
+    vendor: "SynXis (Sabre)"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "spf.synxis.com"
+    confidence: medium
+    notes: "Hospitality reservations platform (Sabre SynXis). Authorised as a sender via spf.synxis.com. Observed on 1 organisation."
+
+  - id: spf-simplepay
+    vendor: "SimplePay"
+    category: "Human Resources"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "simplepay.com.au"
+    confidence: medium
+    notes: "Australian cloud payroll platform. Authorised as a sender via simplepay.com.au. Observed on 1 organisation."
+
+  - id: spf-respax
+    vendor: "RESPAX"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "respax.com"
+    confidence: medium
+    notes: "Tour and activity reservation platform. Authorised as a sender via respax.com. Observed on 1 organisation."
+
+  - id: spf-impactdata
+    vendor: "Impact Data"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "impactdata.com.au"
+    confidence: medium
+    notes: "Australian customer-engagement and messaging platform. Authorised as a sender via email.impactdata.com.au. Observed on 1 organisation."
+
+  - id: spf-catalyst-au
+    vendor: "Catalyst IT"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "catalyst-au.net"
+    confidence: medium
+    notes: "Catalyst IT (Australia) managed hosting and mail. Authorised as a sender via spf.<region>.catalyst-au.net. Complements the Moodle hosting entry already carried. Observed on 1 organisation."
+
+  # --- Added from the third 100-org Australian discovery run (sender-based; CT was rate-limited). ---
+
+  - id: spf-atmail
+    vendor: "Atmail"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "atmailcloud.com"
+    confidence: medium
+    notes: "Hosted email platform (Australia). Authorised as a sender via spf.au-east.atmailcloud.com. Observed on 2 organisations."
+
+  - id: spf-websitewelcome
+    vendor: "HostGator"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "websitewelcome.com"
+    confidence: medium
+    notes: "Shared web hosting (HostGator / Newfold). Authorised as a sender via spf.websitewelcome.com. Observed on 2 organisations."
+
+  - id: spf-actionstep
+    vendor: "Actionstep"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "actionstep.com"
+    confidence: medium
+    notes: "Legal practice-management platform (Australia/New Zealand). Authorised as a sender via _spf.actionstep.com. Observed on 1 organisation."
+
+  - id: spf-isentia
+    vendor: "Isentia"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "isentia.com"
+    confidence: medium
+    notes: "Media monitoring and intelligence (Australia). Authorised as a sender via spfx.isentia.com; the zone is administered from intellicentre.net.au. Observed on 1 organisation."
+
+  - id: spf-commercevision
+    vendor: "Commerce Vision"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "commercevision.cloud"
+    confidence: medium
+    notes: "B2B e-commerce platform (Australia). Authorised as a sender via spf.commercevision.cloud. Observed on 1 organisation."
+
+  - id: spf-triumph
+    vendor: "Triumph"
+    category: "Human Resources"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "triumphcloud.com.au"
+    confidence: medium
+    notes: "Australian payroll and HR platform. Authorised as a sender via spf.triumphcloud.com.au. Observed on 1 organisation."
+
+  - id: spf-eftel
+    vendor: "Eftel"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "eftel.com.au"
+    confidence: medium
+    notes: "Australian internet and hosting provider. Authorised as a sender via eftel.com.au. Zone is self-administered (dnsmaster.eftel.com), which confirms ownership. Observed on 2 organisations."
+
+  - id: spf-guestfolio
+    vendor: "Cendyn (Guestfolio)"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "guestfolio.net"
+    confidence: medium
+    notes: "Hotel CRM and guest-engagement platform (Cendyn Guestfolio). Authorised as a sender via email2.guestfolio.net. Observed on 1 organisation."
+
+  - id: spf-givex
+    vendor: "Givex"
+    category: "Business Applications"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "givex.com"
+    confidence: medium
+    notes: "Gift-card, loyalty and POS platform. Authorised as a sender via spf.givex.com. Zone is self-administered (hostmaster.givex.com), which confirms ownership. Observed on 1 organisation."
+
+  - id: spf-ivt
+    vendor: "IVT"
+    category: "Marketing"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "ivt.com.au"
+    confidence: medium
+    notes: "Australian email/communications sender. Authorised via spf-mdl/spf-ms1/spf-wb1.ivt.com.au. Zone is self-administered (hostmaster.ivt.com.au); the product behind the brand was not independently confirmed. Observed on 1 organisation."
+
+  - id: spf-fastmail
+    vendor: "Fastmail"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "messagingengine.com"
+    confidence: medium
+    notes: "Fastmail hosted email. Authorised as a sender via spf.messagingengine.com. Zone is self-administered (postmaster.messagingengine.com), which confirms ownership. Observed on 1 organisation."
+
+  - id: spf-hostedemail-opensrs
+    vendor: "OpenSRS Hosted Email (Tucows)"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "_spf.hostedemail.com"
+    confidence: medium
+    notes: "OpenSRS/Tucows hosted email. Authorised as a sender via _spf.hostedemail.com. Observed on 1 organisation."
+
+  - id: spf-turbosmtp
+    vendor: "TurboSMTP"
+    category: "Email"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "turbo-smtp.com"
+    confidence: medium
+    notes: "Email delivery / SMTP relay. Authorised as a sender via turbo-smtp.com. Observed on 1 organisation."
+
+  - id: spf-autospf
+    vendor: "AutoSPF"
+    category: "Email Security"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "autospf.email"
+    confidence: medium
+    notes: "Hosted SPF-flattening service that rewrites a domain's includes to stay under the RFC 7208 lookup limit; per-customer records appear as _sNNNN.autospf.email. Observed on 1 organisation."
+
+  - id: spf-webhosting24
+    vendor: "Webhosting24"
+    category: "Infrastructure"
+    type: spf_include
+    query: "{domain}"
+    match:
+      contains: "webhosting24.com.au"
+    confidence: medium
+    notes: "Australian web hosting provider (Web24). Seen as an SPF a: mechanism (ds<id>.webhosting24.com.au). Observed on 1 organisation."
