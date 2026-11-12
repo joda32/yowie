@@ -34,6 +34,7 @@ type Scan struct {
 	warn      func(string)
 	status    func(string)
 	subdomain func(model.Subdomain)
+	certified func(model.Certificate)
 }
 
 // NewScan builds a Scan with the given sinks. emit receives findings, warn
@@ -82,6 +83,18 @@ func (s *Scan) OnSubdomain(sink func(model.Subdomain)) { s.subdomain = sink }
 func (s *Scan) AddSubdomain(host, target string) {
 	if s.subdomain != nil {
 		s.subdomain(model.Subdomain{Host: host, Target: target})
+	}
+}
+
+// OnCertificate sets the sink that receives certificate detail read from CT
+// logs. Like OnSubdomain it is set by the engine and off NewScan's signature.
+func (s *Scan) OnCertificate(sink func(model.Certificate)) { s.certified = sink }
+
+// AddCertificate records a certificate observed in CT logs. A no-op when no sink
+// is set.
+func (s *Scan) AddCertificate(c model.Certificate) {
+	if s.certified != nil {
+		s.certified(c)
 	}
 }
 

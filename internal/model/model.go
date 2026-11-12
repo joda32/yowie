@@ -123,6 +123,11 @@ type Result struct {
 	// scanning want every scannable host; the Findings only attribute the ones
 	// that point at an external vendor.
 	Subdomains []Subdomain `json:"subdomains,omitempty"`
+	// Certificates is the certificate detail behind those subdomains, read from
+	// crt.sh (subject, issuer, validity, SANs). Deduped and capped. It lets a
+	// caller show the actual CT certificates, not only the hostnames extracted
+	// from them.
+	Certificates []Certificate `json:"certificates,omitempty"`
 	// Stats records how much work was done, for tuning and for showing the
 	// reader that an empty result means "we looked and found nothing".
 	Stats Stats `json:"stats"`
@@ -134,6 +139,18 @@ type Result struct {
 type Subdomain struct {
 	Host   string `json:"host"`
 	Target string `json:"target,omitempty"`
+}
+
+// Certificate is one certificate observed in Certificate Transparency logs.
+// Dates are kept as the source's strings (RFC3339-ish) rather than parsed times,
+// so the raw CT value is what surfaces in a report.
+type Certificate struct {
+	Subject   string   `json:"subject"`
+	Issuer    string   `json:"issuer,omitempty"`
+	SANs      []string `json:"sans,omitempty"`
+	NotBefore string   `json:"not_before,omitempty"`
+	NotAfter  string   `json:"not_after,omitempty"`
+	Serial    string   `json:"serial,omitempty"`
 }
 
 // Stats summarises the work performed during a scan.

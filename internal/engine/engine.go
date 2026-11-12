@@ -16,6 +16,10 @@ import (
 	"github.com/joda32/yowie/internal/webclient"
 )
 
+// maxCertificates caps how many CT certificates a result carries. The newest by
+// expiry are kept; the long tail of a large estate is not useful in a report.
+const maxCertificates = 100
+
 // Config describes one scan.
 type Config struct {
 	Domain     string
@@ -73,10 +77,11 @@ func Run(ctx context.Context, cfg Config) (*model.Result, error) {
 	findings := make(chan model.Finding, 256)
 	warnings := make(chan string, 256)
 	subdomains := make(chan model.Subdomain, 256)
+	certificates := make(chan model.Certificate, 256)
 
 	set := model.NewFindingSet()
 	var collector sync.WaitGroup
-	collector.Add(3)
+	collector.Add(4)
 
 	go func() {
 		defer collector.Done()
@@ -107,6 +112,25 @@ func Run(ctx context.Context, cfg Config) (*model.Result, error) {
 				existing.Target = sd.Target
 				subByHost[host] = existing
 			}
+		}
+	}()
+
+	// Certificate detail from CT (crt.sh). Dedupe defensively by serial, falling
+	// back to subject+validity, and keep insertion order for a later sort+cap.
+	var certOrder []model.Certificate
+	certSeen := map[string]bool{}
+	go func() {
+		defer collector.Done()
+		for c := range certificates {
+			key := c.Serial
+			if key == "" {
+				key = c.Subject + "|" + c.NotAfter
+			}
+			if certSeen[key] {
+				continue
+			}
+			certSeen[key] = true
+			certOrder = append(certOrder, c)
 		}
 	}()
 
@@ -145,6 +169,7 @@ func Run(ctx context.Context, cfg Config) (*model.Result, error) {
 	scan.Sigs = cfg.Signatures
 	scan.ReportUnknown = cfg.ReportUnknown
 	scan.OnSubdomain(func(sd model.Subdomain) { subdomains <- sd })
+	scan.OnCertificate(func(c model.Certificate) { certificates <- c })
 
 	var detectorsWG sync.WaitGroup
 	for _, d := range detectors {
@@ -168,6 +193,7 @@ func Run(ctx context.Context, cfg Config) (*model.Result, error) {
 	close(findings)
 	close(warnings)
 	close(subdomains)
+	close(certificates)
 	collector.Wait()
 
 	queries, hits := cfg.Resolver.Stats()
@@ -178,6 +204,15 @@ func Run(ctx context.Context, cfg Config) (*model.Result, error) {
 		for _, h := range subOrder {
 			result.Subdomains = append(result.Subdomains, subByHost[h])
 		}
+	}
+	if len(certOrder) > 0 {
+		// Most recently-valid certificates first (NotAfter is an ISO string, so a
+		// lexical compare orders dates correctly), then cap.
+		sort.SliceStable(certOrder, func(i, j int) bool { return certOrder[i].NotAfter > certOrder[j].NotAfter })
+		if len(certOrder) > maxCertificates {
+			certOrder = certOrder[:maxCertificates]
+		}
+		result.Certificates = certOrder
 	}
 	result.Duration = time.Since(started)
 	result.Stats = model.Stats{

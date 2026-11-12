@@ -200,6 +200,10 @@ type ctSource struct {
 	url func(domain string) string
 	// parse turns a response body into hostnames under domain.
 	parse func(body, domain string) ([]string, error)
+	// certs optionally extracts certificate detail from the same body. Only
+	// sources whose response carries issuer/validity fields set it (crt.sh); the
+	// others contribute hostnames only.
+	certs func(body, domain string) []model.Certificate
 }
 
 // ctSources are all queried and their results merged (see fetch). crt.sh is the
@@ -219,6 +223,7 @@ var ctSources = []ctSource{
 			return "https://crt.sh/?q=" + url.QueryEscape("%."+d) + "&output=json&exclude=expired"
 		},
 		parse: parseCrtSh,
+		certs: parseCrtShCerts,
 	},
 	{
 		name: "Cert Spotter",
@@ -306,6 +311,13 @@ func (d *CertTransparency) query(ctx context.Context, s *Scan, src ctSource) ([]
 	if len(hosts) == 0 {
 		return nil, fmt.Errorf("no hostnames returned")
 	}
+	// Certificate detail is a bonus from the same body, for sources that carry
+	// it. A failure to extract certs never fails the hostname channel.
+	if src.certs != nil {
+		for _, c := range src.certs(resp.Body, s.Domain) {
+			s.AddCertificate(c)
+		}
+	}
 	return hosts, nil
 }
 
@@ -387,6 +399,85 @@ func parseCrtSh(body, domain string) ([]string, error) {
 	}
 	return c.hosts(), nil
 }
+
+// parseCrtShCerts extracts certificate detail from crt.sh's JSON array. crt.sh
+// logs one row per certificate issuance, so the same certificate recurs; rows
+// are deduped by serial number (falling back to subject+validity). SANs are
+// taken from name_value, kept to those under the scanned domain and capped so a
+// wildcard-heavy cert does not dominate.
+//
+// Errors are swallowed by the caller (certs are a bonus over hostnames), so this
+// returns nil rather than an error on malformed input.
+func parseCrtShCerts(body, domain string) []model.Certificate {
+	var entries []struct {
+		IssuerName   string `json:"issuer_name"`
+		CommonName   string `json:"common_name"`
+		NameValue    string `json:"name_value"`
+		NotBefore    string `json:"not_before"`
+		NotAfter     string `json:"not_after"`
+		SerialNumber string `json:"serial_number"`
+	}
+	if err := json.Unmarshal([]byte(body), &entries); err != nil {
+		return nil
+	}
+
+	domain = strings.ToLower(strings.TrimSuffix(domain, "."))
+	suffix := "." + domain
+
+	seen := map[string]bool{}
+	var out []model.Certificate
+	for _, e := range entries {
+		// SANs: dedupe, keep those under the scanned domain, cap the list.
+		sanSeen := map[string]bool{}
+		var sans []string
+		for _, n := range strings.Split(e.NameValue, "\n") {
+			n = strings.ToLower(strings.TrimSpace(n))
+			n = strings.TrimPrefix(n, "*.") // a wildcard names the parent
+			if n == "" || sanSeen[n] {
+				continue
+			}
+			if n != domain && !strings.HasSuffix(n, suffix) {
+				continue
+			}
+			sanSeen[n] = true
+			if len(sans) < maxCertSANs {
+				sans = append(sans, n)
+			}
+		}
+
+		subject := strings.ToLower(strings.TrimSpace(e.CommonName))
+		if subject == "" && len(sans) > 0 {
+			subject = sans[0]
+		}
+		if subject == "" {
+			continue
+		}
+
+		key := e.SerialNumber
+		if key == "" {
+			key = subject + "|" + e.NotAfter
+		}
+		if seen[key] {
+			continue
+		}
+		seen[key] = true
+
+		sort.Strings(sans)
+		out = append(out, model.Certificate{
+			Subject:   subject,
+			Issuer:    strings.TrimSpace(e.IssuerName),
+			SANs:      sans,
+			NotBefore: strings.TrimSpace(e.NotBefore),
+			NotAfter:  strings.TrimSpace(e.NotAfter),
+			Serial:    strings.TrimSpace(e.SerialNumber),
+		})
+	}
+	return out
+}
+
+// maxCertSANs caps how many Subject Alternative Names are kept per certificate,
+// so a wildcard or SAN-stuffed certificate stays readable in a report.
+const maxCertSANs = 20
 
 // parseCertSpotter reads Cert Spotter's JSON array.
 func parseCertSpotter(body, domain string) ([]string, error) {
