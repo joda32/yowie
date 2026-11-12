@@ -100,6 +100,14 @@ func (d *CertTransparency) Run(ctx context.Context, s *Scan) error {
 	}
 	s.Status("Resolving %d hostnames from certificate transparency logs", len(hosts))
 
+	// Record the full inventory before attribution. The loop below only keeps
+	// hosts that CNAME to an external vendor, but a caller doing posture scanning
+	// wants every host the organisation has issued a certificate for, not just the
+	// SaaS-attributed subset. These are the domain's own subdomains.
+	for _, host := range hosts {
+		s.AddSubdomain(host, "")
+	}
+
 	sigs := s.Sigs.ByType(signature.TypeCNAMETarget)
 
 	type hit struct {

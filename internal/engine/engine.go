@@ -72,15 +72,41 @@ func Run(ctx context.Context, cfg Config) (*model.Result, error) {
 	// owns the FindingSet so no locking is needed around merge logic.
 	findings := make(chan model.Finding, 256)
 	warnings := make(chan string, 256)
+	subdomains := make(chan model.Subdomain, 256)
 
 	set := model.NewFindingSet()
 	var collector sync.WaitGroup
-	collector.Add(2)
+	collector.Add(3)
 
 	go func() {
 		defer collector.Done()
 		for f := range findings {
 			set.Add(f)
+		}
+	}()
+
+	// Subdomains arrive from the CT detector (the full host inventory). Dedupe by
+	// host, keeping the first non-empty target seen so a CNAME attribution is not
+	// lost to a later bare record.
+	var subOrder []string
+	subByHost := map[string]model.Subdomain{}
+	go func() {
+		defer collector.Done()
+		for sd := range subdomains {
+			host := strings.ToLower(strings.TrimSuffix(sd.Host, "."))
+			if host == "" {
+				continue
+			}
+			existing, ok := subByHost[host]
+			if !ok {
+				subByHost[host] = model.Subdomain{Host: host, Target: sd.Target}
+				subOrder = append(subOrder, host)
+				continue
+			}
+			if existing.Target == "" && sd.Target != "" {
+				existing.Target = sd.Target
+				subByHost[host] = existing
+			}
 		}
 	}()
 
@@ -118,6 +144,7 @@ func Run(ctx context.Context, cfg Config) (*model.Result, error) {
 	scan.HTTP = cfg.HTTP
 	scan.Sigs = cfg.Signatures
 	scan.ReportUnknown = cfg.ReportUnknown
+	scan.OnSubdomain(func(sd model.Subdomain) { subdomains <- sd })
 
 	var detectorsWG sync.WaitGroup
 	for _, d := range detectors {
@@ -140,10 +167,18 @@ func Run(ctx context.Context, cfg Config) (*model.Result, error) {
 
 	close(findings)
 	close(warnings)
+	close(subdomains)
 	collector.Wait()
 
 	queries, hits := cfg.Resolver.Stats()
 	result.Findings = set.Findings()
+	if len(subOrder) > 0 {
+		sort.Strings(subOrder)
+		result.Subdomains = make([]model.Subdomain, 0, len(subOrder))
+		for _, h := range subOrder {
+			result.Subdomains = append(result.Subdomains, subByHost[h])
+		}
+	}
 	result.Duration = time.Since(started)
 	result.Stats = model.Stats{
 		DNSQueries:   queries,

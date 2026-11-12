@@ -117,9 +117,23 @@ type Result struct {
 	// Errors collects non-fatal problems (timeouts, unreachable endpoints) so
 	// that a partial scan is visibly partial rather than silently incomplete.
 	Errors []string `json:"errors,omitempty"`
+	// Subdomains is the full host inventory observed in Certificate
+	// Transparency logs for the domain — the organisation's own surface, not
+	// just the hosts that CNAME to a known SaaS vendor. Callers doing posture
+	// scanning want every scannable host; the Findings only attribute the ones
+	// that point at an external vendor.
+	Subdomains []Subdomain `json:"subdomains,omitempty"`
 	// Stats records how much work was done, for tuning and for showing the
 	// reader that an empty result means "we looked and found nothing".
 	Stats Stats `json:"stats"`
+}
+
+// Subdomain is a hostname seen in CT logs for the scanned domain. Target is
+// what it resolves to via CNAME when known (used to attribute vendors); it is
+// empty for hosts that resolve by A/AAAA or were not resolved.
+type Subdomain struct {
+	Host   string `json:"host"`
+	Target string `json:"target,omitempty"`
 }
 
 // Stats summarises the work performed during a scan.

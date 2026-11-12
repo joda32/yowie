@@ -30,9 +30,10 @@ type Scan struct {
 	// so it defaults on, but it is the noisiest output.
 	ReportUnknown bool
 
-	emit   func(model.Finding)
-	warn   func(string)
-	status func(string)
+	emit      func(model.Finding)
+	warn      func(string)
+	status    func(string)
+	subdomain func(model.Subdomain)
 }
 
 // NewScan builds a Scan with the given sinks. emit receives findings, warn
@@ -68,6 +69,20 @@ func (s *Scan) EmitSig(sig signature.Signature, conf model.Confidence, ev ...mod
 		f.Notes = []string{sig.Notes}
 	}
 	s.Emit(f)
+}
+
+// OnSubdomain sets the sink that receives every hostname observed in CT logs,
+// so a caller can collect the organisation's full subdomain inventory and not
+// only the SaaS-attributed hosts. It is set by the engine, kept off NewScan so
+// existing callers and tests are unaffected. nil disables collection.
+func (s *Scan) OnSubdomain(sink func(model.Subdomain)) { s.subdomain = sink }
+
+// AddSubdomain records a hostname seen in CT logs. target is the CNAME it
+// resolves to when known, otherwise empty. A no-op when no sink is set.
+func (s *Scan) AddSubdomain(host, target string) {
+	if s.subdomain != nil {
+		s.subdomain(model.Subdomain{Host: host, Target: target})
+	}
 }
 
 // Warn records a non-fatal problem. Warnings appear in the report so that a
