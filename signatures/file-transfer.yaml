@@ -89,6 +89,13 @@ signatures:
     disabled: true
     notes: "Applies only to subdomains discovered via certificate transparency."
 
+  - id: cname-target-kiteworks-cloud
+    vendor: "Kiteworks"
+    type: cname_target
+    query: "kiteworks.cloud"
+    confidence: medium
+    notes: "Kiteworks' cloud-hosted tenant domain (kiteworks.cloud is independently delegated to AWS); a customer host aliased here is a live managed deployment, unlike the customer-hosted kiteworks.com case above. Observed on 1 organisation."
+
   - id: cname-target-moveit
     vendor: "Progress MOVEit"
     type: cname_target

@@ -2180,7 +2180,7 @@ signatures:
     type: cname_target
     query: "govcms.gov.au"
     confidence: medium
-    notes: "The Australian Government's shared Drupal website platform, run by the Department of Finance (govhosting.finance.gov.au in the SOA). Org sites are aliased to paascdn.govcms.gov.au. Observed on 1 organisation."
+    notes: "The Australian Government's shared Drupal website platform, run by the Department of Finance. Org sites are aliased to paascdn.govcms.gov.au. Observed on 1 organisation."
 
   # --- Added from the 150-org New Zealand discovery run (CT host targets). ---
 
@@ -2545,3 +2545,1947 @@ signatures:
     query: "ferve.tickets"
     confidence: medium
     notes: "Event ticketing platform. Org subdomains are aliased to a host under ferve.tickets. Observed on 1 organisation."
+
+  - id: cname-target-careerhub
+    vendor: "CareerHub"
+    category: "HR & Learning"
+    type: cname_target
+    query: "careerhub.com.au"
+    confidence: medium
+    notes: "University careers-services platform. Each institution appears as <org>.careerhub.com.au and <org>.employers.careerhub.com.au. DNS ownership confirmed: careerhub.com.au is independently delegated (AWS). Observed across 3 Australian universities."
+
+  - id: cname-target-lmshosting
+    vendor: "LMS Hosting Services"
+    category: "HR & Learning"
+    type: cname_target
+    query: "lmshosting.com.au"
+    confidence: medium
+    notes: "Managed Moodle LMS hosting (Australian Moodle partner). Tenants are aliased as <org>.lmshosting.com.au. Observed on 2 organisations."
+
+  - id: cname-target-cfjump
+    vendor: "Campaign Factory"
+    category: "Marketing"
+    type: cname_target
+    query: "cfjump.com"
+    confidence: medium
+    notes: "Email/SMS marketing platform; a first-party tracking host is aliased to t.cfjump.com. The trading name is inferred from the cfjump.com domain, not independently confirmed, but the cname_target value is the directly observed hosting suffix. Observed on 2 organisations."
+
+  - id: cname-target-4me
+    vendor: "4me"
+    category: "IT Service Management"
+    type: cname_target
+    query: "4me.com"
+    confidence: medium
+    notes: "Enterprise service-management (ITSM/ESM) platform. Tenants appear as <org>-<service>.au.4me.com. DNS ownership confirmed (AWS, independently delegated). Observed on 1 organisation."
+
+  - id: cname-target-activecampaign
+    vendor: "ActiveCampaign"
+    category: "Marketing"
+    type: cname_target
+    query: "activehosted.com"
+    confidence: medium
+    notes: "Marketing-automation and email platform; activehosted.com is ActiveCampaign's tenant-hosting domain (<account>.activehosted.com). Observed on 1 organisation."
+
+  - id: cname-target-asset-bank
+    vendor: "Asset Bank"
+    category: "Content Management"
+    type: cname_target
+    query: "assetbank-server.com"
+    confidence: medium
+    notes: "Digital asset management (DAM) platform. Customer libraries are aliased to a host under assetbank-server.com. Observed on 1 organisation."
+
+  - id: cname-target-bepress
+    vendor: "bepress Digital Commons"
+    category: "Research"
+    type: cname_target
+    query: "bepress.com"
+    confidence: medium
+    notes: "Institutional-repository / scholarly-publishing platform. Repositories are aliased to a host under bepress.com. Observed on 1 organisation."
+
+  - id: cname-target-bloomreach
+    vendor: "Bloomreach"
+    category: "Marketing"
+    type: cname_target
+    query: "bloomreach.co"
+    confidence: medium
+    notes: "Commerce-experience and marketing/CDP platform. A first-party host is aliased under bloomreach.co. Observed on 1 organisation."
+
+  - id: cname-target-oracle-eloqua-en25
+    vendor: "Oracle Eloqua"
+    category: "Marketing"
+    type: cname_target
+    query: "en25.com"
+    confidence: medium
+    notes: "Eloqua marketing-automation tracking/microsite domain (en25.com is served by Oracle Cloud nameservers). Complements the Eloqua SPF signature with its CT-visible hosting suffix. Observed on 1 organisation."
+
+  - id: cname-target-fliphtml5
+    vendor: "FlipHTML5"
+    category: "Content Management"
+    type: cname_target
+    query: "fliphtml5.com"
+    confidence: medium
+    notes: "Digital-publishing / flipbook platform. A first-party host is aliased under fliphtml5.com. Observed on 1 organisation."
+
+  - id: cname-target-hivebrite
+    vendor: "Hivebrite"
+    category: "Community"
+    type: cname_target
+    query: "hivebrite.com"
+    confidence: medium
+    notes: "Community / alumni engagement platform. Tenant communities are aliased to a host under hivebrite.com. Observed on 1 organisation."
+
+  - id: cname-target-lemlist
+    vendor: "lemlist"
+    category: "Marketing"
+    type: cname_target
+    query: "lemlist.com"
+    confidence: medium
+    notes: "Sales-engagement / cold-outreach platform. A first-party host is aliased under lemlist.com. Observed on 1 organisation."
+
+  - id: cname-target-maestra
+    vendor: "Maestra"
+    category: "Marketing"
+    type: cname_target
+    query: "maestra.io"
+    confidence: medium
+    notes: "Customer-data / marketing-automation platform. A first-party host is aliased under maestra.io. Observed on 1 organisation."
+
+  - id: cname-target-readymag
+    vendor: "Readymag"
+    category: "Content Management"
+    type: cname_target
+    query: "readymag.com"
+    confidence: medium
+    notes: "Hosted web-design / microsite builder. Published sites are aliased to a host under readymag.com. Observed on 1 organisation."
+
+  - id: cname-target-stape
+    vendor: "Stape"
+    category: "Analytics"
+    type: cname_target
+    query: "stape.io"
+    confidence: medium
+    notes: "Server-side tag-management (sGTM) hosting. A first-party tagging host is aliased under stape.io. Observed on 1 organisation."
+
+  - id: cname-target-terminalfour
+    vendor: "TerminalFour"
+    category: "Content Management"
+    type: cname_target
+    query: "terminalfour.net"
+    confidence: medium
+    notes: "Higher-education web CMS (T4). A managed site host is aliased under terminalfour.net. Observed on 1 organisation."
+
+  - id: cname-target-xetta
+    vendor: "Xetta"
+    category: "Payments"
+    type: cname_target
+    query: "xetta.com"
+    confidence: medium
+    notes: "Payment-management / receipting platform for Australian councils and higher education. A first-party payment host is aliased under xetta.com. Observed on 1 organisation."
+
+  - id: cname-target-hireflix
+    vendor: "Hireflix"
+    category: "HR & Learning"
+    type: cname_target
+    query: "hireflix.com"
+    confidence: medium
+    notes: "One-way video-interviewing platform. A first-party host is aliased under hireflix.com. Observed on 1 organisation."
+
+  - id: cname-target-instructure-canvas
+    vendor: "Instructure Canvas"
+    category: "HR & Learning"
+    type: cname_target
+    query: "canvaslms.com"
+    confidence: medium
+    notes: "Canvas LMS tenant-hosting domain; institutions appear as <org>.canvaslms.com. canvaslms.com is independently delegated (AWS). Observed on 1 organisation."
+
+  - id: cname-target-whispir
+    vendor: "Whispir"
+    category: "Communications"
+    type: cname_target
+    query: "whispir.com"
+    confidence: medium
+    notes: "Multichannel communications / messaging platform. A first-party host is aliased under whispir.com. Observed on 1 organisation."
+
+  - id: cname-target-ungerboeck
+    vendor: "Ungerboeck (Momentus)"
+    category: "Business Applications"
+    type: cname_target
+    query: "ungerboeck.com"
+    confidence: medium
+    notes: "Venue / event-management platform (Momentus Technologies, formerly Ungerboeck). A first-party host is aliased under ungerboeck.com. Observed on 1 organisation."
+
+  - id: cname-target-red61
+    vendor: "Red61"
+    category: "Business Applications"
+    type: cname_target
+    query: "red61.com"
+    confidence: medium
+    notes: "Ticketing / audience-management platform. A first-party host is aliased under red61.com. Observed on 1 organisation."
+
+  - id: cname-target-mybos
+    vendor: "MYBOS"
+    category: "Business Applications"
+    type: cname_target
+    query: "mybos.com"
+    confidence: medium
+    notes: "Building / strata management platform. A first-party host is aliased under mybos.com. Observed on 1 organisation."
+
+  - id: cname-target-pagesuite
+    vendor: "PageSuite"
+    category: "Content Management"
+    type: cname_target
+    query: "pagesuite-professional.co.uk"
+    confidence: medium
+    notes: "Digital-edition / epublishing platform. A first-party host is aliased under pagesuite-professional.co.uk. Observed on 1 organisation."
+
+  - id: cname-target-giveeasy
+    vendor: "GiveEasy"
+    category: "Fundraising"
+    type: cname_target
+    query: "giveeasy.com.au"
+    confidence: medium
+    notes: "Not-for-profit fundraising / donation platform (Australian). A first-party host is aliased under giveeasy.com.au. Observed on 1 organisation."
+
+  - id: cname-target-redbox
+    vendor: "ReDBox (QCIF)"
+    category: "Research"
+    type: cname_target
+    query: "redboxresearchdata.com.au"
+    confidence: medium
+    notes: "Research-data-management platform operated by the Queensland Cyber Infrastructure Foundation and deployed across Australian and NZ universities. A tenant host is aliased under redboxresearchdata.com.au. Observed on 1 organisation."
+
+  - id: cname-target-pronto
+    vendor: "Pronto Software"
+    category: "Business Applications"
+    type: cname_target
+    query: "prontocloud.com.au"
+    confidence: medium
+    notes: "Australian ERP vendor; prontocloud.com.au hosts its cloud tenants (shares Cloudflare delegation with prontohosted.com.au). Observed on 1 organisation."
+
+  - id: cname-target-brevo
+    vendor: "Brevo"
+    category: "Marketing"
+    type: cname_target
+    query: "brevosend.com"
+    confidence: medium
+    notes: "Brevo (formerly Sendinblue) tracking/sending domain; a first-party host is aliased under brevosend.com. Complements the Brevo TXT and Sendinblue SPF signatures. Observed on 1 organisation."
+
+  - id: cname-target-123formbuilder
+    vendor: "123FormBuilder"
+    category: "Business Applications"
+    type: cname_target
+    query: "123formbuilder.com"
+    confidence: medium
+    notes: "Online form / survey builder. A first-party form host is aliased under 123formbuilder.com. Observed on 1 organisation."
+
+  - id: cname-target-canary
+    vendor: "Canary Technologies"
+    category: "Business Applications"
+    type: cname_target
+    query: "canarytechnologies.com"
+    confidence: medium
+    notes: "Hospitality guest-management platform (check-in, payments, upsell). A first-party host is aliased under canarytechnologies.com. Observed on 1 organisation."
+
+  - id: cname-target-careerwebsite
+    vendor: "CareerWebsite"
+    category: "HR & Learning"
+    type: cname_target
+    query: "careerwebsite.com"
+    confidence: medium
+    notes: "Hosted careers-site / job-board platform. Org career pages are aliased to a host under careerwebsite.com. The operating company's trading name is inferred from the domain, not independently confirmed, but the cname_target value is the directly observed hosting suffix. Observed on 1 organisation."
+
+  - id: cname-target-concep
+    vendor: "Concep"
+    category: "Marketing"
+    type: cname_target
+    query: "concep.com"
+    confidence: medium
+    notes: "Marketing / client-engagement platform for professional-services firms. A first-party host is aliased under concep.com. Observed on 1 organisation."
+
+  - id: cname-target-heartbeat
+    vendor: "Heartbeat"
+    category: "Community"
+    type: cname_target
+    query: "heartbeat.chat"
+    confidence: medium
+    notes: "Hosted community platform. Tenant communities are aliased to a host under heartbeat.chat. Observed on 1 organisation."
+
+  - id: cname-target-komo
+    vendor: "Komo"
+    category: "Marketing"
+    type: cname_target
+    query: "komo.site"
+    confidence: medium
+    notes: "Australian audience-engagement platform (Komo Technologies, komo.tech); branded interactive hubs are hosted under komo.site. Observed on 1 organisation."
+
+  - id: cname-target-powerhousehub
+    vendor: "PowerHouse Hub"
+    category: "HR & Learning"
+    type: cname_target
+    query: "powerhousehub.net"
+    confidence: medium
+    notes: "Learning / training-management platform. Tenant portals are aliased to a host under powerhousehub.net. Observed on 1 organisation."
+
+  - id: cname-target-treasurup
+    vendor: "TreasurUp"
+    category: "Business Applications"
+    type: cname_target
+    query: "treasurup.com"
+    confidence: medium
+    notes: "Bank-hosted SME treasury / financial-services platform. A tenant host is aliased under treasurup.com. Observed on 1 organisation."
+
+  - id: cname-target-kentico-xperience
+    vendor: "Kentico Xperience"
+    category: "Content Management"
+    type: cname_target
+    query: "xperience-sites.com"
+    confidence: medium
+    notes: "Kentico Xperience hosted-sites domain (DXP/CMS). A managed site is aliased under xperience-sites.com. Observed on 1 organisation."
+
+  - id: cname-target-activecampaign-pages
+    vendor: "ActiveCampaign"
+    category: "Marketing"
+    type: cname_target
+    query: "ac-page.com"
+    confidence: medium
+    notes: "ActiveCampaign hosted landing-pages domain; a published page is aliased under ac-page.com. Complements the activehosted.com cname and emsd1.com SPF signatures. Observed on 1 organisation."
+
+  - id: cname-target-ludicrous
+    vendor: "Ludicrous"
+    category: "Content Management"
+    type: cname_target
+    query: "ludicrous.cloud"
+    confidence: medium
+    notes: "Real-estate website / digital-presence platform; agency sites are aliased to brand.ludicrous.cloud and sites.ludicrous.cloud. The operating company's trading name is inferred from the domain, not independently confirmed, but the cname_target value is the directly observed hosting suffix. Observed on 2 organisations."
+
+  - id: cname-target-transmitsms
+    vendor: "TransmitSMS"
+    category: "Communications"
+    type: cname_target
+    query: "transmitsms.com"
+    confidence: medium
+    notes: "Bulk-SMS / mobile-messaging platform; click-tracking links are served from track-link.transmitsms.com. Observed on 2 organisations."
+
+  - id: cname-target-caniphish
+    vendor: "CanIPhish"
+    category: "Security"
+    type: cname_target
+    query: "caniphish.com"
+    confidence: medium
+    notes: "Phishing-simulation and security-awareness platform. A first-party host is aliased under caniphish.com. Observed on 1 organisation."
+
+  - id: cname-target-cloudways
+    vendor: "Cloudways"
+    category: "Infrastructure"
+    type: cname_target
+    query: "cloudways.cloud"
+    confidence: medium
+    notes: "Managed cloud-hosting platform (DigitalOcean/AWS/GCP under management). A hosted app is aliased under cloudways.cloud. Observed on 1 organisation."
+
+  - id: cname-target-easyredir
+    vendor: "EasyRedir"
+    category: "Infrastructure"
+    type: cname_target
+    query: "easyredir.net"
+    confidence: medium
+    notes: "Hosted URL-redirection service; redirect hostnames are aliased under easyredir.net. Observed on 1 organisation."
+
+  - id: cname-target-eventsair-sites
+    vendor: "EventsAir"
+    category: "Business Applications"
+    type: cname_target
+    query: "eventsairsite.com"
+    confidence: medium
+    notes: "EventsAir hosted event-site domain. A published event site is aliased under eventsairsite.com. Complements the eventsair.com signature. Observed on 1 organisation."
+
+  - id: cname-target-fillout
+    vendor: "Fillout"
+    category: "Business Applications"
+    type: cname_target
+    query: "fillout.com"
+    confidence: medium
+    notes: "Online form / survey builder. A first-party form host is aliased under fillout.com. Observed on 1 organisation."
+
+  - id: cname-target-flipsnack
+    vendor: "Flipsnack"
+    category: "Content Management"
+    type: cname_target
+    query: "flipsnack.com"
+    confidence: medium
+    notes: "Digital-publishing / flipbook platform. A published catalogue is aliased under flipsnack.com. Observed on 1 organisation."
+
+  - id: cname-target-vero
+    vendor: "Vero"
+    category: "Marketing"
+    type: cname_target
+    query: "getvero.com"
+    confidence: medium
+    notes: "Customer-messaging / lifecycle-email platform. A first-party host is aliased under getvero.com. Observed on 1 organisation."
+
+  - id: cname-target-goaffpro
+    vendor: "Goaffpro"
+    category: "Marketing"
+    type: cname_target
+    query: "goaffpro.com"
+    confidence: medium
+    notes: "Affiliate-marketing app (commonly Shopify). An affiliate portal is aliased under goaffpro.com. Observed on 1 organisation."
+
+  - id: cname-target-happyfox
+    vendor: "HappyFox"
+    category: "Business Applications"
+    type: cname_target
+    query: "happyfox.com"
+    confidence: medium
+    notes: "Help-desk / customer-support platform. A support portal is aliased under happyfox.com (the platform also sends via spf.happyfox.com). Observed on 1 organisation."
+
+  - id: cname-target-loanmarket
+    vendor: "Loan Market"
+    category: "Business Applications"
+    type: cname_target
+    query: "loanmarket.cloud"
+    confidence: medium
+    notes: "Mortgage-broking aggregator platform (Australian); broker sites are aliased under loanmarket.cloud. Observed on 1 organisation."
+
+  - id: cname-target-ms-power-pages
+    vendor: "Microsoft Power Pages"
+    category: "Business Applications"
+    type: cname_target
+    query: "microsoftcrmportals.com"
+    confidence: medium
+    notes: "Microsoft Dynamics 365 / Power Pages (formerly Portals) default host; a tenant portal appears as <org>.microsoftcrmportals.com. Observed on 1 organisation."
+
+  - id: cname-target-pixboost
+    vendor: "Pixboost"
+    category: "Infrastructure"
+    type: cname_target
+    query: "pixboost.com"
+    confidence: medium
+    notes: "Image-optimisation / delivery CDN. A first-party image host is aliased under pixboost.com. Observed on 1 organisation."
+
+  - id: cname-target-queue-it
+    vendor: "Queue-it"
+    category: "Infrastructure"
+    type: cname_target
+    query: "queue-it.net"
+    confidence: medium
+    notes: "Virtual waiting-room / traffic-throttling service. A queue hostname is aliased under queue-it.net. Observed on 1 organisation."
+
+  - id: cname-target-revelian
+    vendor: "Revelian"
+    category: "HR & Learning"
+    type: cname_target
+    query: "revelian.com"
+    confidence: medium
+    notes: "Psychometric / pre-employment assessment platform (Australian, now part of Criteria). A first-party host is aliased under revelian.com. Observed on 1 organisation."
+
+  - id: cname-target-surveysparrow
+    vendor: "SurveySparrow"
+    category: "Business Applications"
+    type: cname_target
+    query: "surveysparrow.com"
+    confidence: medium
+    notes: "Conversational survey / experience-management platform. A first-party host is aliased under surveysparrow.com. Observed on 1 organisation."
+
+  - id: cname-target-uscreen
+    vendor: "Uscreen"
+    category: "Content Management"
+    type: cname_target
+    query: "uscreen.io"
+    confidence: medium
+    notes: "Video-membership / OTT streaming platform. A published site is aliased under uscreen.io. Observed on 1 organisation."
+
+  - id: cname-target-fujifilm-imagine
+    vendor: "FUJIFILM Imagine"
+    category: "Healthcare"
+    type: cname_target
+    query: "fujifilmimagine.com"
+    confidence: medium
+    notes: "Cloud medical-imaging / enterprise-imaging platform (also seen under fujifilmimagine.online). A tenant host is aliased under fujifilmimagine.com. Observed on 1 organisation."
+
+  - id: cname-target-mobileiron
+    vendor: "Ivanti (MobileIron)"
+    category: "Security"
+    type: cname_target
+    query: "mobileiron.com"
+    confidence: medium
+    notes: "Mobile device management (MDM/UEM), now Ivanti. A management host is aliased under mobileiron.com. Observed on 1 organisation."
+
+  - id: cname-target-acton
+    vendor: "Act-On"
+    category: "Marketing"
+    type: cname_target
+    query: "actonservice.com"
+    confidence: medium
+    notes: "Act-On marketing-automation hosted pages/assets domain; a first-party host is aliased under actonservice.com. Complements the act-on.net SPF signature. Observed on 1 organisation."
+
+  - id: cname-target-appian
+    vendor: "Appian"
+    category: "Business Applications"
+    type: cname_target
+    query: "appianportals.com"
+    confidence: medium
+    notes: "Appian low-code platform external-portal domain; a tenant portal is aliased under appianportals.com. Observed on 1 organisation."
+
+  - id: cname-target-arrows
+    vendor: "Arrows"
+    category: "Business Applications"
+    type: cname_target
+    query: "arrows.to"
+    confidence: medium
+    notes: "Customer-onboarding / shared action-plan platform (HubSpot ecosystem). A first-party host is aliased under arrows.to. Observed on 1 organisation."
+
+  - id: cname-target-bowlslink
+    vendor: "BowlsLink"
+    category: "Business Applications"
+    type: cname_target
+    query: "bowlslink.com.au"
+    confidence: medium
+    notes: "National sport-administration platform for bowls clubs (Bowls Australia); club sites are aliased under bowlslink.com.au. Observed on 1 organisation."
+
+  - id: cname-target-digistorm-hosting
+    vendor: "Digistorm"
+    category: "Content Management"
+    type: cname_target
+    query: "digistormhosting.com.au"
+    confidence: medium
+    notes: "School website / app platform (Australian); school sites are hosted under digistormhosting.com.au. Distinct hosting suffix from the digistorm.com signature. Observed on 1 organisation."
+
+  - id: cname-target-enrolhq
+    vendor: "EnrolHQ"
+    category: "HR & Learning"
+    type: cname_target
+    query: "enrolhq.net.au"
+    confidence: medium
+    notes: "School online-enrolment platform (Australian); enrolment portals are aliased under enrolhq.net.au. Observed on 1 organisation."
+
+  - id: cname-target-flip
+    vendor: "Flip"
+    category: "HR & Learning"
+    type: cname_target
+    query: "getflip.com"
+    confidence: medium
+    notes: "Frontline-employee communication / engagement app. A tenant host is aliased under getflip.com. Observed on 1 organisation."
+
+  - id: cname-target-k15t
+    vendor: "K15t"
+    category: "Business Applications"
+    type: cname_target
+    query: "k15t.com"
+    confidence: medium
+    notes: "Atlassian-ecosystem content apps (Scroll, Backbone); a published or exported site is aliased under k15t.com. Observed on 1 organisation."
+
+  - id: cname-target-linkgroup
+    vendor: "Link Group"
+    category: "Business Applications"
+    type: cname_target
+    query: "linkgroup.com"
+    confidence: medium
+    notes: "Share-registry / investor and fund administration services (Link Administration Holdings); an investor-portal host is aliased under linkgroup.com. Observed on 1 organisation."
+
+  - id: cname-target-zoey
+    vendor: "Zoey"
+    category: "Business Applications"
+    type: cname_target
+    query: "zoeysite.com"
+    confidence: medium
+    notes: "B2B e-commerce / wholesale-ordering platform; storefronts are hosted under zoeysite.com. Observed on 1 organisation."
+
+  - id: cname-target-rocketseed
+    vendor: "Rocketseed"
+    category: "Marketing"
+    type: cname_target
+    query: "rocketseed.com"
+    confidence: medium
+    notes: "Email-signature / branded-email marketing platform. A first-party host is aliased under rocketseed.com (the platform also sends via spfau.rocketseed.com). Observed on 1 organisation."
+
+  - id: cname-target-sai360
+    vendor: "SAI360"
+    category: "Compliance & GRC"
+    type: cname_target
+    query: "sai360.net"
+    confidence: medium
+    notes: "Governance, risk, compliance and EHS platform. A tenant host is aliased under sai360.net. Observed on 1 organisation."
+
+  - id: cname-target-schoolbox
+    vendor: "Schoolbox"
+    category: "HR & Learning"
+    type: cname_target
+    query: "schoolbox.cloud"
+    confidence: medium
+    notes: "School learning-management / community portal (Australian); school instances are hosted under schoolbox.cloud. Observed on 1 organisation."
+
+  - id: cname-target-schoolzine
+    vendor: "Schoolzine"
+    category: "Communications"
+    type: cname_target
+    query: "schoolzineplus.com"
+    confidence: medium
+    notes: "School newsletter / communications platform (Australian); school sites are aliased under schoolzineplus.com. Observed on 1 organisation."
+
+  - id: cname-target-delib
+    vendor: "Delib"
+    category: "Business Applications"
+    type: cname_target
+    query: "delib.net"
+    confidence: medium
+    notes: "Digital-democracy / public-consultation platform (Citizen Space); consultation sites appear as cs-<org>.delib.net. Observed across 2 government organisations."
+
+  - id: cname-target-thinkific
+    vendor: "Thinkific"
+    category: "HR & Learning"
+    type: cname_target
+    query: "thinkific.com"
+    confidence: medium
+    notes: "Online-course / learning platform; course sites are aliased under thinkific.com. Observed on 2 organisations."
+
+  - id: cname-target-tradablebits
+    vendor: "Tradable Bits"
+    category: "Marketing"
+    type: cname_target
+    query: "tradablebits.com"
+    confidence: medium
+    notes: "Fan-engagement / audience-marketing platform; campaign hosts are aliased under tradablebits.com (e.g. virtual.tradablebits.com). Observed on 2 organisations."
+
+  - id: cname-target-auth0-app
+    vendor: "Auth0"
+    category: "Identity & Secrets"
+    type: cname_target
+    query: "auth0app.com"
+    confidence: medium
+    notes: "Auth0 (Okta) custom-domain login host; a first-party authentication host is aliased under auth0app.com. Distinct domain from the auth0.com signature. Observed on 1 organisation."
+
+  - id: cname-target-bluera
+    vendor: "Bluera"
+    category: "HR & Learning"
+    type: cname_target
+    query: "bluera.com"
+    confidence: medium
+    notes: "Course / experience evaluation platform (eXplorance Blue ecosystem); tenant hosts appear as <tenant>.bluera.com. Observed on 1 organisation."
+
+  - id: cname-target-credsverse
+    vendor: "Credsverse"
+    category: "HR & Learning"
+    type: cname_target
+    query: "credsverse.com"
+    confidence: medium
+    notes: "Digital-credential / certificate issuance platform; tenant hosts appear under customers.credsverse.com. Observed on 1 organisation."
+
+  - id: cname-target-digitalpigeon
+    vendor: "Digital Pigeon"
+    category: "Business Applications"
+    type: cname_target
+    query: "digitalpigeon.com"
+    confidence: medium
+    notes: "Large-file / media delivery platform for creative teams; a first-party host is aliased under digitalpigeon.com. Observed on 1 organisation."
+
+  - id: cname-target-facts
+    vendor: "FACTS Management"
+    category: "Business Applications"
+    type: cname_target
+    query: "factsmgt.com.au"
+    confidence: medium
+    notes: "School tuition / payment management platform (Nelnet); a first-party host is aliased under factsmgt.com.au. Observed on 1 organisation."
+
+  - id: cname-target-fareye
+    vendor: "FarEye"
+    category: "Business Applications"
+    type: cname_target
+    query: "fareye.co"
+    confidence: medium
+    notes: "Last-mile logistics / delivery-orchestration platform; a tracking host is aliased under fareye.co. Observed on 1 organisation."
+
+  - id: cname-target-feedpress
+    vendor: "FeedPress"
+    category: "Analytics"
+    type: cname_target
+    query: "feedpress.me"
+    confidence: medium
+    notes: "RSS / podcast feed hosting and analytics; a first-party feed host is aliased under feedpress.me. Observed on 1 organisation."
+
+  - id: cname-target-figshare
+    vendor: "Figshare"
+    category: "Research"
+    type: cname_target
+    query: "figshare.com"
+    confidence: medium
+    notes: "Research-data repository / open-data platform (Digital Science); an institutional portal is aliased under figshare.com. Observed on 1 organisation."
+
+  - id: cname-target-forgerock
+    vendor: "ForgeRock"
+    category: "Identity & Secrets"
+    type: cname_target
+    query: "forgerock.io"
+    confidence: medium
+    notes: "Identity and access management platform (now Ping Identity); a tenant host is aliased under forgerock.io. Observed on 1 organisation."
+
+  - id: cname-target-gigya-api
+    vendor: "SAP Customer Data Cloud (Gigya)"
+    category: "Identity & Secrets"
+    type: cname_target
+    query: "gigya-api.com"
+    confidence: medium
+    notes: "SAP Customer Data Cloud (Gigya) API domain; a first-party host is aliased under gigya-api.com. Complements the gigya-raas.com SPF signature. Observed on 1 organisation."
+
+  - id: cname-target-gorgias
+    vendor: "Gorgias"
+    category: "Business Applications"
+    type: cname_target
+    query: "gorgias.help"
+    confidence: medium
+    notes: "E-commerce help-desk / customer-support platform; a support portal is aliased under gorgias.help. Observed on 1 organisation."
+
+  - id: cname-target-gradconnection
+    vendor: "GradConnection"
+    category: "HR & Learning"
+    type: cname_target
+    query: "gradconnection.com"
+    confidence: medium
+    notes: "Graduate-recruitment / student job-board platform (SEEK, Australian); a careers host is aliased under gradconnection.com. Observed on 1 organisation."
+
+  - id: cname-target-publitas
+    vendor: "Publitas"
+    category: "Marketing"
+    type: cname_target
+    query: "publitas.com"
+    confidence: medium
+    notes: "Digital catalogue / shoppable-publication platform; a published catalogue is aliased under publitas.com. Observed on 1 organisation."
+
+  - id: cname-target-sentral
+    vendor: "Sentral"
+    category: "HR & Learning"
+    type: cname_target
+    query: "sentral.school"
+    confidence: medium
+    notes: "School-management / student information system (Australian); school instances are hosted under sentral.school. Observed on 1 organisation."
+
+  - id: cname-target-symplectic
+    vendor: "Symplectic"
+    category: "Research"
+    type: cname_target
+    query: "symplectic.org"
+    confidence: medium
+    notes: "Research information management (Symplectic Elements, Digital Science); an institutional host is aliased under symplectic.org. Observed on 1 organisation."
+
+  - id: cname-target-zohohost
+    vendor: "Zoho"
+    category: "Business Applications"
+    type: cname_target
+    query: "zohohost.com.au"
+    confidence: medium
+    notes: "Zoho's Australian data-centre hosting for its cloud apps (helpdesk / ServiceDesk tenants appear under *.cs.zohohost.com.au). Delegation confirmed: zohohost.com.au has SOA ns1.zohocorp.com. Observed on 3 organisations."
+
+  - id: cname-target-exlibris
+    vendor: "Ex Libris"
+    category: "Research"
+    type: cname_target
+    query: "exlibrisgroup.com"
+    confidence: medium
+    notes: "Library discovery and research-information platforms (Primo, Esploro); institutional instances are hosted under *.exlibrisgroup.com. Distinct from the Prosentient intersearch entry. Observed on 2 organisations."
+
+  - id: cname-target-stripe-checkout
+    vendor: "Stripe"
+    category: "Payments"
+    type: cname_target
+    query: "stripecdn.com"
+    confidence: medium
+    notes: "Stripe-hosted checkout; a customer payment host is aliased to hosted-checkout.stripecdn.com. Observed on 2 organisations."
+
+  - id: cname-target-appsflyer
+    vendor: "AppsFlyer"
+    category: "Analytics"
+    type: cname_target
+    query: "appsflyer.com"
+    confidence: medium
+    notes: "Mobile attribution and deep-linking; branded link hosts appear under *.customlinks.appsflyer.com. Observed on 1 organisation."
+
+  - id: cname-target-brandpad
+    vendor: "BrandPad"
+    category: "Marketing"
+    type: cname_target
+    query: "brandpad.io"
+    confidence: medium
+    notes: "Hosted brand-guideline portals; a customer brand host is aliased to brandpad.io. Observed on 1 organisation."
+
+  - id: cname-target-clickdimensions
+    vendor: "ClickDimensions"
+    category: "Marketing"
+    type: cname_target
+    query: "clickdimensions.com"
+    confidence: medium
+    notes: "Marketing automation for Dynamics 365; email link-tracking hosts resolve to elink.clickdimensions.com. Pairs with the clickdimensions.com SPF signature. Observed on 1 organisation."
+
+  - id: cname-target-cloudways-apps
+    vendor: "Cloudways"
+    category: "Infrastructure"
+    type: cname_target
+    query: "cloudwaysapps.com"
+    confidence: medium
+    notes: "Cloudways managed application hosting; provisioned app instances appear as phpstack-*.cloudwaysapps.com. Distinct from the cloudways.cloud entry. Observed on 1 organisation."
+
+  - id: cname-target-customerio
+    vendor: "Customer.io"
+    category: "Marketing"
+    type: cname_target
+    query: "customeriomail.com"
+    confidence: medium
+    notes: "Customer.io messaging; click/open tracking hosts resolve under *.customeriomail.com. Observed on 1 organisation."
+
+  - id: cname-target-eloqua
+    vendor: "Oracle Eloqua"
+    category: "Marketing"
+    type: cname_target
+    query: "eloqua.com"
+    confidence: medium
+    notes: "Oracle Eloqua marketing; landing-page and microsite hosts resolve under *.hs.eloqua.com. Complements the en25.com and SPF Eloqua entries. Observed on 1 organisation."
+
+  - id: cname-target-emarsys
+    vendor: "Emarsys"
+    category: "Marketing"
+    type: cname_target
+    query: "emarsys.net"
+    confidence: medium
+    notes: "SAP Emarsys customer-engagement platform; link and image tracking hosts resolve to <customer>.emarsys.net. Pairs with the emarsys.net SPF signature. Observed on 1 organisation."
+
+  - id: cname-target-engagementhq
+    vendor: "Granicus EngagementHQ"
+    category: "Community Engagement"
+    type: cname_target
+    query: "engagementhq.com"
+    confidence: medium
+    notes: "Community-consultation platform (Granicus EngagementHQ, formerly Bang the Table); engagement sites are aliased to platform.engagementhq.com. Observed on 1 organisation."
+
+  - id: cname-target-discourse-hosted
+    vendor: "Discourse"
+    category: "Collaboration"
+    type: cname_target
+    query: "hosted-by-discourse.com"
+    confidence: medium
+    notes: "Discourse-hosted community forums; customer forum hosts are aliased under *.hosted-by-discourse.com. Distinct from the discourse.cloud entry. Observed on 1 organisation."
+
+  - id: cname-target-klaviyo-dns
+    vendor: "Klaviyo"
+    category: "Marketing"
+    type: cname_target
+    query: "klaviyodns.com"
+    confidence: medium
+    notes: "Klaviyo branded sending/tracking; customer tracking hosts resolve under *.klaviyodns.com. Complements the klaviyo.com and verification-TXT entries. Observed on 1 organisation."
+
+  - id: cname-target-kxcdn
+    vendor: "KeyCDN"
+    category: "Infrastructure"
+    type: cname_target
+    query: "kxcdn.com"
+    confidence: medium
+    notes: "KeyCDN content delivery; pull-zone hosts appear as <zone>.kxcdn.com. Observed on 1 organisation."
+
+  - id: cname-target-maglr
+    vendor: "Maglr"
+    category: "Marketing"
+    type: cname_target
+    query: "maglr.com"
+    confidence: medium
+    notes: "Interactive-content / digital-publishing platform; published content hosts are aliased to *.cname.maglr.com. Observed on 1 organisation."
+
+  - id: cname-target-maropost-stores
+    vendor: "Maropost"
+    category: "Marketing"
+    type: cname_target
+    query: "mymaropost.com"
+    confidence: medium
+    notes: "Maropost commerce/marketing storefronts hosted under stores.mymaropost.com. Observed on 1 organisation."
+
+  - id: cname-target-socialpinpoint
+    vendor: "Social Pinpoint"
+    category: "Community Engagement"
+    type: cname_target
+    query: "mysocialpinpoint.com.au"
+    confidence: medium
+    notes: "Australian community-engagement platform; engagement sites appear under *.app.mysocialpinpoint.com.au. Observed on 1 organisation."
+
+  - id: cname-target-opendatasoft
+    vendor: "Opendatasoft"
+    category: "Data & Analytics"
+    type: cname_target
+    query: "opendatasoft.com"
+    confidence: medium
+    notes: "Open-data portal platform; customer portals are aliased to <customer>.opendatasoft.com. Observed on 1 organisation."
+
+  - id: cname-target-paperturn
+    vendor: "Paperturn"
+    category: "Publishing"
+    type: cname_target
+    query: "paperturn.com"
+    confidence: medium
+    notes: "Digital flipbook / online-publication hosting; customer publication hosts are aliased under *.paperturn.com. Observed on 1 organisation."
+
+  - id: cname-target-railway
+    vendor: "Railway"
+    category: "Infrastructure"
+    type: cname_target
+    query: "railway.app"
+    confidence: medium
+    notes: "Railway application-hosting PaaS; deployed services appear under *.up.railway.app. Observed on 1 organisation."
+
+  - id: cname-target-screensteps
+    vendor: "ScreenSteps"
+    category: "Knowledge Base"
+    type: cname_target
+    query: "screensteps.com"
+    confidence: medium
+    notes: "Knowledge-base / documentation hosting; customer KB hosts are aliased to ext.screensteps.com. Observed on 1 organisation."
+
+  - id: cname-target-site123
+    vendor: "SITE123"
+    category: "Content Management"
+    type: cname_target
+    query: "site123.com"
+    confidence: medium
+    notes: "Hosted website builder; published sites are aliased to ssl.site123.com. Observed on 1 organisation."
+
+  - id: cname-target-sleekplan
+    vendor: "Sleekplan"
+    category: "Business Applications"
+    type: cname_target
+    query: "sleekplan.app"
+    confidence: medium
+    notes: "Customer-feedback / product-roadmap widget; customer boards are aliased to cname.sleekplan.app. Observed on 1 organisation."
+
+  - id: cname-target-sportsrm
+    vendor: "Sports RM"
+    category: "Business Applications"
+    type: cname_target
+    query: "sportsrm.com.au"
+    confidence: medium
+    notes: "Australian sports membership-management platform; member portals appear under *.membership.sportsrm.com.au. Observed on 1 organisation."
+
+  - id: cname-target-stape-info
+    vendor: "Stape"
+    category: "Analytics"
+    type: cname_target
+    query: "stape.info"
+    confidence: medium
+    notes: "Stape server-side tagging; customer GTM endpoints appear under *.stape.info. Distinct from the stape.io entry. Observed on 1 organisation."
+
+  - id: cname-target-talentlms
+    vendor: "TalentLMS"
+    category: "HR & Learning"
+    type: cname_target
+    query: "talentlms.com"
+    confidence: medium
+    notes: "Hosted learning-management system; customer learning portals are aliased to <customer>.talentlms.com. Observed on 1 organisation."
+
+  - id: cname-target-sentral-comau
+    vendor: "Sentral"
+    category: "Education"
+    type: cname_target
+    query: "sentral.com.au"
+    confidence: medium
+    notes: "School-management / student information system (Australian); some school instances are hosted under *.sentral.com.au. Distinct from the sentral.school entry. Observed on 1 organisation."
+
+  - id: cname-target-mailtrap
+    vendor: "Mailtrap"
+    category: "Email"
+    type: cname_target
+    query: "mailtrap.live"
+    confidence: medium
+    notes: "Email-delivery / sending platform; link-tracking hosts resolve to t.mailtrap.live. Pairs with the mailtrap.live SPF signature. Observed on 1 organisation."
+
+  - id: cname-target-hostinger-hstgr
+    vendor: "Hostinger"
+    category: "Infrastructure"
+    type: cname_target
+    query: "hstgr.net"
+    confidence: medium
+    notes: "Hostinger shared/managed web hosting; customer sites are served from infrastructure under *.hstgr.net. Pairs with the hostinger.com SPF signature. Observed on 3 organisations."
+
+  - id: cname-target-circle
+    vendor: "Circle"
+    category: "Community"
+    type: cname_target
+    query: "circle.so"
+    confidence: medium
+    notes: "Hosted community platform; customer community hosts are aliased under *.circle.so. Observed on 2 organisations."
+
+  - id: cname-target-acquia-sites
+    vendor: "Acquia"
+    category: "Content Management"
+    type: cname_target
+    query: "acquia-sites.com"
+    confidence: medium
+    notes: "Acquia Cloud / Site Factory Drupal hosting; customer sites are served under *.acquia-sites.com. Complements the Acquia DAM and SPF entries. Observed on 1 organisation."
+
+  - id: cname-target-acquia-edge
+    vendor: "Acquia"
+    category: "Infrastructure"
+    type: cname_target
+    query: "acquiaedge.net"
+    confidence: medium
+    notes: "Acquia Edge CDN / WAF in front of Acquia-hosted sites; hosts are aliased under *.acquiaedge.net. Observed on 1 organisation."
+
+  - id: cname-target-botify
+    vendor: "Botify"
+    category: "Marketing"
+    type: cname_target
+    query: "botify.com"
+    confidence: medium
+    notes: "Enterprise SEO platform; managed edge/rendering hosts are aliased under *.botify.com. Observed on 1 organisation."
+
+  - id: cname-target-eventsair
+    vendor: "EventsAir"
+    category: "Scheduling & Events"
+    type: cname_target
+    query: "eventsair.com"
+    confidence: medium
+    notes: "Event-management platform; customer hosts are aliased under *.eventsair.com. Complements the eventsairsite.com and eventsairmail.com entries. Observed on 1 organisation."
+
+  - id: cname-target-fly
+    vendor: "Fly.io"
+    category: "Infrastructure"
+    type: cname_target
+    query: "fly.dev"
+    confidence: medium
+    notes: "Fly.io application-hosting platform; deployed apps appear under *.fly.dev. Delegation confirmed: fly.dev is served by ns1.flydns.net. Observed on 1 organisation."
+
+  - id: cname-target-gitbook-io
+    vendor: "GitBook"
+    category: "Documentation"
+    type: cname_target
+    query: "gitbook.io"
+    confidence: medium
+    notes: "Hosted documentation; customer docs sites are aliased under *.gitbook.io. Current domain alongside the older gitbooks.io entry. Observed on 1 organisation."
+
+  - id: cname-target-kasada
+    vendor: "Kasada"
+    category: "Security"
+    type: cname_target
+    query: "kasada.io"
+    confidence: medium
+    notes: "Bot-mitigation / web-threat defence (Australian); protected endpoints are aliased under *.kasada.io. Observed on 1 organisation."
+
+  - id: cname-target-medusa
+    vendor: "Medusa"
+    category: "eCommerce"
+    type: cname_target
+    query: "medusajs.app"
+    confidence: medium
+    notes: "Medusa commerce platform hosting; storefront/proxy hosts are aliased under *.medusajs.app. Observed on 1 organisation."
+
+  - id: cname-target-memberful
+    vendor: "Memberful"
+    category: "Membership"
+    type: cname_target
+    query: "memberful.com"
+    confidence: medium
+    notes: "Membership / paid-subscription platform; customer membership hosts are aliased under *.memberful.com. Observed on 1 organisation."
+
+  - id: cname-target-officernd
+    vendor: "OfficeRnD"
+    category: "Business Applications"
+    type: cname_target
+    query: "officernd.com"
+    confidence: medium
+    notes: "Coworking / flexible-workspace management; customer member portals are aliased under *.officernd.com. Pairs with the officernd.com SPF signature. Observed on 1 organisation."
+
+  - id: cname-target-digitalocean-app
+    vendor: "DigitalOcean"
+    category: "Infrastructure"
+    type: cname_target
+    query: "ondigitalocean.app"
+    confidence: medium
+    notes: "DigitalOcean App Platform; deployed apps appear under *.ondigitalocean.app. Observed on 1 organisation."
+
+  - id: cname-target-peakhour
+    vendor: "Peakhour"
+    category: "Infrastructure"
+    type: cname_target
+    query: "peakhour.zone"
+    confidence: medium
+    notes: "Content delivery / WAF (Australian); protected sites are aliased under <site>.peakhour.zone. Observed on 1 organisation."
+
+  - id: cname-target-resend
+    vendor: "Resend"
+    category: "Email"
+    type: cname_target
+    query: "resend-dns.com"
+    confidence: medium
+    notes: "Resend email-delivery API; link/tracking hosts are aliased under *.resend-dns.com. Observed on 1 organisation."
+
+  - id: cname-target-silktide
+    vendor: "Silktide"
+    category: "Analytics"
+    type: cname_target
+    query: "silktide.com"
+    confidence: medium
+    notes: "Website accessibility / quality monitoring; managed hosts are aliased under *.silktide.com. Observed on 1 organisation."
+
+  - id: cname-target-zephr
+    vendor: "Zephr"
+    category: "Content Management"
+    type: cname_target
+    query: "zephr.com"
+    confidence: medium
+    notes: "Subscription / paywall platform for publishers (Zuora Zephr); delivery hosts are aliased under *.cdn.zephr.com. Observed on 1 organisation."
+
+  - id: cname-target-zephr-cf
+    vendor: "Zephr"
+    category: "Content Management"
+    type: cname_target
+    query: "zephrcf.com"
+    confidence: medium
+    notes: "Zephr production delivery domain, distinct from zephr.com; hosts are aliased under *.production.zephrcf.com. Observed on 1 organisation."
+
+  - id: cname-target-niceboard
+    vendor: "Niceboard"
+    category: "Business Applications"
+    type: cname_target
+    query: "niceboard.co"
+    confidence: medium
+    notes: "Hosted job-board platform; customer boards are aliased under *.niceboard.co. Observed on 1 organisation."
+
+  - id: cname-target-myfoodlink
+    vendor: "Foodlink"
+    category: "eCommerce"
+    type: cname_target
+    query: "myfoodlink.com"
+    confidence: medium
+    notes: "Online-grocery / click-and-collect platform (Australian); customer storefronts are aliased under *.custom-ssl.myfoodlink.com. Observed on 1 organisation."
+
+  - id: cname-target-clerk
+    vendor: "Clerk"
+    category: "Identity & Secrets"
+    type: cname_target
+    query: "clerk.services"
+    confidence: medium
+    notes: "Clerk authentication; a customer frontend-API host is aliased to frontend-api.clerk.services. Observed on 1 organisation."
+
+  - id: cname-target-cloudinary
+    vendor: "Cloudinary"
+    category: "Infrastructure"
+    type: cname_target
+    query: "cloudinary.com"
+    confidence: medium
+    notes: "Media-management / image-and-video CDN; delivery hosts are aliased under *.multicdn.cloudinary.com. Observed on 2 organisations."
+
+  - id: cname-target-elsevierpure
+    vendor: "Elsevier"
+    category: "Research"
+    type: cname_target
+    query: "elsevierpure.com"
+    confidence: medium
+    notes: "Elsevier Pure research-information-management system; institutional instances are aliased to <institution>.elsevierpure.com. Observed on 2 organisations."
+
+  - id: cname-target-staffbase
+    vendor: "Staffbase"
+    category: "Collaboration"
+    type: cname_target
+    query: "staffbase.com"
+    confidence: medium
+    notes: "Employee-communications / intranet platform; customer hosts are aliased under *.staffbase.com. Observed on 1 organisation."
+
+  - id: cname-target-coda
+    vendor: "Coda"
+    category: "Productivity"
+    type: cname_target
+    query: "coda.io"
+    confidence: medium
+    notes: "Collaborative docs / workspace platform; published doc hosts are aliased under *.coda.io. Observed on 1 organisation."
+
+  - id: cname-target-learnworlds
+    vendor: "LearnWorlds"
+    category: "HR & Learning"
+    type: cname_target
+    query: "getlearnworlds.com"
+    confidence: medium
+    notes: "Hosted learning-management / course platform; customer academies are aliased under *.getlearnworlds.com. Observed on 1 organisation."
+
+  - id: cname-target-pressbooks
+    vendor: "Pressbooks"
+    category: "Content Management"
+    type: cname_target
+    query: "pressbooks.pub"
+    confidence: medium
+    notes: "Open-textbook / digital-publishing platform; customer book sites are aliased under *.pressbooks.pub. Observed on 1 organisation."
+
+  - id: cname-target-campuspress
+    vendor: "CampusPress"
+    category: "Content Management"
+    type: cname_target
+    query: "campuspress.com"
+    confidence: medium
+    notes: "Managed WordPress for education (CampusPress / Edublogs); institutional sites are aliased under *.campuspress.com. Observed on 1 organisation."
+
+  - id: cname-target-qwilr
+    vendor: "Qwilr"
+    category: "Business Applications"
+    type: cname_target
+    query: "qwilr.com"
+    confidence: medium
+    notes: "Proposal / sales-document platform (Australian); customer-published documents are aliased under *.qwilr.com. Observed on 1 organisation."
+
+  - id: cname-target-chronus
+    vendor: "Chronus"
+    category: "HR & Learning"
+    type: cname_target
+    query: "chronus.com"
+    confidence: medium
+    notes: "Mentoring / employee-development platform; customer programs are aliased under *.chronus.com. Observed on 1 organisation."
+
+  - id: cname-target-mirakl
+    vendor: "Mirakl"
+    category: "eCommerce"
+    type: cname_target
+    query: "mirakl.net"
+    confidence: medium
+    notes: "Marketplace / drop-ship commerce platform; customer marketplaces are aliased under *.mirakl.net. Observed on 1 organisation."
+
+  - id: cname-target-tass
+    vendor: "TASS"
+    category: "Education"
+    type: cname_target
+    query: "tass.cloud"
+    confidence: medium
+    notes: "School administration / student-management system (Australian); school instances are aliased under *.tass.cloud. Observed on 1 organisation."
+
+  - id: cname-target-activecarrot
+    vendor: "ActiveCarrot"
+    category: "Business Applications"
+    type: cname_target
+    query: "activecarrot.com"
+    confidence: medium
+    notes: "Membership / fitness-and-wellness booking platform (Australian); customer portals are aliased under *.secure.activecarrot.com. Observed on 1 organisation."
+
+  - id: cname-target-donorlink
+    vendor: "DonorLink"
+    category: "Fundraising"
+    type: cname_target
+    query: "donorlink.au"
+    confidence: medium
+    notes: "Donation / fundraising platform (Australian); customer giving hosts are aliased to donor.donorlink.au. Observed on 1 organisation."
+
+  - id: cname-target-medical-objects
+    vendor: "Medical-Objects"
+    category: "Business Applications"
+    type: cname_target
+    query: "medical-objects.com.au"
+    confidence: medium
+    notes: "Clinical secure-messaging / health-information exchange (Australian); hosts are aliased under medical-objects.com.au. Delegation confirmed: the zone is self-administered on ns3.medical-objects.com.au. Observed on 1 organisation."
+
+  - id: cname-target-schedulehero
+    vendor: "ScheduleHero"
+    category: "Scheduling & Events"
+    type: cname_target
+    query: "schedulehero.io"
+    confidence: medium
+    notes: "Appointment / calendar-booking platform; customer booking hosts are aliased to schedulehero.io. Observed on 1 organisation."
+
+  - id: cname-target-solutionpath
+    vendor: "Solutionpath"
+    category: "Analytics"
+    type: cname_target
+    query: "solutionpath.io"
+    confidence: medium
+    notes: "Student-engagement / learning analytics (Solutionpath StREAM); institutional instances are aliased under *.production.solutionpath.io. Observed on 1 organisation."
+
+  - id: cname-target-yourmembership
+    vendor: "YourMembership"
+    category: "Membership"
+    type: cname_target
+    query: "site-ym.com"
+    confidence: medium
+    notes: "Association / membership management (YourMembership, Community Brands); member sites are aliased under *.site-ym.com. Delegation confirmed: the zone is served by ns1.ymaws.com. Observed on 1 organisation."
+
+  - id: cname-target-emuseum
+    vendor: "Gallery Systems"
+    category: "Business Applications"
+    type: cname_target
+    query: "emuseum.com"
+    confidence: medium
+    notes: "Online collections / museum-catalogue platform (Gallery Systems eMuseum); customer catalogues are aliased under *.emuseum.com. Observed on 1 organisation."
+
+  - id: cname-target-synap
+    vendor: "Synap"
+    category: "HR & Learning"
+    type: cname_target
+    query: "synap.ac"
+    confidence: medium
+    notes: "Assessment / exam-delivery platform; customer instances are aliased under *.cus.synap.ac. Observed on 1 organisation."
+
+  - id: cname-target-moodlerooms
+    vendor: "Open LMS (MoodleRooms)"
+    category: "HR & Learning"
+    type: cname_target
+    query: "mrooms.net"
+    confidence: medium
+    notes: "Managed Moodle hosting (MoodleRooms / Open LMS); customer learning sites are aliased under *.mrooms.net. Observed on 1 organisation."
+
+  - id: cname-target-ethink
+    vendor: "Open LMS (eThink)"
+    category: "HR & Learning"
+    type: cname_target
+    query: "ethinkcloud.net"
+    confidence: medium
+    notes: "Managed Moodle / Totara hosting (eThink, now Open LMS); customer sites are aliased under *.sites.ethinkcloud.net. Observed on 1 organisation."
+
+  - id: cname-target-desire2learn
+    vendor: "D2L Brightspace"
+    category: "HR & Learning"
+    type: cname_target
+    query: "desire2learn.com"
+    confidence: medium
+    notes: "D2L Brightspace learning platform; hosts are aliased under *.desire2learn.com. Complements the brightspace.com entry. Observed on 1 organisation."
+
+  - id: cname-target-netlify-cdn
+    vendor: "Netlify"
+    category: "Infrastructure"
+    type: cname_target
+    query: "netlifyglobalcdn.com"
+    confidence: medium
+    notes: "Netlify edge CDN serving Netlify-hosted sites; hosts are aliased under *.netlifyglobalcdn.com. Complements the netlify.app entry. Observed on 1 organisation."
+
+  - id: cname-target-atmail
+    vendor: "Atmail"
+    category: "Email"
+    type: cname_target
+    query: "atmailcloud.com"
+    confidence: medium
+    notes: "Hosted webmail / email platform (Australian); customer webmail hosts are aliased under *.atmailcloud.com. Pairs with the atmailcloud.com SPF signature. Observed on 1 organisation."
+
+  - id: cname-target-amazee
+    vendor: "amazee.io"
+    category: "Infrastructure"
+    type: cname_target
+    query: "amazee.io"
+    confidence: medium
+    notes: "Managed Drupal / Laravel hosting (amazee.io Lagoon); customer sites are aliased under *.amazee.io. Observed on 1 organisation."
+
+  - id: cname-target-uservoice
+    vendor: "UserVoice"
+    category: "Business Applications"
+    type: cname_target
+    query: "uservoice.com"
+    confidence: medium
+    notes: "Product-feedback / support platform; customer feedback portals are aliased under *.uservoice.com. Delegation confirmed: the zone is self-administered on ns1.uservoice.com. Observed on 1 organisation."
+
+  - id: cname-target-markitondemand
+    vendor: "Markit on Demand"
+    category: "Financial Services"
+    type: cname_target
+    query: "markitondemand.com"
+    confidence: medium
+    notes: "Financial-data and charting widgets (Markit on Demand / Wall Street On Demand); embed hosts are aliased under *.markitondemand.com. Observed on 1 organisation."
+
+  - id: cname-target-litmos
+    vendor: "SAP Litmos"
+    category: "HR & Learning"
+    type: cname_target
+    query: "litmos.com.au"
+    confidence: medium
+    notes: "SAP Litmos learning-management system (Australian tenant domain); customer learning sites are aliased to <customer>.litmos.com.au. Observed on 1 organisation."
+
+  - id: cname-target-gumroad
+    vendor: "Gumroad"
+    category: "eCommerce"
+    type: cname_target
+    query: "gumroad.com"
+    confidence: medium
+    notes: "Creator commerce / digital-product storefronts; customer stores are aliased under *.gumroad.com. Observed on 1 organisation."
+
+  - id: cname-target-tally
+    vendor: "Tally"
+    category: "Business Applications"
+    type: cname_target
+    query: "tally.so"
+    confidence: medium
+    notes: "Hosted form / survey builder; customer forms are aliased under *.tally.so. Observed on 1 organisation."
+
+  - id: cname-target-sweethawk
+    vendor: "SweetHawk"
+    category: "Business Applications"
+    type: cname_target
+    query: "sweethawk.com"
+    confidence: medium
+    notes: "Workflow / app add-ons for service desks (SweetHawk); customer hosts are aliased under *.sweethawk.com. Observed on 1 organisation."
+
+  - id: cname-target-ecreators
+    vendor: "eCreators"
+    category: "HR & Learning"
+    type: cname_target
+    query: "ecreators.io"
+    confidence: medium
+    notes: "Managed Moodle hosting / e-learning (Australian); customer learning sites are aliased under *.ecreators.io. Observed on 1 organisation."
+
+  - id: cname-target-epom
+    vendor: "Epom"
+    category: "Marketing"
+    type: cname_target
+    query: "epom.com"
+    confidence: medium
+    notes: "Ad-serving / programmatic platform; managed hosts are aliased under *.epom.com. Delegation confirmed: the zone is self-administered on ns1.epom.com. Observed on 1 organisation."
+
+  - id: cname-target-cdn77
+    vendor: "CDN77"
+    category: "Infrastructure"
+    type: cname_target
+    query: "cdn77.org"
+    confidence: medium
+    notes: "Content-delivery network; pull-zone hosts are aliased under *.cdn77.org. Delegation confirmed: the zone is self-administered on ns1.cdn77.org. Observed on 1 organisation."
+
+  - id: cname-target-gandi
+    vendor: "Gandi"
+    category: "Infrastructure"
+    type: cname_target
+    query: "gandi.net"
+    confidence: medium
+    notes: "Domain / web-hosting and redirection provider; managed hosts are aliased under *.gandi.net. Delegation confirmed: the zone is self-administered on dns0.gandi.net. Observed on 1 organisation."
+
+  - id: cname-target-shifter
+    vendor: "Shifter"
+    category: "Infrastructure"
+    type: cname_target
+    query: "getshifter.io"
+    confidence: medium
+    notes: "Static WordPress hosting (Shifter); generated sites are aliased under *.getshifter.io. Observed on 1 organisation."
+
+  - id: cname-target-marval
+    vendor: "Marval"
+    category: "IT Service Management"
+    type: cname_target
+    query: "marval.cloud"
+    confidence: medium
+    notes: "IT service-management (ITSM) platform; customer instances are aliased under *.marval.cloud. Observed on 1 organisation."
+
+  - id: cname-target-telligent
+    vendor: "Verint Telligent"
+    category: "Community"
+    type: cname_target
+    query: "telligentcloud.net"
+    confidence: medium
+    notes: "Community / forum platform (Verint Telligent); customer communities are aliased under *.telligentcloud.net. Observed on 1 organisation."
+
+  - id: cname-target-sendlayer
+    vendor: "SendLayer"
+    category: "Email"
+    type: cname_target
+    query: "sendlayer.net"
+    confidence: medium
+    notes: "Transactional-email delivery; tracking hosts are aliased under *.sendlayer.net. Observed on 1 organisation."
+
+  - id: cname-target-taguchi
+    vendor: "Taguchi"
+    category: "Marketing"
+    type: cname_target
+    query: "taguchimail.com"
+    confidence: medium
+    notes: "Marketing-automation / email platform (Australian); customer link and tracking hosts are aliased under *.app.taguchimail.com. Observed on 1 organisation."
+
+  - id: cname-target-webscribble
+    vendor: "Webscribble"
+    category: "Business Applications"
+    type: cname_target
+    query: "webscribble.co"
+    confidence: medium
+    notes: "Hosted job-board / career-centre platform; customer boards are aliased under *.webscribble.co. Observed on 1 organisation."
+
+  - id: cname-target-turborecruit
+    vendor: "TurboRecruit"
+    category: "Human Resources"
+    type: cname_target
+    query: "turborecruit.com.au"
+    confidence: medium
+    notes: "Applicant-tracking / recruitment platform (Australian); customer careers sites are aliased to <customer>.turborecruit.com.au. Observed on 1 organisation."
+
+  - id: cname-target-medallia
+    vendor: "Medallia"
+    category: "Customer Experience"
+    type: cname_target
+    query: "medallia.com.au"
+    confidence: medium
+    notes: "Experience-management platform (Australian tenant domain); customer hosts are aliased under *.medallia.com.au. Pairs with the medallia.com SPF signature. Observed on 1 organisation."
+
+  - id: cname-target-exacttarget
+    vendor: "Salesforce Marketing Cloud"
+    category: "Marketing"
+    type: cname_target
+    query: "exacttarget.com"
+    confidence: medium
+    notes: "Salesforce Marketing Cloud (ExactTarget); email link and microsite hosts are aliased under *.exacttarget.com. Pairs with the exacttarget.com SPF signature. Observed on 1 organisation."
+
+  - id: cname-target-sparkpost
+    vendor: "SparkPost"
+    category: "Email"
+    type: cname_target
+    query: "sparkpostmail.com"
+    confidence: medium
+    notes: "SparkPost email delivery; tracking hosts are aliased under *.sparkpostmail.com. Pairs with the sparkpostmail.com SPF signature. Observed on 1 organisation."
+
+  - id: cname-target-androgogic-com
+    vendor: "Androgogic"
+    category: "HR & Learning"
+    type: cname_target
+    query: "androgogic.com"
+    confidence: medium
+    notes: "Learning-platform integrator / managed LMS hosting (Australian); hosts are aliased under *.androgogic.com. Complements the androgogic.com.au entries. Observed on 1 organisation."
+
+  - id: cname-target-funnelback
+    vendor: "Funnelback"
+    category: "Site Search"
+    type: cname_target
+    query: "funnelback.com"
+    confidence: medium
+    notes: "Funnelback (Squiz) enterprise site search; customer search front-ends are aliased under *.clients.funnelback.com. Observed on 2 organisations."
+
+  - id: cname-target-adobe-cjm
+    vendor: "Adobe Experience Cloud"
+    category: "Marketing & CDP"
+    type: cname_target
+    query: "cjm.adobe.com"
+    confidence: medium
+    notes: "Adobe Experience Cloud / Journey Optimizer messaging CDN; customer hosts resolve to <host>.cname.cjm.adobe.com. Observed on 2 organisations."
+
+  - id: cname-target-mendix
+    vendor: "Mendix"
+    category: "Low-Code Platform"
+    type: cname_target
+    query: "mendix.net"
+    confidence: medium
+    notes: "Mendix low-code application hosting; app hosts resolve to <host>.cname.mendix.net. Observed on 1 organisation."
+
+  - id: cname-target-datadome
+    vendor: "DataDome"
+    category: "Bot & Fraud Protection"
+    type: cname_target
+    query: "datadome.co"
+    confidence: medium
+    notes: "DataDome bot-and-online-fraud protection; first-party script endpoints are aliased under *.first-party-js.datadome.co. Observed on 1 organisation."
+
+  - id: cname-target-threatmetrix
+    vendor: "ThreatMetrix"
+    category: "Bot & Fraud Protection"
+    type: cname_target
+    query: "online-metrix.net"
+    confidence: medium
+    notes: "ThreatMetrix device-fingerprinting / fraud profiling; collector hosts alias under *.online-metrix.net. Observed on 1 organisation."
+
+  - id: cname-target-workos
+    vendor: "WorkOS"
+    category: "Identity & Access"
+    type: cname_target
+    query: "workos-dns.com"
+    confidence: medium
+    notes: "WorkOS enterprise SSO/SCIM; customer auth hosts resolve to cname.workos-dns.com. Observed on 1 organisation."
+
+  - id: cname-target-odoo
+    vendor: "Odoo"
+    category: "ERP & CRM"
+    type: cname_target
+    query: "odoo.com"
+    confidence: medium
+    notes: "Odoo-hosted ERP/CRM; customer databases are reachable as <database>.odoo.com. Observed on 1 organisation."
+
+  - id: cname-target-figshare-figsh
+    vendor: "Figshare"
+    category: "Research & Data"
+    type: cname_target
+    query: "figsh.com"
+    confidence: medium
+    notes: "Figshare research-data repository; hosted/proxy instances resolve under *.figsh.com. Complements the figshare.com entry. Observed on 1 organisation."
+
+  - id: cname-target-biocatch
+    vendor: "BioCatch"
+    category: "Bot & Fraud Protection"
+    type: cname_target
+    query: "biocatch.com"
+    confidence: medium
+    notes: "BioCatch behavioural-biometrics fraud detection; per-tenant endpoints under *.customers.biocatch.com. Observed on 1 organisation."
+
+  - id: cname-target-bluecore
+    vendor: "Bluecore"
+    category: "Marketing & CDP"
+    type: cname_target
+    query: "bluecore.com"
+    confidence: medium
+    notes: "Bluecore retail marketing / personalisation; tracking hosts alias under *.bluecore.com. Observed on 1 organisation."
+
+  - id: cname-target-impactcom
+    vendor: "Impact.com"
+    category: "Affiliate & Partnerships"
+    type: cname_target
+    query: "impactradius.com"
+    confidence: medium
+    notes: "Impact.com partnership / affiliate tracking; branded tracking hosts alias under *.ct.impactradius.com. Observed on 1 organisation."
+
+  - id: cname-target-hushly
+    vendor: "Hushly"
+    category: "Marketing & CDP"
+    type: cname_target
+    query: "hushly.com"
+    confidence: medium
+    notes: "Hushly B2B content engagement / demand generation; content hub hosts alias under *.hushly.com. Observed on 1 organisation."
+
+  - id: cname-target-idkit
+    vendor: "IDVerse"
+    category: "Identity & Access"
+    type: cname_target
+    query: "idkit.co"
+    confidence: medium
+    notes: "IDVerse (IDKit) remote identity verification; branded capture hosts alias under *.idkit.co. Observed on 1 organisation."
+
+  - id: cname-target-kaligo
+    vendor: "Kaligo"
+    category: "Loyalty & Rewards"
+    type: cname_target
+    query: "kaligo.com"
+    confidence: medium
+    notes: "Kaligo / Ascenda travel-rewards and hotel-booking platform; co-branded hosts alias under *.kaligo.com. Observed on 1 organisation."
+
+  - id: cname-target-nopaperforms
+    vendor: "NoPaperForms"
+    category: "CRM"
+    type: cname_target
+    query: "nopaperforms.com"
+    confidence: medium
+    notes: "NoPaperForms (Meritto) education enrolment CRM; tenant portals alias under *.nopaperforms.com. Observed on 1 organisation."
+
+  - id: cname-target-netcorecloud
+    vendor: "Netcore Cloud"
+    category: "Marketing & CDP"
+    type: cname_target
+    query: "netcorecloud.net"
+    confidence: medium
+    notes: "Netcore Cloud marketing / email delivery; customer API and delivery hosts alias under *.netcorecloud.net. Observed on 1 organisation."
+
+  - id: cname-target-manageengine-in
+    vendor: "ManageEngine"
+    category: "IT & Service Management"
+    type: cname_target
+    query: "manageengine.in"
+    confidence: medium
+    notes: "ManageEngine (Zoho) ServiceDesk Plus Cloud, Indian region; tenant hosts resolve to customer-*.manageengine.in. Complements the manageengine.com entry. Observed on 1 organisation."
+
+  - id: cname-target-supermetrics
+    vendor: "Supermetrics"
+    category: "Analytics"
+    type: cname_target
+    query: "supermetrics.co"
+    confidence: medium
+    notes: "Supermetrics marketing-data pipelines; customer endpoints alias under *.supermetrics.co. Observed on 1 organisation."
+
+  - id: cname-target-pathify
+    vendor: "Pathify"
+    category: "Education"
+    type: cname_target
+    query: "pathify.com"
+    confidence: medium
+    notes: "Pathify student / campus engagement hub; tenant hosts resolve to <tenant>.pathify.com. Observed on 1 organisation."
+
+  - id: cname-target-questionscout
+    vendor: "QuestionScout"
+    category: "Forms & Surveys"
+    type: cname_target
+    query: "questionscout.com"
+    confidence: medium
+    notes: "QuestionScout online forms; custom form hosts alias under *.form.questionscout.com. Observed on 1 organisation."
+
+  - id: cname-target-pageflow
+    vendor: "Pageflow"
+    category: "CMS & Website"
+    type: cname_target
+    query: "pageflow.io"
+    confidence: medium
+    notes: "Pageflow multimedia storytelling; published-story hosts alias under domains.pageflow.io. Observed on 1 organisation."
+
+  - id: cname-target-clientseoreport
+    vendor: "ClientSEOReport"
+    category: "SEO & Marketing"
+    type: cname_target
+    query: "clientseoreport.com"
+    confidence: medium
+    notes: "White-label SEO client-reporting portal; agency client dashboards alias to cname.clientseoreport.com. Observed on 1 organisation."
+
+  - id: cname-target-scribe-mail
+    vendor: "Scribe"
+    category: "Email Signatures"
+    type: cname_target
+    query: "scribe-mail.com"
+    confidence: medium
+    notes: "Scribe email-signature management; hosted signature assets alias under *.scribe-mail.com. Observed on 1 organisation."
+
+  - id: cname-target-rioseo
+    vendor: "Rio SEO"
+    category: "SEO & Marketing"
+    type: cname_target
+    query: "rioseo.com"
+    confidence: medium
+    notes: "Rio SEO local-search / store-locator pages; locator hosts alias under *.rioseo.com. Observed on 1 organisation."
+
+  - id: cname-target-insider
+    vendor: "Insider"
+    category: "Marketing & CDP"
+    type: cname_target
+    query: "insdr.io"
+    confidence: medium
+    notes: "Insider (Insider One) link-branding / URL shortener; branded short-link hosts alias under *.insdr.io. Observed on 1 organisation."
+
+  - id: cname-target-p2motivate
+    vendor: "Power2Motivate"
+    category: "Loyalty & Rewards"
+    type: cname_target
+    query: "p2motivate.com"
+    confidence: medium
+    notes: "Power2Motivate (CarltonOne) loyalty, recognition and incentives; tenant storefronts alias under *.p2motivate.com. Observed on 1 organisation."
+
+  - id: cname-target-alterian
+    vendor: "Alterian"
+    category: "Marketing & CDP"
+    type: cname_target
+    query: "alterian.net"
+    confidence: medium
+    notes: "Alterian marketing / email engagement; delivery and content hosts alias under *.e.alterian.net. Observed on 1 organisation."
+
+  - id: cname-target-sophosdmarc
+    vendor: "Sophos Mail"
+    category: "DMARC & Email Security"
+    type: cname_target
+    query: "sophosdmarc.net"
+    confidence: medium
+    notes: "Sophos email-security DMARC / MTA-STS management; MTA-STS policy and SPF-redirect hosts alias under *.sophosdmarc.net. Observed on 1 organisation."
+
+  - id: cname-target-sendmarc-mtacerts
+    vendor: "Sendmarc"
+    category: "DMARC & Email Security"
+    type: cname_target
+    query: "sendmarc.com"
+    confidence: medium
+    notes: "Sendmarc DMARC / MTA-STS management; MTA-STS certificate host mta-certs.sendmarc.com. Complements the sendmarc.com / sdmarc.net DMARC entries. Observed on 1 organisation."
+
+  - id: cname-target-springboard
+    vendor: "Springboard"
+    category: "HR & Recruiting"
+    type: cname_target
+    query: "springboard.com.au"
+    confidence: medium
+    notes: "Springboard careers / recruitment portals (Australian); client sites alias under prod-au-clients.springboard.com.au. Observed on 1 organisation."
+
+  - id: cname-target-cibis
+    vendor: "CIBIS"
+    category: "Education"
+    type: cname_target
+    query: "cibis.net.au"
+    confidence: medium
+    notes: "CIBIS course-discovery / education web platform (Australian); tenant course catalogues alias under *.cibis.net.au. Observed on 1 organisation."
+
+  - id: cname-target-uknowva
+    vendor: "uKnowva"
+    category: "HR & Learning"
+    type: cname_target
+    query: "uknowva.cloud"
+    confidence: medium
+    notes: "uKnowva HRMS; tenant instances resolve to <tenant>.uknowva.cloud. Observed on 1 organisation."
+
+  - id: cname-target-planneren
+    vendor: "Planneren"
+    category: "eCommerce Tools"
+    type: cname_target
+    query: "planneren.app"
+    confidence: medium
+    notes: "Planneren 3D room / furniture configurator; branded configurators alias under *.planneren.app (staging under planneren.dev). Observed on 1 organisation."
+
+  - id: cname-target-stape-nz
+    vendor: "Stape"
+    category: "Tag Management"
+    type: cname_target
+    query: "stape.nz"
+    confidence: medium
+    notes: "Stape server-side tagging (GTM); container endpoints alias under *.stape.nz. Complements the stape.io / stape.info entries. Observed on 1 organisation."
+
+  - id: cname-target-allocate-plus
+    vendor: "Allocate+"
+    category: "Education"
+    type: cname_target
+    query: "allocate.plus"
+    confidence: medium
+    notes: "Student timetabling / scheduling cloud; institution hosts resolve under *.prd.allocate.plus. Observed on 1 organisation."
+
+  - id: cname-target-brandworkz
+    vendor: "Brandworkz"
+    category: "DAM & Brand"
+    type: cname_target
+    query: "brandworkz.com"
+    confidence: medium
+    notes: "Brandworkz digital-asset-management / brand portal; tenant portals resolve to <customer>.brandworkz.com. Observed on 1 organisation."
+
+  - id: cname-target-intersect
+    vendor: "Intersect Australia"
+    category: "Research & Data"
+    type: cname_target
+    query: "intersect.org.au"
+    confidence: medium
+    notes: "Intersect Australia research-computing / REDCap and research-app hosting (not-for-profit); tenant hosts resolve under *.intersect.org.au. Observed on 1 organisation."
+
+  - id: cname-target-jitbit
+    vendor: "Jitbit"
+    category: "IT & Service Management"
+    type: cname_target
+    query: "jitbit.com"
+    confidence: medium
+    notes: "Jitbit hosted helpdesk; tenant desks resolve to <customer>.jitbit.com. Observed on 1 organisation."
+
+  - id: cname-target-mashery
+    vendor: "TIBCO Mashery"
+    category: "API Management"
+    type: cname_target
+    query: "mashery.com"
+    confidence: medium
+    notes: "TIBCO Mashery API management; customer API gateways resolve to <host>.mashery.com. Observed on 1 organisation."
+
+  - id: cname-target-movio
+    vendor: "Movio"
+    category: "Marketing & CDP"
+    type: cname_target
+    query: "movio.co"
+    confidence: medium
+    notes: "Movio cinema audience marketing / CRM; tracking hosts resolve under *.movio.co. Observed on 1 organisation."
+
+  - id: cname-target-parsely
+    vendor: "Parse.ly"
+    category: "Analytics"
+    type: cname_target
+    query: "parsely.com"
+    confidence: medium
+    notes: "Parse.ly (Automattic) content analytics; first-party CDN/API endpoints alias under *.parsely.com. Observed on 1 organisation."
+
+  - id: cname-target-peoplegrove
+    vendor: "PeopleGrove"
+    category: "Education"
+    type: cname_target
+    query: "peoplegrove.com"
+    confidence: medium
+    notes: "PeopleGrove student mentoring / career networking; tenant hosts resolve under *.domains.peoplegrove.com. Observed on 1 organisation."
+
+  - id: cname-target-simitive
+    vendor: "Simitive"
+    category: "Education"
+    type: cname_target
+    query: "simitive.com"
+    confidence: medium
+    notes: "Simitive academic workload / performance management; tenant hosts resolve to <customer>.simitive.com. Observed on 1 organisation."
+
+  - id: cname-target-skillsforge
+    vendor: "SkillsForge"
+    category: "Education"
+    type: cname_target
+    query: "skillsforge.net"
+    confidence: medium
+    notes: "SkillsForge researcher-development / skills management; tenant hosts resolve under *.skillsforge.net. Observed on 1 organisation."
+
+  - id: cname-target-skpr
+    vendor: "Skpr"
+    category: "Hosting & CMS"
+    type: cname_target
+    query: "skpr.live"
+    confidence: medium
+    notes: "Skpr managed Drupal hosting (Australian); tenant sites resolve under *.shared.skpr.live. Observed on 1 organisation."
+
+  - id: cname-target-gofundraise
+    vendor: "GoFundraise"
+    category: "Fundraising"
+    type: cname_target
+    query: "gofundraise.com.au"
+    confidence: medium
+    notes: "GoFundraise online fundraising platform (Australian); hosted fundraising pages alias to gofundraise.com.au. Observed on 1 organisation."
+
+  - id: cname-target-neto
+    vendor: "Neto (Maropost Commerce Cloud)"
+    category: "eCommerce"
+    type: cname_target
+    query: "neto.com.au"
+    confidence: medium
+    notes: "Neto / Maropost Commerce Cloud webstore hosting; storefronts alias under stores.neto.com.au. Complements the neto.com.au SPF entry. Observed on 1 organisation."
+
+  - id: cname-target-mydispense
+    vendor: "MyDispense"
+    category: "Education"
+    type: cname_target
+    query: "mydispense.site"
+    confidence: medium
+    notes: "MyDispense pharmacy-dispensing simulation (education); institution instances resolve under *.mydispense.site. Observed on 1 organisation."
+
+  - id: cname-target-symphony-cadence
+    vendor: "Symphony by Cadence"
+    category: "HR & Learning"
+    type: cname_target
+    query: "symphonybycadence.app"
+    confidence: medium
+    notes: "Symphony by Cadence hosted learning / simulation platform; tenant hosts resolve under tenants.symphonybycadence.app. Observed on 1 organisation."
+
+  - id: cname-target-optimizely-cmp
+    vendor: "Optimizely"
+    category: "Marketing & CDP"
+    type: cname_target
+    query: "optimizely.com"
+    confidence: medium
+    notes: "Optimizely content marketing platform (CMP); asset and collection hosts resolve under *.cmp.optimizely.com. Complements the episerver.net entry. Observed on 1 organisation."
+
+  - id: cname-target-oracle-waf
+    vendor: "Oracle Cloud WAF"
+    category: "Bot & Fraud Protection"
+    type: cname_target
+    query: "waas.oci.oraclecloud.net"
+    confidence: medium
+    notes: "Oracle Cloud Infrastructure Web Application Firewall; protected sites resolve to <host>.o.waas.oci.oraclecloud.net (oraclecloud.net zone administered by oracle.com). Observed on 1 organisation."
+
+  - id: cname-target-libanswers
+    vendor: "Springshare LibAnswers"
+    category: "Education"
+    type: cname_target
+    query: "libanswers.com"
+    confidence: medium
+    notes: "Springshare LibAnswers library Q&A / knowledge base; tenant hosts resolve to region-<region>.libanswers.com. Observed on 1 organisation."
+
+  - id: cname-target-quartex
+    vendor: "Quartex"
+    category: "Research & Data"
+    type: cname_target
+    query: "quartexcollections.com"
+    confidence: medium
+    notes: "Quartex (Adam Matthew Digital) digital-collections platform; tenant sites resolve under *.quartexcollections.com. Observed on 1 organisation."
+
+  - id: cname-target-zohohost-com
+    vendor: "Zoho"
+    category: "Productivity"
+    type: cname_target
+    query: "zohohost.com"
+    confidence: medium
+    notes: "Zoho-hosted services (forms, sites); hosts resolve under *.cs.zohohost.com. Complements the zohohost.com.au entry. Observed on 1 organisation."
+
+  - id: cname-target-xcloud-app
+    vendor: "xCloud"
+    category: "Hosting & CMS"
+    type: cname_target
+    query: "xcloud.app"
+    confidence: medium
+    notes: "xCloud (WPManageNinja) managed WordPress hosting; sites front-ended via edge.xcloud.app. Pairs with the xcloud.email entry. Observed on 1 organisation."
+
+  - id: cname-target-xcloud-email
+    vendor: "xCloud"
+    category: "Hosting & CMS"
+    type: cname_target
+    query: "xcloud.email"
+    confidence: medium
+    notes: "xCloud (WPManageNinja) managed WordPress hosting; mail/tracking hosts resolve under *.xcloud.email. Pairs with the xcloud.app entry. Observed on 1 organisation."
+
+  - id: cname-target-mta-sts-tech
+    vendor: "MTA-STS.tech"
+    category: "DMARC & Email Security"
+    type: cname_target
+    query: "mta-sts.tech"
+    confidence: medium
+    notes: "Managed MTA-STS policy hosting; a customer's mta-sts subdomain aliases to <customer>.mta-sts.tech. Observed on 1 organisation."
+
+  - id: cname-target-cr4ce
+    vendor: "cr4ce"
+    category: "Awards & Grants"
+    type: cname_target
+    query: "cr4ce.com"
+    confidence: medium
+    notes: "Shared awards / grants / challenge-management platform; tenant sites resolve under au.cr4ce.com. Vendor/product identity not independently confirmed; attribution rests on the recurring shared host. Observed on 2 organisations."

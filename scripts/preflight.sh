@@ -57,6 +57,11 @@ independent shell times total universal joins \
 copyright acquisition border asset consumer \
 heritage budget classification fitness publishers \
 interaction dictionary \
+directory perpetual voice \
+wellness catch finance library linux \
+education \
+interactive tenants rightnow \
+property standard wires \
 "
   for d in "${domains[@]}"; do
     # For a subdomain, the first label names the site section, not the

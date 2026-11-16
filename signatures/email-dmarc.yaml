@@ -341,3 +341,133 @@ signatures:
       contains: "dmarcdigests.com"
     confidence: medium
     notes: "DMARC monitoring platform. Aggregate reports are sent to a destination under inbound.dmarcdigests.com. Observed on 1 organisation."
+
+  - id: dmarc-thegrid
+    vendor: "The Grid"
+    category: "Compliance & GRC"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "dmarc.thegrid.com.au"
+    confidence: medium
+    notes: "Aggregate/forensic reports are sent to a third-party destination under dmarc.thegrid.com.au (rua and ruf), an Australian managed-service DMARC aggregator. The reporting domain is independently delegated; the operating company's trading name is not independently confirmed. Observed on 1 organisation."
+
+  - id: dmarc-palisade
+    vendor: "Palisade"
+    category: "Compliance & GRC"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "palisade.email"
+    confidence: medium
+    notes: "DMARC / email-security platform; aggregate reports are sent to a destination under palisade.email (e.g. reports.palisade.email). Observed on 1 organisation."
+
+  - id: dmarc-genisys
+    vendor: "Genisys"
+    category: "Compliance & GRC"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "dmarc.genisys.com.au"
+    confidence: medium
+    notes: "Australian managed-service DMARC aggregation; aggregate/forensic reports are sent to rua/ruf destinations under dmarc.genisys.com.au (the same provider also offers SPF flattening under spf.dmarc.genisys.com.au). Observed on 1 organisation."
+
+  - id: dmarc-dmarcdefend
+    vendor: "DMARC Defend"
+    category: "Compliance & GRC"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "dmarcdefend.com"
+    confidence: medium
+    notes: "DMARC monitoring / reporting platform; aggregate reports are sent to a destination under dmarcdefend.com. Observed on 1 organisation."
+
+  - id: dmarc-firstwave
+    vendor: "Firstwave"
+    category: "Compliance & GRC"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "firstwavecloud.com"
+    confidence: medium
+    notes: "Australian email / cyber-security vendor's managed DMARC reporting; aggregate reports are sent to a destination under firstwavecloud.com. Pairs with the firstwave.com.au SPF signature. Observed on 1 organisation."
+
+  - id: dmarc-glockapps
+    vendor: "GlockApps"
+    category: "Compliance & GRC"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "glockapps.com"
+    confidence: medium
+    notes: "Email deliverability / DMARC monitoring; aggregate or forensic reports are sent to a destination under *.glockapps.com. Observed on 1 organisation."
+
+  - id: dmarc-theitagency
+    vendor: "The IT Agency"
+    category: "Compliance & GRC"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "dmarc.theitagency.com.au"
+    confidence: medium
+    notes: "Managed DMARC reporting by an Australian IT services provider; aggregate and forensic reports are sent to destinations under *.dmarc.theitagency.com.au. Observed on 1 organisation."
+
+  - id: dmarc-dmarcinput
+    vendor: "dmarcinput.com"
+    category: "Compliance & GRC"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "dmarcinput.com"
+    confidence: medium
+    notes: "Managed DMARC reporting; aggregate reports are sent to a per-tenant destination under dmarcinput.com. Pairs with the dmarcinput.com SPF signature. Observed on 1 organisation."
+
+  - id: dmarc-mailgun
+    vendor: "Mailgun"
+    category: "Email"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "dmarc.mailgun.org"
+    confidence: medium
+    notes: "Mailgun managed DMARC reporting; aggregate reports are sent to a destination under dmarc.mailgun.org. Complements the mailgun.org SPF and cname-target entries. Observed on 1 organisation."
+
+  - id: dmarc-brevo-mailinblue
+    vendor: "Brevo"
+    category: "Email"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "mailinblue.com"
+    confidence: medium
+    notes: "Brevo (formerly Sendinblue) managed DMARC reporting; aggregate reports sent to a destination under mailinblue.com (Brevo's legacy domain). Observed on 1 organisation."
+
+  - id: dmarc-suped
+    vendor: "Suped"
+    category: "Email"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "suped.com"
+    confidence: medium
+    notes: "Suped managed DMARC reporting; aggregate reports sent to a per-tenant destination under mail.suped.com. Observed on 1 organisation."
+
+  - id: dmarc-dmarkoff
+    vendor: "DMARKOFF"
+    category: "Email"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "dmarkoff.com"
+    confidence: medium
+    notes: "DMARKOFF (GlockApps) managed DMARC reporting; aggregate reports sent to a destination under reports.dmarkoff.com. Observed on 1 organisation."
+
+  - id: dmarc-trendmicro-anz
+    vendor: "Trend Micro Email Security"
+    category: "Email"
+    type: dmarc_rua
+    query: "{domain}"
+    match:
+      contains: "dmarcrua.tmes-anz.trendmicro.com"
+    confidence: medium
+    notes: "Trend Micro Email Security (ANZ region) managed DMARC reporting; aggregate reports sent to a per-tenant mailbox under dmarcrua.tmes-anz.trendmicro.com. Complements the tmes-anz.trendmicro.com SPF entry. Observed on 1 organisation."
